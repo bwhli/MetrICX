@@ -14,8 +14,7 @@ export class HomePage {
   
   async calc(){
 	  const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: 'Subtitle',
+      title: 'Alert',
       message: 'This is an alert message.',
       buttons: ['Cancel', 'Open Modal', 'Delete']
     });
