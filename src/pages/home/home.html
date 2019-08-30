@@ -1,0 +1,36 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      ICX Reward Calculator
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+	<div class="row">
+		<div class="col-xs-6 col-md-5 bg-light border border-info">
+		   <form (ngSubmit)="calc()">
+			  <ion-item>
+				<ion-label>Todo</ion-label>
+				<ion-input type="text"> </ion-input>
+			  </ion-item>
+			  <ion-item>
+				<ion-label>Description</ion-label>
+				<ion-textarea name="description"></ion-textarea>
+			  </ion-item>
+			  <button ion-button type="submit" block>Add Todo</button>
+			</form>
+		</div>
+	</div>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar>
+    <img src="../assets/imgs/rhizomebanner.png" width="150px" style="display:inline-block" height="30px"/>
+    <ion-title float-right>
+	  <a href="https://twitter.com/RhizomeICX" target="_top"><i class="fa fa-twitter"></i></a>
+      <a href="https://t.me/RhizomeICX"target="_top"><i class="fa fa-telegram"></i></a>
+      <a href="https://github.com/rhizomeicx"target="_top"><i class="fa fa-github"></i></a>
+	</ion-title>
+  </ion-toolbar>
+</ion-footer>
