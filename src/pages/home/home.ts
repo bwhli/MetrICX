@@ -41,13 +41,13 @@ export class HomePage {
                 .build();
 
      const getStake = await iconService.call(call).execute();
-	 const stake = getStake['stake'];
+	 const stake = BigInt(getStake['stake']).toString();
 	
 	 console.log(IconConverter.toBigNumber(IconAmount.of(stake, IconAmount.Unit.ICX).convertUnit(IconAmount.Unit.LOOP)));
 
 	  const alert = await this.alertController.create({
       title: 'ICX Balance',
-      message: IconConverter.toBigNumber(stake).toString(),
+      message: stake,
       buttons: ['Cancel']
     });
 
