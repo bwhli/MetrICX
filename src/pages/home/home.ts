@@ -26,37 +26,34 @@ export class HomePage {
 			  }
   
   async calc(){
-	 
+	  var address = this.stakingForm.controls['address'].value;
 	  const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
 	  const iconService = new IconService(httpProvider);
+	  console.log(address);
      
-	  const balance = await iconService.getBalance('hx5af8bd1b5cdc321a53ead7a836601ce8e2c938c9').execute();
+	 //hx1141b769011ee8399ef70f393b568ca15a6e22d7
+	  const availableBalance = await iconService.getBalance(address).execute();
 	  
 	  const call = new CallBuilder()
 				.to('cx0000000000000000000000000000000000000000')
 				.method('getStake')
 				.params({
-							address: 'hx1141b769011ee8399ef70f393b568ca15a6e22d7'
+							address: address
 						})				
                 .build();
 
      const getStake = await iconService.call(call).execute();
-	 const stake = BigInt(getStake['stake']).toString();
-	
-	 console.log(IconConverter.toBigNumber(IconAmount.of(stake, IconAmount.Unit.ICX).convertUnit(IconAmount.Unit.LOOP)));
+	 const stake = BigInt(getStake['stake']);
+	 
+	 const totalBalance = BigInt(BigInt(getStake['stake']) + BigInt(availableBalance)).toString();
 
 	  const alert = await this.alertController.create({
       title: 'ICX Balance',
-      message: stake,
+      message: totalBalance,
       buttons: ['Cancel']
     });
 
     await alert.present();
-	
   }
   
-  
-  
-
-
 }
