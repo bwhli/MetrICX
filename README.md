@@ -1,3 +1,2 @@
-# Ionic-Icx-Reward-Calculator
-Simple application to estimate the amount of ICX reward returned from Staking
-
+# ICONomy
+Application that provides an economic and governance overview of the ICON network. 
