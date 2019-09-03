@@ -6,18 +6,17 @@
 	</ion-navbar>
   </ion-header>
 
-<ion-content padding>
+<ion-content padding >
    
-	<span>No address has been found</span> <br />
-	<span>Enter your address to view your ICONomy </span>
-   <form [formGroup]="stakingForm" (ngSubmit)="calc()">
-	  <ion-item>
-		<ion-input type="text" placeholder="hx0000000000000001.." formControlName="address"></ion-input>
-	  </ion-item>
-
-	 <button color="primary" ion-button type="submit" block>
-		<i class="fa fa-lg fa-save"></i>
-	 </button>
+	<form [formGroup]="stakingForm" (ngSubmit)="calc()" >
+		<ion-label> Enter and save your address to view your ICONomy  </ion-label>
+		<ion-item>
+				<ion-input type="text" placeholder="hx0000000000000001.." formControlName="address"></ion-input>
+				<button ion-button clear item-right color="primary" type="submit">
+					<i class="fa fa-2x fa-save"></i>
+				</button>
+		</ion-item>		
 	</form>
-	
+		
+
 </ion-content>
