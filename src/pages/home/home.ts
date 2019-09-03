@@ -6,6 +6,9 @@ import { Storage } from '@ionic/storage';
 
 const { CallBuilder } = IconBuilder;
 
+type BigInt = number;
+declare const BigInt: typeof Number;
+
 @Component({
   selector: 'page-home',
   templateUrl: 'home.html'
