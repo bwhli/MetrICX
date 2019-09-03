@@ -1,46 +1,23 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-	  <span><img src="../assets/imgs/icon_white.png" width="90px" style="float:right" height="30px"/> ICX Reward Calculator </span>
-    </ion-title>
-  </ion-navbar>
-</ion-header>
+	<ion-navbar>
+	  <ion-title>
+		Home
+	  </ion-title>
+	</ion-navbar>
+  </ion-header>
 
 <ion-content padding>
+   
+	<span>No address has been found</span> <br />
+	<span>Enter your address to view your ICONomy </span>
    <form [formGroup]="stakingForm" (ngSubmit)="calc()">
-    <ion-item>
-      <ion-label color="primary">	Enter Manually </ion-label>
-	 </ion-item>
-	  <ion-item  no-lines >
-		<ion-label position="floating" color="dark" >ICX Staked: </ion-label>
-		<ion-input type="number" placeholder="10000"  formControlName="amount"> </ion-input>
-	  </ion-item>
-	  <ion-item  no-lines >
-		<ion-label position="floating" color="dark">Network Staked %: </ion-label>
-		<ion-input type="number" placeholder="30" formControlName="network_perc"></ion-input>
-	  </ion-item>
 	  <ion-item>
-		<ion-label color="primary">OR</ion-label>
-	 </ion-item>
-	  <ion-item  no-lines>
-		<ion-label position="floating" color="dark">Public Address: </ion-label>
 		<ion-input type="text" placeholder="hx0000000000000001.." formControlName="address"></ion-input>
 	  </ion-item>
 
 	 <button color="primary" ion-button type="submit" block>
-		<i class="fa fa-lg fa-calculator"></i>
+		<i class="fa fa-lg fa-save"></i>
 	 </button>
 	</form>
 	
 </ion-content>
-
-<ion-footer>
-  <ion-toolbar>
-    <img src="../assets/imgs/rhizomebanner.png" width="85px" style="display:inline-block" height="25px"/>
-    <ion-title float-right>
-	  <a href="https://twitter.com/RhizomeICX" target="_top"><i class="fa fa-twitter"></i></a>
-      <a href="https://t.me/RhizomeICX"target="_top"><i class="fa fa-telegram"></i></a>
-      <a href="https://github.com/rhizomeicx"target="_top"><i class="fa fa-github"></i></a>
-	</ion-title>
-  </ion-toolbar>
-</ion-footer>

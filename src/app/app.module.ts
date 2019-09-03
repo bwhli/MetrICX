@@ -7,23 +7,34 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
 
 import { MyApp } from './app.component';
+import { Govern } from '../pages/govern/govern';
+import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
+import { TabsPage } from '../pages/tabs/tabs';
+
+
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    Govern,
+    ContactPage,
+    TabsPage
   ],
   imports: [
     BrowserModule,
-	ReactiveFormsModule,
+	  ReactiveFormsModule,
     IonicModule.forRoot(MyApp),
 	IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    Govern,
+    ContactPage,
+    HomePage,
+    TabsPage
   ],
   providers: [
     StatusBar,
