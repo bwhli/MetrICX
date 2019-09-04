@@ -1,0 +1,37 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Wallet
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+		<ion-list lines="full" class="ion-no-margin ion-no-padding">
+        <ion-item>
+            <ion-label position="stacked">ICX Balance</ion-label>
+            <ion-label>{{balance.toFixed(4)}}</ion-label>
+            <ion-button class="ion-no-margin" (click)="loadWallet()">
+              <ion-icon name="refresh"></ion-icon>
+            </ion-button>
+          </ion-item>		
+          <ion-item>
+              <ion-label position="stacked">ICX Staked</ion-label>
+              <ion-label>{{stake.toFixed(4)}}</ion-label>
+              <ion-button class="ion-no-margin" (click)="loadStake()">
+                <ion-icon name="refresh"></ion-icon>
+              </ion-button>
+          </ion-item>		
+          <ion-item>
+              <ion-label position="stacked">Rewards Earned</ion-label>
+              <ion-label>{{claim.toFixed(4)}}</ion-label>
+              <ion-button class="ion-no-margin" (click)="loadClaim()">
+                <ion-icon name="refresh"></ion-icon>
+              </ion-button>
+          </ion-item>		
+          <ion-item>
+              <ion-label position="stacked"><strong>Total</strong></ion-label>
+              <ion-label><strong>{{(stake+balance).toFixed(2)}} (+{{claim.toFixed(2)}})</strong></ion-label>
+          </ion-item>		
+    </ion-list>
+</ion-content>

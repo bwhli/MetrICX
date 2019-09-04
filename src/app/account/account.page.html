@@ -1,0 +1,26 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>
+      Account
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+	<br>
+	<form [formGroup]="accountForm" (ngSubmit)="save()" >
+		<ion-list lines="full" class="ion-no-margin ion-no-padding">
+			<ion-item>
+				<ion-label position="stacked">Your ICX Public Key</ion-label>
+				<ion-input type="text" placeholder="hx0000000000000001.." formControlName="address"></ion-input>
+			</ion-item>		
+		</ion-list>
+		<div class="ion-padding">
+			<ion-button expand="block" type="submit" class="ion-no-margin">
+				<ion-icon slot="start" name="save"></ion-icon>
+				Save
+			</ion-button>
+		</div>
+	</form>
+
+</ion-content>
