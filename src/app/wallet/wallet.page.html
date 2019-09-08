@@ -1,37 +1,77 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Wallet
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
 
-<ion-content>
-		<ion-list lines="full" class="ion-no-margin ion-no-padding">
-        <ion-item>
-            <ion-label position="stacked">ICX Balance</ion-label>
-            <ion-label>{{balance.toFixed(4)}}</ion-label>
-            <ion-button class="ion-no-margin" (click)="loadWallet()">
-              <ion-icon name="refresh"></ion-icon>
-            </ion-button>
-          </ion-item>		
-          <ion-item>
-              <ion-label position="stacked">ICX Staked</ion-label>
-              <ion-label>{{stake.toFixed(4)}}</ion-label>
-              <ion-button class="ion-no-margin" (click)="loadStake()">
-                <ion-icon name="refresh"></ion-icon>
-              </ion-button>
-          </ion-item>		
-          <ion-item>
-              <ion-label position="stacked">Rewards Earned</ion-label>
-              <ion-label>{{claim.toFixed(4)}}</ion-label>
-              <ion-button class="ion-no-margin" (click)="loadClaim()">
-                <ion-icon name="refresh"></ion-icon>
-              </ion-button>
-          </ion-item>		
-          <ion-item>
-              <ion-label position="stacked"><strong>Total</strong></ion-label>
-              <ion-label><strong>{{(stake+balance).toFixed(2)}} (+{{claim.toFixed(2)}})</strong></ion-label>
-          </ion-item>		
-    </ion-list>
-</ion-content>
+<div style="height:10%">
+
+</div>
+
+  <ion-content class="bg-class">
+    <ion-grid>
+      <ion-row class="ion-justify-content-start">
+        <ion-col size="6">
+            <ion-card>
+                <ion-title class="card-title-primary">
+                        Available     
+                </ion-title>
+                  <ion-card-content class="card-content">
+                      <ion-row>
+                          <ion-col size="3" text-left>
+                              <img src="../../assets/icx_black.png" alt="icx"/>       
+                          </ion-col>
+                          <ion-col text-right>
+                              {{balance.toFixed(4)}}
+                          </ion-col>
+                        </ion-row>       
+                  </ion-card-content>
+                </ion-card>
+        </ion-col>
+          <ion-col size="6">
+              <ion-card>
+                  <ion-title class="card-title-primary">
+                          Staked     
+                  </ion-title>
+                    <ion-card-content class="card-content">
+                        <ion-row>
+                            <ion-col size="3" text-left>
+                                <img src="../../assets/icx_black.png" alt="icx"/>       
+                            </ion-col>
+                            <ion-col text-right>
+                                {{stake.toFixed(4)}}
+                            </ion-col>
+                          </ion-row>       
+                    </ion-card-content>
+                  </ion-card>
+          </ion-col>
+        </ion-row>
+        <ion-row class="ion-justify-content-start">
+          <ion-col>
+                  <ion-card>
+                      <ion-title class="card-title-primary">
+                              Total / (unclaimed)   
+                      </ion-title>
+                        <ion-card-content class="card-content">
+                            <ion-row>
+                                <ion-col size="3" text-left>
+                                    <img src="../../assets/icx_black.png" alt="icx"/>       
+                                </ion-col>
+                                <ion-col class="total-amount" text-right>
+                                    {{(stake+balance).toFixed(2)}} (+{{claim.toFixed(2)}})
+                                </ion-col>
+                              </ion-row>       
+                        </ion-card-content>
+                      </ion-card>
+              </ion-col>
+            </ion-row>
+            <ion-row class="ion-justify-content-start">
+              <ion-col>
+                  <ion-card>
+                      <ion-title class="card-title-primary">
+                              Earnings over time     
+                      </ion-title>
+                        <ion-card-content class="card-content-chart">
+                          <canvas #barCanvas></canvas> 
+                        </ion-card-content>
+                      </ion-card>
+              </ion-col>
+            </ion-row>
+
+    </ion-grid>
+  </ion-content>   

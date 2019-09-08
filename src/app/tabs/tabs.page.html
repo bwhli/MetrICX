@@ -1,20 +1,30 @@
-<ion-tabs>
+<ion-header >
+      <ion-title class="dark">
+       <img src="../../assets/icon_white.png" width="120px" height="40px"/>
+      </ion-title>
+</ion-header>
 
-  <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="wallet">
-      <ion-icon name="logo-bitcoin"></ion-icon>
-      <ion-label>Wallet</ion-label>
+<ion-tabs >
+  <ion-tab-bar slot="bottom" class="dark">
+    <ion-tab-button tab="wallet" class="dark">
+      <ion-icon name="stats"></ion-icon>
+      <ion-label>Dashboard</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="tab2">
-      <ion-icon name="apps"></ion-icon>
-      <ion-label>Calculator</ion-label>
+    <ion-tab-button tab="preps" class="dark">
+      <ion-icon name="business"></ion-icon>
+      <ion-label>Preps</ion-label>
     </ion-tab-button>
 
-    <ion-tab-button tab="account">
-      <ion-icon name="settings"></ion-icon>
+    <ion-tab-button tab="account" class="dark">
+      <ion-icon name="wallet"></ion-icon>
       <ion-label>Account</ion-label>
     </ion-tab-button>
+
+    <ion-tab-button tab="settings" class="dark">
+        <ion-icon name="cog"></ion-icon>
+        <ion-label>Settings</ion-label>
+      </ion-tab-button>
   </ion-tab-bar>
 
 </ion-tabs>

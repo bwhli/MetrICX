@@ -1,1 +1,15 @@
 
+  .dark {
+    background-color: #000;
+    color: #fff;
+    padding: 1%;
+  }
+
+  .primary {
+    background-color: #32b8bb !important;
+    color: #fff;
+  }
+
+  ion-tab-bar {
+    --color-selected: #000 !important;
+}

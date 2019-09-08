@@ -1,4 +1,79 @@
-.welcome-card img {
-  max-height: 35vh;
-  overflow: hidden;
+:root {
+  --ion-safe-area-top: 20px;
+  --ion-safe-area-bottom: 22px;
+}
+
+ion-col > div {
+  background-color: #f7f7f7;
+  border: solid 1px #ddd;
+}
+
+.primary {
+  background-color: #32b8bb !important;
+  color: #fff;
+  font-size: xx-large;
+  height: 80px;
+  width: 80px;
+  box-shadow: 1px 1px 1px 1px #888888;
+}
+
+.secondary {
+  background-color: #545454;
+  color: #fff;
+}
+
+.card-title-primary {
+  background-color: #32b8bb !important;
+  --color: #fff;
+  font-size: 18px;
+ padding: 5px !important;
+}
+
+.card-title-secondary {
+  background-color: #545454 !important;
+  --color: #fff;
+  font-size: 18px;
+ padding: 5px !important;
+}
+
+.card-content {
+  background-color: #fff !important;
+  --color: #000;
+  font-size: 18px;
+ padding: 0px !important;
+}
+
+.card-content-chart {
+  background-color: #fff !important;
+  --color: #000;
+  font-size: 18px;
+ padding-top: 10px !important;
+}
+
+.total-amount {
+  background-color: #fff !important;
+  --color: #000;
+  font-size: 22px;
+ padding-right: 5px !important;
+}
+
+.card-image {
+  background-color:  #32b8bb;
+}
+
+.dark {
+  background-color: #1f2120;
+  color: #fff;
+}
+
+.light {
+  background-color: #fff;
+  color: #1f2120;
+  height: 80px;
+  width: 150px;
+  box-shadow: 1px 1px 1px 1px #e9e9e9;
+}
+
+.bg-class{
+  --background: #F5F5F5 ;
 }
