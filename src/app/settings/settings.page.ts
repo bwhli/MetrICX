@@ -4,30 +4,30 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 
 @Component({
-  selector: 'app-account',
-  templateUrl: 'account.page.html',
-  styleUrls: ['account.page.scss']
+  selector: 'app-settings',
+  templateUrl: 'settings.page.html',
+  styleUrls: ['settings.page.scss']
 })
-export class AccountPage {
+export class SettingsPage {
 
-  public accountForm: FormGroup;
+  public settingsForm: FormGroup;
 
   constructor(
     private formBuilder: FormBuilder,
     private storage: Storage,
     private toastController: ToastController
   ) {
-    this.accountForm = formBuilder.group({
+    this.settingsForm = formBuilder.group({
       address: [null]}
     );
 
     //Update input value with stored address
-    this.storage.get('address').then(address => this.accountForm.patchValue({address: address}));
+    this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
   }
 
   // Save to storage and display Toaster when done
   async save() {
-    const address = this.accountForm.controls['address'].value;
+    const address = this.settingsForm.controls['address'].value;
     await this.storage.set('address', address);
     this.presentToast();
 

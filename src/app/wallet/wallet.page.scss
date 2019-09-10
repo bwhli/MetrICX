@@ -8,13 +8,18 @@ ion-col > div {
   border: solid 1px #ddd;
 }
 
+ion-card {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .primary {
   background-color: #32b8bb !important;
   color: #fff;
-  font-size: xx-large;
+  font-size: large;
   height: 80px;
   width: 80px;
-  box-shadow: 1px 1px 1px 1px #888888;
+  box-shadow: 1px 1px 1px 1px #1f2120;
 }
 
 .secondary {
@@ -22,38 +27,49 @@ ion-col > div {
   color: #fff;
 }
 
+.tooltip {
+  font-size: 14px;
+}
+
 .card-title-primary {
   background-color: #32b8bb !important;
   --color: #fff;
-  font-size: 18px;
+  font-size: 14px;
  padding: 5px !important;
 }
 
 .card-title-secondary {
   background-color: #545454 !important;
   --color: #fff;
-  font-size: 18px;
+  font-size: 16px;
  padding: 5px !important;
 }
 
 .card-content {
   background-color: #fff !important;
   --color: #000;
-  font-size: 18px;
+  font-size: 16px;
  padding: 0px !important;
+}
+
+.card-content-footer {
+  background-color: #fff !important;
+  --color: #000;
+  font-size: 12px;
+ padding: 3px !important;
 }
 
 .card-content-chart {
   background-color: #fff !important;
   --color: #000;
-  font-size: 18px;
- padding-top: 10px !important;
+  font-size: 16px;
+ padding-top: 3px !important;
 }
 
 .total-amount {
   background-color: #fff !important;
   --color: #000;
-  font-size: 22px;
+  font-size: 18px;
  padding-right: 5px !important;
 }
 

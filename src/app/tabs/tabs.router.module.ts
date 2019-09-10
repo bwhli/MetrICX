@@ -28,12 +28,12 @@ const routes: Routes = [
         ]
       },
       {
-        path: 'account',
+        path: 'settings',
         children: [
           {
             path: '',
             loadChildren: () =>
-              import('../account/account.module').then(m => m.AccountPageModule)
+              import('../settings/settings.module').then(m => m.SettingsPageModule)
           }
         ]
       },

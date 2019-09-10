@@ -1,14 +1,9 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>
-      Account
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<div style="height:10%"></div>
+	
 
 <ion-content>
 	<br>
-	<form [formGroup]="accountForm" (ngSubmit)="save()" >
+	<form [formGroup]="settingsForm" (ngSubmit)="save()" >
 		<ion-list lines="full" class="ion-no-margin ion-no-padding">
 			<ion-item>
 				<ion-label position="stacked">Your ICX Public Key</ion-label>

@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { AccountPage } from './account.page';
+import { SettingsPage } from './settings.page';
 
 @NgModule({
   imports: [
@@ -11,8 +11,8 @@ import { AccountPage } from './account.page';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule.forChild([{ path: '', component: AccountPage }])
+    RouterModule.forChild([{ path: '', component: SettingsPage }])
   ],
-  declarations: [AccountPage]
+  declarations: [SettingsPage]
 })
-export class AccountPageModule {}
+export class SettingsPageModule {}
