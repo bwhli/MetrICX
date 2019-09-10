@@ -1,7 +1,4 @@
-:root {
-  --ion-safe-area-top: 20px;
-  --ion-safe-area-bottom: 22px;
-}
+
 
 ion-col > div {
   background-color: #f7f7f7;
@@ -22,6 +19,10 @@ ion-card {
   box-shadow: 1px 1px 1px 1px #1f2120;
 }
 
+.toolbar-title {
+  text-align: center;  // now center the title
+}
+
 .secondary {
   background-color: #545454;
   color: #fff;
@@ -35,7 +36,8 @@ ion-card {
   background-color: #32b8bb !important;
   --color: #fff;
   font-size: 14px;
- padding: 5px !important;
+  height:100%;
+  padding: 5px !important;
 }
 
 .card-title-secondary {
