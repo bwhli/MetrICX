@@ -29,6 +29,7 @@
     "@ionic/angular": "^4.7.1",
     "@ionic/storage": "^2.2.0",
     "chart.js": "^2.8.0",
+    "chartjs-plugin-labels": "^1.1.0",
     "cordova-android": "8.0.0",
     "cordova-ios": "5.0.1",
     "core-js": "^2.5.4",
