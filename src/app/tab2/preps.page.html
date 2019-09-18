@@ -9,7 +9,7 @@
                 <ion-col>
                     <ion-card>
                         <ion-card-title class="card-title-primary">
-                                Voting distrubution   
+                               Your Staking Distribution   
                         </ion-card-title>
                           <ion-card-content class="card-content-chart">
                             <canvas #dnChart></canvas> 
@@ -17,5 +17,58 @@
                         </ion-card>
                 </ion-col>
               </ion-row>
+              <ion-row class="ion-justify-content-start">
+                  <ion-col>
+                        <ion-card>
+                                <ion-card-title class="card-title-primary">
+                                        P-Rep Info   
+                                </ion-card-title>
+                                  <ion-card-content class="card-content-table">
+                                        <ngx-datatable [headerHeight]="50"  [footerHeight]="50" [rows]="rows" class="bootstrap" [columnMode]="'force'" [sortType]="'multi'" [reorderable]="false">
+                                                <ngx-datatable-column name="Rank" [width]="200">
+                                                    <ng-template let-value="value" ngx-datatable-body-cell>
+                                                         {{ value }}
+                                                        </ng-template>
+                                                 </ngx-datatable-column>
+                                                 <ngx-datatable-column name="Name" [width]="200">
+                                                        <ng-template let-row="row" let-value="value" ngx-datatable-body-cell>
+                                                          {{ value }}
+                                                        </ng-template>
+                                                  </ngx-datatable-column>
+                                                  <ngx-datatable-column name="Productivity" [width]="200">
+                                                        <ng-template let-value="value"ngx-datatable-body-cell>
+                                                          {{ value }}
+                                                        </ng-template>
+                                                  </ngx-datatable-column>
+                                                  <ngx-datatable-column name="Total" class="total" [width]="200">
+                                                        <ng-template let-value="value" ngx-datatable-body-cell>
+                                                          {{ value }}
+                                                        </ng-template>
+                                                  </ngx-datatable-column>
+
+                                                  <ngx-datatable-footer>
+                                                        <ng-template
+                                                        ngx-datatable-footer-template
+                                                        let-rowCount="rowCount"
+                                                        let-pageSize="pageSize"
+                                                        let-selectedCount="selectedCount"
+                                                        let-curPage="curPage"
+                                                        let-offset="offset"
+                                                      >
+                                                        <div style="padding: 5px 10px">
+                                                          <div><strong>Summary</strong>: Preps you  have staked with </div>
+                                                          <hr style="width:100%" />
+                                                          <div>
+                                                            Rows: {{ rowCount }} | Total: {{ pageSize }} | Current page:
+                                                            {{ curPage }} | Toal pages: {{ offset }}
+                                                          </div>
+                                                        </div>
+                                                      </ng-template>
+                                                  </ngx-datatable-footer>
+                                        </ngx-datatable>
+                                  </ion-card-content>
+                                </ion-card>
+                  </ion-col>
+              </ion-row>    
     </ion-grid> 
 </ion-content>

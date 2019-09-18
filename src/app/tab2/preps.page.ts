@@ -3,7 +3,7 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import IconService, { HttpProvider, IconBuilder, IconConverter, IconAmount  } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
-import { Chart, ChartModule } from 'chart.js';
+import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 
 @Component({
@@ -14,8 +14,9 @@ import 'chartjs-plugin-labels';
 export class PrepsPage implements OnInit {
 
   @ViewChild('dnChart', {static:false}) dnChart: ElementRef;
-
+  rows: Object;
   dn: Chart;
+  tablestyle = 'bootstrap';
 
   constructor() {}
 
@@ -24,7 +25,26 @@ export class PrepsPage implements OnInit {
   }
 
   ngOnInit(){
-
+    this.rows = [
+      {
+        "rank": '#2',
+        "name": "Ubik",
+        "productivity": "0/0",
+        "total": "13.6%"
+      },
+      {
+        "rank": '#4',
+        "name": "ICONation",
+        "productivity": "0/0",
+        "total": "9.7%"
+      },
+      {
+        "rank": "#5",
+        "name": "RHIZOME",
+        "productivity": "0/0",
+        "total": "8.1%"
+      }
+    ];
   }
 
 
@@ -33,19 +53,19 @@ export class PrepsPage implements OnInit {
       type: 'pie',
       circumference: Math.PI,
       data: {
-        labels: ['ICONation','Ubik','Rhizome'],
+        labels: ['ICONation','Rhizome','Ubik'],
         datasets: [{
           label: '',
-          data: [400,25332,10233],
+          data: [4000,25332,10233],
           backgroundColor: [
-            'rgba(255, 99, 132, 0.5)',
-            '#32b8bb',
+            '#729192',
+            '#84d4d6',
             '#545454'
           ],
           borderColor: [
-            '#000',
-            '#000',
-            '#000'
+            '#e9e9e9',
+            '#e9e9e9',
+            '#e9e9e9'
           ],
           borderWidth: 1
         }]
@@ -63,7 +83,7 @@ export class PrepsPage implements OnInit {
         animation: {
           animateRotate: true
         },
-      cutoutPercentage: 0,
+      cutoutPercentage: 10,
       layout: {
         padding: {
             left: 0,
@@ -78,7 +98,7 @@ export class PrepsPage implements OnInit {
             {
               render: 'value',
               position: 'outside',
-              fontColor: '#000',
+              fontColor: '#1f2120',
               fontSize: 8
             },
             {
@@ -91,5 +111,4 @@ export class PrepsPage implements OnInit {
       }
     });
   }
-
 }

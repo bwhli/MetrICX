@@ -1,4 +1,7 @@
-ion-col > div {
+  
+
+  
+  ion-col > div {
     background-color: #f7f7f7;
     border: solid 1px #ddd;
   }
@@ -51,6 +54,13 @@ ion-col > div {
     font-size: 16px;
    padding: 0px !important;
   }
+
+  .card-content-table {
+    background-color: #fff !important;
+    --color: #000;
+    font-size: 12px !important;
+    padding: 2px !important;
+  }
   
   .card-content-footer {
     background-color: #fff !important;
@@ -95,9 +105,37 @@ ion-col > div {
   }
 
   canvas{
-
     width: 400px !important;
-    height: 180px !important;
-  
+    height: 190px !important;
   }
+
+  :host ::ng-deep .datatable-header {
+    height: unset !important;
+ }
+
+ :host ::ng-deep  .ngx-datatable.bootstrap {
+   font-size: 11px;
+   padding: 2px;
+ }
+ 
+ :host ::ng-deep  .ngx-datatable.bootstrap .datatable-header .datatable-header-cell {
+    vertical-align: bottom;
+    padding: 2px !important;
+    background-color: #545454;
+    color: #fff;
+ }
+ 
+ :host ::ng-deep  .ngx-datatable.bootstrap .datatable-body .datatable-body-row .datatable-body-cell {
+   text-align: left;
+   vertical-align: bottom !important;
+   border-bottom: 1px solid #545454;
+   height: unset !important;
+ }
+
+ :host ::ng-deep .datatable-row-even {
+  background-color: #ededed;
+  color: #1f2120
+}
+
+
   
