@@ -21,28 +21,28 @@
                   <ion-col>
                         <ion-card>
                                 <ion-card-title class="card-title-primary">
-                                        P-Rep Info   
+                                        P-Rep Status Information   
                                 </ion-card-title>
                                   <ion-card-content class="card-content-table">
-                                        <ngx-datatable [headerHeight]="50"  [footerHeight]="50" [rows]="rows" class="bootstrap" [columnMode]="'force'" [sortType]="'multi'" [reorderable]="false">
-                                                <ngx-datatable-column name="Rank" [width]="200">
+                                        <ngx-datatable [headerHeight]="50"  [footerHeight]="50" [rows]="rows" class="bootstrap" [columnMode]="flex">
+                                                <ngx-datatable-column name="Rank" [width]="30">
                                                     <ng-template let-value="value" ngx-datatable-body-cell>
                                                          {{ value }}
                                                         </ng-template>
                                                  </ngx-datatable-column>
-                                                 <ngx-datatable-column name="Name" [width]="200">
+                                                 <ngx-datatable-column name="Name" [width]="80">
                                                         <ng-template let-row="row" let-value="value" ngx-datatable-body-cell>
                                                           {{ value }}
                                                         </ng-template>
                                                   </ngx-datatable-column>
-                                                  <ngx-datatable-column name="Productivity" [width]="200">
+                                                  <ngx-datatable-column name="Production" [width]="80">
                                                         <ng-template let-value="value"ngx-datatable-body-cell>
                                                           {{ value }}
                                                         </ng-template>
                                                   </ngx-datatable-column>
-                                                  <ngx-datatable-column name="Total" class="total" [width]="200">
+                                                  <ngx-datatable-column name="Votes" class="total" [width]="200">
                                                         <ng-template let-value="value" ngx-datatable-body-cell>
-                                                          {{ value }}
+                                                          {{ value }} 
                                                         </ng-template>
                                                   </ngx-datatable-column>
 
@@ -55,12 +55,11 @@
                                                         let-curPage="curPage"
                                                         let-offset="offset"
                                                       >
-                                                        <div style="padding: 5px 10px">
-                                                          <div><strong>Summary</strong>: Preps you  have staked with </div>
-                                                          <hr style="width:100%" />
-                                                          <div>
-                                                            Rows: {{ rowCount }} | Total: {{ pageSize }} | Current page:
-                                                            {{ curPage }} | Toal pages: {{ offset }}
+                                                        <div style="padding: 2px 2px; width:100%">
+                                                          <div><strong>Summary</strong>: Preps you have staked your icx to </div>
+                                                          <hr />
+                                                          <div style="text-align: right;">
+                                                            Total Preps: {{ rowCount }}
                                                           </div>
                                                         </div>
                                                       </ng-template>

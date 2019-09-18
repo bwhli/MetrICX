@@ -18,6 +18,8 @@ export class PrepsPage implements OnInit {
   dn: Chart;
   tablestyle = 'bootstrap';
 
+  prepTotal = 132545535;
+
   constructor() {}
 
   ngAfterViewInit() {
@@ -29,20 +31,20 @@ export class PrepsPage implements OnInit {
       {
         "rank": '#2',
         "name": "Ubik",
-        "productivity": "0/0",
-        "total": "13.6%"
+        "production": "0/0",
+        "votes": "13.6% / 13,545,552"
       },
       {
         "rank": '#4',
         "name": "ICONation",
-        "productivity": "0/0",
-        "total": "9.7%"
+        "production": "0/0",
+        "votes": "9.7% / 10,256,556"
       },
       {
         "rank": "#5",
         "name": "RHIZOME",
-        "productivity": "0/0",
-        "total": "8.1%"
+        "production": "0/0",
+        "votes": "8.1% / 9,654,225"
       }
     ];
   }
