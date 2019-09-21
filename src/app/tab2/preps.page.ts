@@ -17,11 +17,8 @@ export class PrepsPage implements OnInit {
   @ViewChild('dnChart', {static:false}) dnChart: ElementRef;
   rows: Object;
   dn: Chart;
-  tablestyle = 'bootstrap';
 
   public address: string;
-  public prepTotal = 132545535;
-  public myPreps: DelegatedPRep;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService) {}
