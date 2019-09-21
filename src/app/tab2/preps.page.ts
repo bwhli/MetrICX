@@ -1,8 +1,6 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
-import IconService, { HttpProvider, IconBuilder, IconConverter, IconAmount  } from 'icon-sdk-js';
-const { CallBuilder } = IconBuilder;
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 
