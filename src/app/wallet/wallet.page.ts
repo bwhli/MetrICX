@@ -4,6 +4,7 @@ import { ToastController } from '@ionic/angular';
 import IconService, { HttpProvider, IconBuilder, IconConverter, IconAmount  } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
 import { Chart } from 'chart.js';
+import { IconContractService } from '../services/icon-contract/icon-contract.service';
 
 @Component({
   selector: 'app-wallet',
@@ -15,7 +16,7 @@ export class WalletPage implements OnInit {
   @ViewChild("barCanvas", {static:false}) barCanvas: ElementRef;
 
   public address: string;
-  public balance = 0;
+  public balance: number = 0;
   public stake = 0;
   public claim = 0;
   public networkedStaked = 0;
@@ -24,7 +25,8 @@ export class WalletPage implements OnInit {
 
   constructor(
     private storage: Storage,
-    private toastController: ToastController
+    private toastController: ToastController,
+    private iconContract: IconContractService
   ) { }
    
   ngOnInit () { 
@@ -40,80 +42,24 @@ export class WalletPage implements OnInit {
   }
 
   async loadWallet() {
-    const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
-    const iconService = new IconService(httpProvider);
-    const bigBalance = await iconService.getBalance(this.address).execute();
-    this.balance = 1 * bigBalance / 10**18
+    this.balance = await this.iconContract.getBalance(this.address);
   }
 
   async loadStake() {
-    const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
-    const iconService = new IconService(httpProvider);
-    
-	  const call = new CallBuilder()
-      .to('cx0000000000000000000000000000000000000000')
-      .method('getStake')
-      .params({
-          address: this.address
-      })				
-      .build();
-
-      var response = await iconService.call(call).execute();
-      const bigStakedAmount = response['stake'];
-      this.stake = 1 * bigStakedAmount / 10**18 ;
+    this.stake = await this.iconContract.getStakedAmount(this.address);
   }
 
   async loadClaim() {
-    const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
-    const iconService = new IconService(httpProvider);
-    
-	  const call = new CallBuilder()
-      .to('cx0000000000000000000000000000000000000000')
-      .method('queryIScore')
-      .params({
-          address: this.address
-      })				
-      .build();
-
-      var response = await iconService.call(call).execute();
-      const bigAmount = response['estimatedICX'];
-      this.claim = 1 * bigAmount / 10**18 ;
-      
+    this.claim = await this.iconContract.getClaimableRewards(this.address);
   }
 
   async loadUnstakePeriod() {
-    const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
-    const iconService = new IconService(httpProvider);
-    
-	  const call = new CallBuilder()
-      .to('cx0000000000000000000000000000000000000000')
-      .method('estimateUnstakeLockPeriod')
-      .params({
-          address: this.address
-      })				
-      .build();
-
-      var response = await iconService.call(call).execute();
-      this.unstakePeriod = response['unstakeLockPeriod'];
-   
+    this.claim = await this.iconContract.getUnstakingPeriod(this.address);  
   }
 
   async loadChart() {
-    const httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
-    const iconService = new IconService(httpProvider);
-    
-	  const call = new CallBuilder()
-      .to('cx0000000000000000000000000000000000000000')
-      .method('getPReps')
-      .params({
-          address: this.address
-      })				
-      .build();
 
-      var response = await iconService.call(call).execute();
-      const totalStaked = response['totalStake'];
-      const staked = 1 * totalStaked / 10**18;
-      const perc  = IconConverter.toNumber(staked) / 800362000 * 100;
+    await this.iconContract.getPReps(this.address);
 
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: "bar",
