@@ -45,26 +45,27 @@ export class IconContractService {
     return this.toBigInt(response['estimatedICX']);
   }
   
-  public async getUnstakingPeriod(address: string) {
-	  const call = new CallBuilder()
-      .to('cx0000000000000000000000000000000000000000')
-      .method('estimateUnstakeLockPeriod')
-      .params({address: address})				
-      .build();
+  public async getPRep(address: string) {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getPRep')			
+    .params({address: address})		
+    .build();
 
-    var response = await this.iconService.call(call).execute();
-    return response['unstakeLockPeriod'];
+    return await this.iconService.call(call).execute();
   }
+
   
-  public async getPReps(address: string) {
+  public async getPReps(address: string, delegated: true) {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')
-      .method('getPReps')
-      .params({address: address})				
+      .method('getPReps')			
       .build();
 
     var response = await this.iconService.call(call).execute();
     var preps = new PReps();
+    //count is used to hold the number array index of delegated PReps;
+    var count = 0;
     preps.blockHeight = this.toInt(response.blockHeight);
     preps.totalDelegated = this.toBigInt(response.totalDelegated);
     preps.totalStake = this.toBigInt(response.totalStake);
@@ -73,22 +74,64 @@ export class IconContractService {
 
     for (var i = 0; i < response.preps.length; i++) {
       var item = response.preps[i];
-      var rep = new DelegatedPRep();
-      rep.name = item.name;
-      rep.address = item.address;
-      rep.city = item.city;
-      rep.delegated = this.toBigInt(item.delegated);
-      rep.grade = this.toInt(item.grade);
-      rep.irep = this.toBigInt(item.irep);
-      rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
-      rep.lastGenerateBlockHeight = this.toInt(item.lastGenerateBlockHeight);
-      rep.stake = this.toInt(item.stake);
-      rep.status = this.toInt(item.status);
-      rep.totalBlocks = this.toInt(item.totalBlocks);
-      rep.validatedBlocks = this.toInt(item.validatedBlocks);
-      preps[i] = rep;
+      //only return ones that have been delegated by the public address holder
+      if(delegated) {
+       if(item.address === address) {
+        var rep = new DelegatedPRep();
+        rep.name = item.name;
+        rep.address = item.address;
+        rep.city = item.city;
+        rep.delegated = this.toBigInt(item.delegated);
+        rep.grade = this.toInt(item.grade);
+        rep.irep = this.toBigInt(item.irep);
+        rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
+        rep.lastGenerateBlockHeight = this.toInt(item.lastGenerateBlockHeight);
+        rep.stake = this.toInt(item.stake);
+        rep.status = this.toInt(item.status);
+        rep.totalBlocks = this.toInt(item.totalBlocks);
+        rep.validatedBlocks = this.toInt(item.validatedBlocks);
+        //by default the list of preps is ordered from highest to lowest
+        //so we can use the order of the array to determine the ranking
+        rep.rank = i+1;
+        preps[count] = rep;
+        count++;
+       }
+      } else {
+        //we just want to return everything
+        var rep = new DelegatedPRep();
+        rep.name = item.name;
+        rep.address = item.address;
+        rep.city = item.city;
+        rep.delegated = this.toBigInt(item.delegated);
+        rep.grade = this.toInt(item.grade);
+        rep.irep = this.toBigInt(item.irep);
+        rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
+        rep.lastGenerateBlockHeight = this.toInt(item.lastGenerateBlockHeight);
+        rep.stake = this.toInt(item.stake);
+        rep.status = this.toInt(item.status);
+        rep.totalBlocks = this.toInt(item.totalBlocks);
+        rep.validatedBlocks = this.toInt(item.validatedBlocks);
+        rep.rank = i+1;
+        preps[i] = rep;
+       }
     }
-
     return preps;
+  }
+
+  public async getDelegatedPReps(address: string) {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getDelegation')
+    .params({address: address})		
+    .build();
+
+    let dPrep: PReps[] = [];
+    const response = await this.iconService.call(call).execute();
+    for(let p of response.delegations) {
+        this.getPReps(p.address, true).then(result => { 
+           dPrep.push(result);
+        });
+     }
+     return dPrep;
   }
 }

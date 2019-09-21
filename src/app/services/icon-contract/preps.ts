@@ -12,6 +12,7 @@ export class DelegatedPRep {
     status: number;
     totalBlocks: number;
     validatedBlocks: number;
+    rank: number;
 }
 
 export class PReps {

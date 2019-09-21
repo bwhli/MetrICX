@@ -3,6 +3,8 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
+import { IconContractService } from '../services/icon-contract/icon-contract.service';
+import { DelegatedPRep, PReps } from '../services/icon-contract/preps';
 
 @Component({
   selector: 'app-preps',
@@ -17,16 +19,25 @@ export class PrepsPage implements OnInit {
   dn: Chart;
   tablestyle = 'bootstrap';
 
-  prepTotal = 132545535;
+  public address: string;
+  public prepTotal = 132545535;
+  public myPreps: DelegatedPRep;
 
-  constructor() {}
+  constructor( private storage: Storage, 
+               private iconContract: IconContractService) {}
 
   ngAfterViewInit() {
      this.createDnChart();
   }
 
-  ngOnInit(){
-    this.rows = [
+  ngOnInit() {
+    this.storage.get('address').then(address => {
+      this.address = address;     
+      this.getMyPreps();
+    });
+     
+
+     this.rows = [
       {
         "rank": '#2',
         "name": "Ubik",
@@ -48,6 +59,11 @@ export class PrepsPage implements OnInit {
     ];
   }
 
+  async getMyPreps() {
+    this.iconContract.getDelegatedPReps(this.address).then(result => {
+      console.log(result);
+    });
+   }
 
   createDnChart() {
     this.dn = new Chart(this.dnChart.nativeElement, {
@@ -71,6 +87,7 @@ export class PrepsPage implements OnInit {
           borderWidth: 1
         }]
       }, 
+      
       options: {
         legend: {
           display: true,
