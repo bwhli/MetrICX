@@ -151,7 +151,10 @@ export class WalletPage implements OnInit {
       },
       options: {
         legend: {
-          display: false
+          display: false,
+          defaultFontFamily: "'Open Sans',  sans-serif",
+          defaultFontSize: 8
+          
       },
         scales: {
           yAxes: [

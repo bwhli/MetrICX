@@ -1,5 +1,4 @@
   
-
   
   ion-col > div {
     background-color: #f7f7f7;
@@ -58,7 +57,7 @@
   .card-content-table {
     background-color: #fff !important;
     --color: #000;
-    font-size: 12px !important;
+    font-size: 13px !important;
     padding: 2px !important;
   }
   
@@ -114,7 +113,8 @@
  }
 
  :host ::ng-deep  .ngx-datatable.bootstrap {
-   font-size: 11px;
+   font-family: 'Open Sans',  sans-serif !important;
+   font-size: 12px;
    padding: 2px;
  }
  
@@ -127,7 +127,7 @@
  
  :host ::ng-deep  .ngx-datatable.bootstrap .datatable-body .datatable-body-row .datatable-body-cell {
    text-align: left;
-   vertical-align: bottom !important;
+   line-height: 2.6em;
    border-bottom: 1px solid #545454;
    height: unset !important;
  }
@@ -140,7 +140,7 @@
 hr {
   border: 1px solid black !important;
   height: 2px !important;
-  width: 400px !important;
+  width: 100% !important;
   display: block !important;
   font-size: 1em !important;
   opacity: 1 !important;

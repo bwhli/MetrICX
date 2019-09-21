@@ -13,7 +13,7 @@ ion-card {
 .primary {
   background-color: #32b8bb !important;
   color: #fff;
-  font-size: large;
+  font-size: 12px;
   height: 80px;
   width: 80px;
   box-shadow: 1px 1px 1px 1px #1f2120;
@@ -64,8 +64,8 @@ ion-card {
 .card-content-chart {
   background-color: #fff !important;
   --color: #000;
-  font-size: 16px;
- padding-top: 3px !important;
+  font-size: 8px;
+  //padding-top: px !important;
 }
 
 .total-amount {

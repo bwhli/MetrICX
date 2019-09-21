@@ -9,7 +9,8 @@ import 'chartjs-plugin-labels';
 @Component({
   selector: 'app-preps',
   templateUrl: 'preps.page.html',
-  styleUrls: ['preps.page.scss']
+  styleUrls: ['preps.page.scss',
+              '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css']
 })
 export class PrepsPage implements OnInit {
 
@@ -79,11 +80,9 @@ export class PrepsPage implements OnInit {
           fullWidth: false,
           labels: {
             fontSize: 8,
-            boxWidth: 10
+            boxWidth: 10,
+            defaultFontFamily: "'Open Sans',  sans-serif"
           }
-        },
-        animation: {
-          animateRotate: true
         },
       cutoutPercentage: 10,
       layout: {
