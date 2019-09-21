@@ -2,7 +2,8 @@ export class DelegatedPRep {
     address: string;
     city: string;
     country: string;
-    delegated: number;
+    totalDelegated: number;
+    userDelegated : number;
     grade: number;
     irep: number;
     irepUpdateBlockHeight: number;
@@ -13,6 +14,7 @@ export class DelegatedPRep {
     totalBlocks: number;
     validatedBlocks: number;
     rank: number;
+    
 }
 
 export class PReps {

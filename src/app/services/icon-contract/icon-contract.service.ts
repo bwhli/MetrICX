@@ -81,7 +81,7 @@ export class IconContractService {
         rep.name = item.name;
         rep.address = item.address;
         rep.city = item.city;
-        rep.delegated = this.toBigInt(item.delegated);
+        rep.totalDelegated = this.toBigInt(item.delegated);
         rep.grade = this.toInt(item.grade);
         rep.irep = this.toBigInt(item.irep);
         rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
@@ -102,7 +102,7 @@ export class IconContractService {
         rep.name = item.name;
         rep.address = item.address;
         rep.city = item.city;
-        rep.delegated = this.toBigInt(item.delegated);
+        rep.totalDelegated = this.toBigInt(item.delegated);
         rep.grade = this.toInt(item.grade);
         rep.irep = this.toBigInt(item.irep);
         rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
@@ -129,6 +129,7 @@ export class IconContractService {
     const response = await this.iconService.call(call).execute();
     for(let p of response.delegations) {
         this.getPReps(p.address, true).then(result => { 
+           result[0].userDelegated = this.toBigInt(p.value);
            dPrep.push(result);
         });
      }
