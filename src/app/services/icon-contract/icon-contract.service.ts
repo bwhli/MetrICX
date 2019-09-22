@@ -44,17 +44,6 @@ export class IconContractService {
     return this.toBigInt(response['estimatedICX']);
   }
   
-  public async getPRep(address: string) {
-    const call = new CallBuilder()
-    .to('cx0000000000000000000000000000000000000000')
-    .method('getPRep')			
-    .params({address: address})		
-    .build();
-
-    return await this.iconService.call(call).execute();
-  }
-
-  
   public async getPReps() {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')
