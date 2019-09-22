@@ -4,7 +4,8 @@ import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
-import { DelegatedPRep, PReps } from '../services/icon-contract/preps';
+import { PRepDelegation, PReps } from '../services/icon-contract/preps';
+
 
 @Component({
   selector: 'app-preps',
@@ -17,6 +18,8 @@ export class PrepsPage implements OnInit {
   @ViewChild('dnChart', {static:false}) dnChart: ElementRef;
   rows: Object;
   dn: Chart;
+  public delegatedPrep: PRepDelegation;
+  public preps: PReps;
 
   public address: string;
 
@@ -24,15 +27,17 @@ export class PrepsPage implements OnInit {
                private iconContract: IconContractService) {}
 
   ngAfterViewInit() {
-     this.createDnChart();
+     this.createDnChart();  
   }
 
   ngOnInit() {
     this.storage.get('address').then(address => {
       this.address = address;     
+      this.getAllPreps();
       this.getMyPreps();
     });
-     
+
+
 
      this.rows = [
       {
@@ -57,12 +62,15 @@ export class PrepsPage implements OnInit {
   }
 
   async getMyPreps() {
-    this.iconContract.getDelegatedPReps(this.address).then(result => {
-      console.log(result);
-    });
+    this.delegatedPrep = await this.iconContract.getDelegatedPReps(this.address);
+  }
+
+   async getAllPreps() {
+      this.preps = await this.iconContract.getPReps();
    }
 
   createDnChart() {
+
     this.dn = new Chart(this.dnChart.nativeElement, {
       type: 'pie',
       circumference: Math.PI,

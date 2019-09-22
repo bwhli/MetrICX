@@ -36,7 +36,6 @@
     "core-js": "^2.5.4",
     "icon-sdk-js": "0.0.16",
     "ng2-tooltip-directive": "^2.1.9",
-    "rxjs": "~6.5.1",
     "tslib": "^1.9.0",
     "zone.js": "~0.9.1"
   },
