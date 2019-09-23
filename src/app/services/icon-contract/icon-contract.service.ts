@@ -101,7 +101,7 @@ export class IconContractService {
     var delegatedPRep = new DelegatedPRep();
     delegatedPRep.totalDelegated = this.toBigInt(response.totalDelegated);
     delegatedPRep.votingPower = this.toBigInt(response.votingPower);
-    delegatedPRep.delegations = [response.delegations.length];
+    delegatedPRep.delegations = [] = [];
     for (var i = 0; i < response.delegations.length; i++) {
       var item = response.delegations[i];
       var delegate = new Delegations();

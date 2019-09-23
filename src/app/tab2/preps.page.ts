@@ -80,8 +80,8 @@ export class PrepsPage implements OnInit {
     var delegatedPReps = await this.iconContract.getDelegatedPReps('hx12c4c9f2333ff2b839d89f378bbdfe6051a91aa7');
     var votedPreps: number = delegatedPReps.delegations.length;
     let data: number[] = [votedPreps];
-    for(var i = 1; i < votedPreps; i++) {
-      data[i-1] = delegatedPReps.delegations[i].value;
+    for(var i = 0; i < votedPreps; i++) {
+      data[i] = delegatedPReps.delegations[i].value;
     }
 
     this.dn = new Chart(this.dnChart.nativeElement, {
