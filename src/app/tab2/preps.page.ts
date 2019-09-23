@@ -118,7 +118,7 @@ export class PrepsPage implements OnInit {
           position: 'right',
           fullWidth: false,
           labels: {
-            fontSize: 10,
+            fontSize: 8,
             boxWidth: 10,
             fontFamily: '"Open Sans",  sans-serif',
           }
