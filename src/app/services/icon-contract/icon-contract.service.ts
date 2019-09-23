@@ -67,7 +67,7 @@ export class IconContractService {
     preps.totalDelegated = this.toBigInt(response.totalDelegated);
     preps.totalStake = this.toBigInt(response.totalStake);
     preps.startRanking = this.toInt(response.startRanking);
-    preps.preps = [response.preps.length];
+    preps.preps = [] = [];
 
     for (var i = 0; i < response.preps.length; i++) {
       var item = response.preps[i];
@@ -85,8 +85,9 @@ export class IconContractService {
       rep.totalBlocks = this.toInt(item.totalBlocks);
       rep.validatedBlocks = this.toInt(item.validatedBlocks);
       rep.rank = i;
-      preps[i] = rep;
+      preps.preps.push(rep);
     }
+    
     return preps;
   }
 
