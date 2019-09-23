@@ -3,6 +3,8 @@ import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
+import { LoadingController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-wallet',
@@ -24,18 +26,34 @@ export class WalletPage implements OnInit {
   constructor(
     private storage: Storage,
     private toastController: ToastController,
-    private iconContract: IconContractService
+    private iconContract: IconContractService,
+    public loadingController: LoadingController,
+    public navCtrl: NavController
   ) { }
    
   ngOnInit () { 
     //Update stored address
     this.storage.get('address').then(address => {
       this.address = address; 
-      this.loadWallet();
-      this.loadStake();
-      this.loadClaim();
-      this.loadChart();
+      if (address) {
+        this.presentLoading();
+        this.loadWallet();
+        this.loadStake();
+        this.loadClaim();
+        this.loadChart();
+      } else {
+        this.navCtrl.navigateForward('/tabs/settings');
+      }
+    }); 
+  }
+
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      message: 'Loading',
+      duration: 1000
     });
+    await loading.present();
+    const { role, data } = await loading.onDidDismiss();
   }
 
   async loadWallet() {
