@@ -4,7 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
-import { PRepDelegation, PReps } from '../services/icon-contract/preps';
+import { DelegatedPRep, PReps } from '../services/icon-contract/preps';
 
 
 @Component({
@@ -18,7 +18,7 @@ export class PrepsPage implements OnInit {
   @ViewChild('dnChart', {static:false}) dnChart: ElementRef;
   rows: Object;
   dn: Chart;
-  public delegatedPrep: PRepDelegation;
+  public delegatedPrep: DelegatedPRep;
   public preps: PReps;
 
   public address: string;

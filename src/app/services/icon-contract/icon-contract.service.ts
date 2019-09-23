@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import IconService, { HttpProvider, IconBuilder, IconConverter, IconAmount  } from 'icon-sdk-js';
+import IconService, { HttpProvider, IconBuilder } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
-import { PReps, PrepDetails, PRepDelegation, Delegations} from './preps';
+import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
 @Injectable({
   providedIn: 'root'
 })
@@ -44,6 +44,17 @@ export class IconContractService {
     return this.toBigInt(response['estimatedICX']);
   }
   
+  public async getPRep(address: string) {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getPRep')			
+    .params({address: address})		
+    .build();
+
+    return await this.iconService.call(call).execute();
+  }
+
+  
   public async getPReps() {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')
@@ -56,7 +67,27 @@ export class IconContractService {
     preps.totalDelegated = this.toBigInt(response.totalDelegated);
     preps.totalStake = this.toBigInt(response.totalStake);
     preps.startRanking = this.toInt(response.startRanking);
-    preps.preps = response.preps.map((result: PrepDetails) => <PrepDetails>result);
+    preps.preps = [response.preps.length];
+
+    for (var i = 0; i < response.preps.length; i++) {
+      var item = response.preps[i];
+      var rep = new PrepDetails();
+      rep.name = item.name;
+      rep.address = item.address;
+      rep.city = item.city;
+      rep.delegated = this.toBigInt(item.delegated);
+      rep.grade = this.toInt(item.grade);
+      rep.irep = this.toBigInt(item.irep);
+      rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
+      rep.lastGenerateBlockHeight = this.toInt(item.lastGenerateBlockHeight);
+      rep.stake = this.toInt(item.stake);
+      rep.status = this.toInt(item.status);
+      rep.totalBlocks = this.toInt(item.totalBlocks);
+      rep.validatedBlocks = this.toInt(item.validatedBlocks);
+      rep.rank = i;
+      preps[i] = rep;
+    }
+ debugger;
     return preps;
   }
 
@@ -68,10 +99,20 @@ export class IconContractService {
     .build();
 
     var response = await this.iconService.call(call).execute();
-    var delegationPRep = new PRepDelegation();
-    delegationPRep.totalDelegated = this.toBigInt(response.totalDelegated);
-    delegationPRep.votingPower = this.toBigInt(response.votingPower);
-    delegationPRep.delegations = response.delegations.map((result: Delegations) => <Delegations>result);
-    return delegationPRep;
+    var delegatedPRep = new DelegatedPRep();
+    delegatedPRep.totalDelegated = this.toBigInt(response.totalDelegated);
+    delegatedPRep.votingPower = this.toBigInt(response.votingPower);
+    delegatedPRep.delegations = [response.delegations.length];
+    for (var i = 0; i < response.delegations.length; i++) {
+      var item = response.delegations[i];
+      var delegate = new Delegations();
+      delegate.address = item.address;
+      delegate.value = this.toBigInt(item.value);
+      delegatedPRep[i] = delegate;
+    }
+
+    debugger;
+
+    return delegatedPRep; 
   }
 }

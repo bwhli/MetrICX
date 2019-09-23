@@ -23,7 +23,7 @@ export class PReps {
     startRanking: number;
 }
 
-export class PRepDelegation {
+export class DelegatedPRep {
     totalDelegated: number;
     votingPower: number;
     delegations: Delegations[];
