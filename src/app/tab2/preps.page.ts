@@ -27,17 +27,23 @@ export class PrepsPage implements OnInit {
                private iconContract: IconContractService) {}
 
   ngAfterViewInit() {
-     this.createDnChart();  
+
+    if(this.dn == null) {
+      this.storage.get('address').then(address => {
+        this.address = address;   
+        this.createDnChart(address);
+      });
+    }
+    
   }
 
   ngOnInit() {
     this.storage.get('address').then(address => {
-      this.address = address;     
-      this.getAllPreps();
-      this.getMyPreps();
-    });
-
-
+     this.address = address;     
+     this.getAllPreps();
+     this.getMyPreps();
+     this.createDnChart(address);  
+   });
 
      this.rows = [
       {
@@ -69,22 +75,35 @@ export class PrepsPage implements OnInit {
       this.preps = await this.iconContract.getPReps();
    }
 
-  createDnChart() {
+  async createDnChart(address: string) {
+    //hx12c4c9f2333ff2b839d89f378bbdfe6051a91aa7
+    var delegatedPReps = await this.iconContract.getDelegatedPReps('hx12c4c9f2333ff2b839d89f378bbdfe6051a91aa7');
+    var votedPreps: number = delegatedPReps.delegations.length;
+    let data: number[] = [votedPreps];
+    for(var i = 1; i < votedPreps; i++) {
+      data[i-1] = delegatedPReps.delegations[i].value;
+    }
 
     this.dn = new Chart(this.dnChart.nativeElement, {
       type: 'pie',
       circumference: Math.PI,
       data: {
-        labels: ['ICONation','Rhizome','Ubik'],
+        labels: ['VELIC','ICONation', 'RHIZOME', 'Ubik Capital', 'ICX_Station'],
         datasets: [{
           label: '',
-          data: [4000,25332,10233],
+          data: data,
           backgroundColor: [
             '#729192',
             '#84d4d6',
-            '#545454'
+            '#545454',
+            '#9999cc',
+            '#cccc99',
+            '#cc9999'
           ],
           borderColor: [
+            '#e9e9e9',
+            '#e9e9e9',
+            '#e9e9e9',
             '#e9e9e9',
             '#e9e9e9',
             '#e9e9e9'
@@ -99,9 +118,9 @@ export class PrepsPage implements OnInit {
           position: 'right',
           fullWidth: false,
           labels: {
-            fontSize: 8,
+            fontSize: 10,
             boxWidth: 10,
-            defaultFontFamily: "'Open Sans',  sans-serif"
+            fontFamily: '"Open Sans",  sans-serif',
           }
         },
       cutoutPercentage: 10,
@@ -116,16 +135,12 @@ export class PrepsPage implements OnInit {
       responsive: true,
       plugins: {
           labels: [
-            {
-              render: 'value',
-              position: 'outside',
-              fontColor: '#1f2120',
-              fontSize: 8
-            },
+            
             {
               render: 'percentage',
               fontColor: '#fff',
-              fontSize: 8
+              fontSize: 10,
+              fontFamily: '"Open Sans",  sans-serif',
             }
           ]
         }

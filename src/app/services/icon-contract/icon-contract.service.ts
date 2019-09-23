@@ -107,7 +107,7 @@ export class IconContractService {
       var delegate = new Delegations();
       delegate.address = item.address;
       delegate.value = this.toBigInt(item.value);
-      delegatedPRep[i] = delegate;
+      delegatedPRep.delegations.push(delegate);
     }
     return delegatedPRep; 
   }

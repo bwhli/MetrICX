@@ -71,8 +71,9 @@
   .card-content-chart {
     background-color: #fff !important;
     --color: #000;
-    font-size: 16px;
+    font-size: 12px;
    padding-top: 3px !important;
+   text-align: right
   }
   
   .total-amount {
@@ -104,7 +105,7 @@
   }
 
   canvas{
-    width: 400px !important;
+    width: 380px !important;
     height: 190px !important;
   }
 
