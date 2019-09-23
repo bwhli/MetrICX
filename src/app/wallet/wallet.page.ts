@@ -40,7 +40,6 @@ export class WalletPage implements OnInit {
         this.loadWallet();
         this.loadStake();
         this.loadClaim();
-        this.loadUnstakePeriod();
         this.loadChart();
       } else {
         this.navCtrl.navigateForward('/tabs/settings');
@@ -69,13 +68,10 @@ export class WalletPage implements OnInit {
     this.claim = await this.iconContract.getClaimableRewards(this.address);
   }
 
-  async loadUnstakePeriod() {
-    this.claim = await this.iconContract.getUnstakingPeriod(this.address);  
-  }
 
   async loadChart() {
 
-    await this.iconContract.getPReps(this.address);
+  //  await this.iconContract.getPReps(this.address);
 
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: "bar",

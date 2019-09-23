@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
-import IconService, { HttpProvider, IconBuilder, IconConverter, IconAmount  } from 'icon-sdk-js';
+import IconService, { HttpProvider, IconBuilder } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
-import { PReps, DelegatedPRep } from './preps';
-
+import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
 @Injectable({
   providedIn: 'root'
 })
@@ -45,22 +44,21 @@ export class IconContractService {
     return this.toBigInt(response['estimatedICX']);
   }
   
-  public async getUnstakingPeriod(address: string) {
-	  const call = new CallBuilder()
-      .to('cx0000000000000000000000000000000000000000')
-      .method('estimateUnstakeLockPeriod')
-      .params({address: address})				
-      .build();
+  public async getPRep(address: string) {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getPRep')			
+    .params({address: address})		
+    .build();
 
-    var response = await this.iconService.call(call).execute();
-    return response['unstakeLockPeriod'];
+    return await this.iconService.call(call).execute();
   }
+
   
-  public async getPReps(address: string) {
+  public async getPReps() {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')
-      .method('getPReps')
-      .params({address: address})				
+      .method('getPReps')			
       .build();
 
     var response = await this.iconService.call(call).execute();
@@ -73,7 +71,7 @@ export class IconContractService {
 
     for (var i = 0; i < response.preps.length; i++) {
       var item = response.preps[i];
-      var rep = new DelegatedPRep();
+      var rep = new PrepDetails();
       rep.name = item.name;
       rep.address = item.address;
       rep.city = item.city;
@@ -86,9 +84,31 @@ export class IconContractService {
       rep.status = this.toInt(item.status);
       rep.totalBlocks = this.toInt(item.totalBlocks);
       rep.validatedBlocks = this.toInt(item.validatedBlocks);
+      rep.rank = i;
       preps[i] = rep;
     }
-
     return preps;
+  }
+
+  public async getDelegatedPReps(address: string) {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getDelegation')
+    .params({address: address})		
+    .build();
+
+    var response = await this.iconService.call(call).execute();
+    var delegatedPRep = new DelegatedPRep();
+    delegatedPRep.totalDelegated = this.toBigInt(response.totalDelegated);
+    delegatedPRep.votingPower = this.toBigInt(response.votingPower);
+    delegatedPRep.delegations = [response.delegations.length];
+    for (var i = 0; i < response.delegations.length; i++) {
+      var item = response.delegations[i];
+      var delegate = new Delegations();
+      delegate.address = item.address;
+      delegate.value = this.toBigInt(item.value);
+      delegatedPRep[i] = delegate;
+    }
+    return delegatedPRep; 
   }
 }
