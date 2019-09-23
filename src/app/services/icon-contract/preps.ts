@@ -1,4 +1,4 @@
-export class DelegatedPRep {
+export class PrepDetails {
     address: string;
     city: string;
     country: string;
@@ -12,12 +12,24 @@ export class DelegatedPRep {
     status: number;
     totalBlocks: number;
     validatedBlocks: number;
+    rank: number;
 }
 
 export class PReps {
     totalDelegated: number;
     totalStake: number;
-    preps: DelegatedPRep[];
+    preps: PrepDetails[];
     blockHeight: number;
     startRanking: number;
+}
+
+export class DelegatedPRep {
+    totalDelegated: number;
+    votingPower: number;
+    delegations: Delegations[];
+}
+
+export class Delegations {
+    address: string;
+    value: number;
 }
