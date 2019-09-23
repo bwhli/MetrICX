@@ -87,7 +87,6 @@ export class IconContractService {
       rep.rank = i;
       preps[i] = rep;
     }
- debugger;
     return preps;
   }
 
@@ -110,9 +109,6 @@ export class IconContractService {
       delegate.value = this.toBigInt(item.value);
       delegatedPRep[i] = delegate;
     }
-
-    debugger;
-
     return delegatedPRep; 
   }
 }
