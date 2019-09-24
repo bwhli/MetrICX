@@ -76,7 +76,7 @@ export class PrepsPage implements OnInit {
     return filteredArrayPreps
    }
 
-  async createDnChart(address: string) {
+  async createDnChart() {
     var delegatedPReps = await this.iconContract.getDelegatedPReps(this.address);
     var votedPreps: number = delegatedPReps.delegations.length;
     let data: number[] = [votedPreps];
