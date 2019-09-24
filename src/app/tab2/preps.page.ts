@@ -31,7 +31,7 @@ export class PrepsPage implements OnInit {
      this.address = address;     
      this.getAllPreps();
      this.getMyPreps();
-     this.createDnChart(address);  
+     this.createDnChart();  
    });
 
      this.rows = [
