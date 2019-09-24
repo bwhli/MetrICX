@@ -4,7 +4,7 @@ import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
-import { DelegatedPRep, PReps } from '../services/icon-contract/preps';
+import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 
 
 @Component({
@@ -25,17 +25,6 @@ export class PrepsPage implements OnInit {
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService) {}
-
-  ngAfterViewInit() {
-
-    if(this.dn == null) {
-      this.storage.get('address').then(address => {
-        this.address = address;   
-        this.createDnChart(address);
-      });
-    }
-    
-  }
 
   ngOnInit() {
     this.storage.get('address').then(address => {
@@ -75,20 +64,37 @@ export class PrepsPage implements OnInit {
       this.preps = await this.iconContract.getPReps();
    }
 
+
+  async filterPrepsList(delegatedPrepList: Delegations[]) : Promise<PrepDetails[]> {
+    var preps = await this.iconContract.getPReps();
+
+    var filteredArrayPreps  = preps.preps.filter(function(array_el) {
+      return delegatedPrepList.filter(function(anotherOne_el) {
+         return anotherOne_el.address == array_el.address;
+      }).length > 0
+    });
+    return filteredArrayPreps
+   }
+
   async createDnChart(address: string) {
-    //hx12c4c9f2333ff2b839d89f378bbdfe6051a91aa7
-    var delegatedPReps = await this.iconContract.getDelegatedPReps('hx12c4c9f2333ff2b839d89f378bbdfe6051a91aa7');
+    var delegatedPReps = await this.iconContract.getDelegatedPReps(this.address);
     var votedPreps: number = delegatedPReps.delegations.length;
     let data: number[] = [votedPreps];
     for(var i = 0; i < votedPreps; i++) {
       data[i] = delegatedPReps.delegations[i].value;
+    }
+    var labels: string[] = [];
+    
+    var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations);   
+    for(var i = 0; i < delegatedPrepDetail.length; i++) {
+      labels[i] = delegatedPrepDetail[i].name;
     }
 
     this.dn = new Chart(this.dnChart.nativeElement, {
       type: 'pie',
       circumference: Math.PI,
       data: {
-        labels: ['VELIC','ICONation', 'RHIZOME', 'Ubik Capital', 'ICX_Station'],
+        labels: labels,
         datasets: [{
           label: '',
           data: data,

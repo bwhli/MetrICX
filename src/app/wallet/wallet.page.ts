@@ -31,6 +31,13 @@ export class WalletPage implements OnInit {
     public navCtrl: NavController
   ) { }
    
+  ngAfterViewInit() {
+
+
+    
+  }
+
+
   ngOnInit () { 
     //Update stored address
     this.storage.get('address').then(address => {
