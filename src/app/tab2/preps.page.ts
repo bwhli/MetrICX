@@ -26,14 +26,16 @@ export class PrepsPage implements OnInit {
   constructor( private storage: Storage, 
                private iconContract: IconContractService) {}
 
-  ngOnInit() {
+  ionViewWillEnter() {
     this.storage.get('address').then(address => {
-     this.address = address;     
-     this.getAllPreps();
-     this.getMyPreps();
-     this.createDnChart();  
-   });
+      this.address = address;     
+      this.getAllPreps();
+      this.getMyPreps();
+      this.createDnChart();  
+    });
+  }
 
+  ngOnInit() {
      this.rows = [
       {
         "rank": '#2',
@@ -63,6 +65,16 @@ export class PrepsPage implements OnInit {
    async getAllPreps() {
       this.preps = await this.iconContract.getPReps();
    }
+
+   doRefresh(event) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      this.createDnChart();
+      this.ionViewWillEnter();
+      event.target.complete();
+    }, 2000);
+  }
 
 
   async filterPrepsList(delegatedPrepList: Delegations[]) : Promise<PrepDetails[]> {

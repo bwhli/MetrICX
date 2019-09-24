@@ -1,17 +1,24 @@
 <div style="height:10%">
 
 </div>
-  
 
 <ion-content class="bg-class">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="50">
+        <ion-refresher-content
+          pullingIcon="arrow-dropdown"
+          pullingText="Pull to refresh"
+          refreshingSpinner="circles"
+          refreshingText="Refreshing...">
+        </ion-refresher-content>
+     </ion-refresher>
 <ion-grid>
         <ion-row class="ion-justify-content-start">
                 <ion-col>
                     <ion-card>
                         <ion-card-title class="card-title-primary">
-                               Your Staking Distribution   
+                               Your Staking Distribution
                         </ion-card-title>
-                          <ion-card-content class="card-content-chart">
+                          <ion-card-content class="card-content-chart"> 
                             <canvas #dnChart></canvas> 
                             * Click pie segment for more data
                           </ion-card-content>

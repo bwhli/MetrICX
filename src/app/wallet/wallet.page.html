@@ -3,6 +3,16 @@
 </div>
 
   <ion-content class="bg-class">
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="50">
+          <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+          </ion-refresher-content>
+       </ion-refresher>
+
+
     <ion-grid>
       <ion-row class="ion-justify-content-start">
         <ion-col size="6">

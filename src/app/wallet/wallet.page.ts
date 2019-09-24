@@ -22,6 +22,7 @@ export class WalletPage implements OnInit {
   public networkedStaked = 0;
   public unstakePeriod = 0;
   private barChart: Chart;
+  public loaded: boolean = false;
 
   constructor(
     private storage: Storage,
@@ -41,6 +42,7 @@ export class WalletPage implements OnInit {
         this.loadStake();
         this.loadClaim();
         this.loadChart();
+        this.loaded = true;
       } else {
         this.navCtrl.navigateForward('/tabs/settings');
       }
@@ -48,12 +50,14 @@ export class WalletPage implements OnInit {
   }
 
   async presentLoading() {
-    const loading = await this.loadingController.create({
-      message: 'Loading',
-      duration: 1000
-    });
-    await loading.present();
-    const { role, data } = await loading.onDidDismiss();
+      if(!this.loaded) {
+      const loading = await this.loadingController.create({
+        message: 'Loading',
+        duration: 1000
+      });
+      await loading.present();
+      const { role, data } = await loading.onDidDismiss();
+    }
   }
 
   async loadWallet() {
@@ -66,6 +70,15 @@ export class WalletPage implements OnInit {
 
   async loadClaim() {
     this.claim = await this.iconContract.getClaimableRewards(this.address);
+  }
+
+  doRefresh(event) {
+    console.log('Begin async operation');
+
+    setTimeout(() => {
+      this.ngOnInit();
+      event.target.complete();
+    }, 2000);
   }
 
 
