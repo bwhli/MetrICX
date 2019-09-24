@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -15,7 +16,8 @@ export class SettingsPage {
   constructor(
     private formBuilder: FormBuilder,
     private storage: Storage,
-    private toastController: ToastController
+    private toastController: ToastController,
+    public navCtrl: NavController
   ) {
     this.settingsForm = formBuilder.group({
       address: [null]}
@@ -30,8 +32,7 @@ export class SettingsPage {
     const address = this.settingsForm.controls['address'].value;
     await this.storage.set('address', address);
     this.presentToast();
-
-    //TODO: Maybe go back to home page ???
+    this.navCtrl.navigateForward('/tabs/wallet');
   }
   
   async presentToast() {
