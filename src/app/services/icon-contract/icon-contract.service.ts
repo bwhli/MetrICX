@@ -17,6 +17,11 @@ export class IconContractService {
     return 1 * hexValue;
   }
 
+  public async getTotalSupply() {
+    const bigSupply = await this.iconService.getTotalSupply().execute();
+    return this.toBigInt(bigSupply);
+  }
+
   public async getBalance(address: string) {
     const bigBalance = await this.iconService.getBalance(address).execute();
     return this.toBigInt(bigBalance);
@@ -84,7 +89,7 @@ export class IconContractService {
       rep.status = this.toInt(item.status);
       rep.totalBlocks = this.toInt(item.totalBlocks);
       rep.validatedBlocks = this.toInt(item.validatedBlocks);
-      rep.rank = i;
+      rep.rank = i+1;
       preps.preps.push(rep);
     }
     
