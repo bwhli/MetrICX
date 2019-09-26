@@ -1,6 +1,5 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
@@ -30,14 +29,11 @@ export class PrepsPage implements OnInit {
   constructor( private storage: Storage, 
                private iconContract: IconContractService) {}
 
-  ionViewWillEnter() {
+  ngOnInit() { 
     this.storage.get('address').then(address => {
       this.address = address;     
       this.loadPageData();
     });
-  }
-
-  ngOnInit() { 
   }
 
   async getMyPreps() {
@@ -48,9 +44,7 @@ export class PrepsPage implements OnInit {
       this.preps = await this.iconContract.getPReps();
    }
 
-   doRefresh(event) {
-    console.log('Begin async operation');
-
+   doRefresh(event: any) {
     setTimeout(() => {
       this.loadPageData();
       event.target.complete();
