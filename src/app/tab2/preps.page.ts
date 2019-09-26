@@ -73,7 +73,7 @@ export class PrepsPage implements OnInit {
     
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
     for(var i = 0; i < delegatedPrepDetail.length; i++) {
-      labels[i] = delegatedPrepDetail[i].name + ' ('+ Math.round(delegatedPReps.delegations[i].value).toLocaleString() +')';
+      labels[i] = delegatedPrepDetail[i].name;
     }
 
     await this.createDnChart(data, labels);
