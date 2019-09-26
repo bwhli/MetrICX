@@ -71,8 +71,9 @@
   .card-content-chart {
     background-color: #fff !important;
     --color: #000;
-    font-size: 16px;
+    font-size: 12px;
    padding-top: 3px !important;
+   text-align: right
   }
   
   .total-amount {
@@ -90,6 +91,10 @@
     background-color: #1f2120;
     color: #fff;
   }
+
+  ion-refresher-content {
+    background-color: #F5F5F5;
+  }
   
   .light {
     background-color: #fff;
@@ -103,8 +108,8 @@
     --background: #F5F5F5 ;
   }
 
-  canvas{
-    width: 400px !important;
+  canvas {
+    width: 380px !important;
     height: 190px !important;
   }
 

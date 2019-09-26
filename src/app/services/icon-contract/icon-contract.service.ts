@@ -67,7 +67,7 @@ export class IconContractService {
     preps.totalDelegated = this.toBigInt(response.totalDelegated);
     preps.totalStake = this.toBigInt(response.totalStake);
     preps.startRanking = this.toInt(response.startRanking);
-    preps.preps = [response.preps.length];
+    preps.preps = [];
 
     for (var i = 0; i < response.preps.length; i++) {
       var item = response.preps[i];
@@ -85,8 +85,9 @@ export class IconContractService {
       rep.totalBlocks = this.toInt(item.totalBlocks);
       rep.validatedBlocks = this.toInt(item.validatedBlocks);
       rep.rank = i;
-      preps[i] = rep;
+      preps.preps.push(rep);
     }
+    
     return preps;
   }
 
@@ -101,13 +102,13 @@ export class IconContractService {
     var delegatedPRep = new DelegatedPRep();
     delegatedPRep.totalDelegated = this.toBigInt(response.totalDelegated);
     delegatedPRep.votingPower = this.toBigInt(response.votingPower);
-    delegatedPRep.delegations = [response.delegations.length];
+    delegatedPRep.delegations = [];
     for (var i = 0; i < response.delegations.length; i++) {
       var item = response.delegations[i];
       var delegate = new Delegations();
       delegate.address = item.address;
       delegate.value = this.toBigInt(item.value);
-      delegatedPRep[i] = delegate;
+      delegatedPRep.delegations.push(delegate);
     }
     return delegatedPRep; 
   }
