@@ -36,14 +36,6 @@ export class PrepsPage implements OnInit {
     });
   }
 
-  async getMyPreps() {
-    this.delegatedPrep = await this.iconContract.getDelegatedPReps(this.address);
-  }
-
-   async getAllPreps() {
-      this.preps = await this.iconContract.getPReps();
-   }
-
    doRefresh(event: any) {
     setTimeout(() => {
       this.loadPageData();
@@ -88,8 +80,6 @@ export class PrepsPage implements OnInit {
   
 
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number) {
-     debugger;
-
      var prepArray: PrepTable[] = [];
 
      for(var i = 0; i < prepDetail.length; i++) {
