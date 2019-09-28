@@ -29,16 +29,22 @@ export class PrepsPage implements OnInit {
   constructor( private storage: Storage, 
                private iconContract: IconContractService) {}
 
-  ngOnInit() { 
-    this.storage.get('address').then(address => {
-      this.address = address;     
-      this.loadPageData();
+
+   ionViewWillEnter() {
+    this.storage.get('address').then(address => {   
+      this.loadPageData(address);
     });
+   }
+
+  ngOnInit() { 
+   
   }
 
    doRefresh(event: any) {
     setTimeout(() => {
-      this.loadPageData();
+      this.storage.get('address').then(address => {   
+        this.loadPageData(address);
+      });
       event.target.complete();
     }, 2000);
   }
@@ -52,9 +58,9 @@ export class PrepsPage implements OnInit {
     return filteredArrayPreps
    }
 
-   async loadPageData() {
+   async loadPageData(address: string) {
     var preps = await this.iconContract.getPReps();
-    var delegatedPReps = await this.iconContract.getDelegatedPReps(this.address);
+    var delegatedPReps = await this.iconContract.getDelegatedPReps(address);
     var totalSupply = await this.iconContract.getTotalSupply();
     var votedPreps: number = delegatedPReps.delegations.length;
     let data: number[] = [votedPreps];
