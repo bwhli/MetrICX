@@ -29,10 +29,10 @@
                   <ion-col>
                         <ion-card>
                                 <ion-card-title class="card-title-primary">
-                                        P-Rep Status Information   
+                                       Your PRep Status
                                 </ion-card-title>
                                   <ion-card-content class="card-content-table">
-                                        <ngx-datatable [headerHeight]="50"  [footerHeight]="50" [rows]="rows" class="bootstrap" [columnMode]="flex">
+                                        <ngx-datatable [headerHeight]="50"  [footerHeight]="100" [rows]="rows" class="bootstrap" [columnMode]="flex">
                                                 <ngx-datatable-column name="Rank" [width]="30">
                                                     <ng-template let-value="value" ngx-datatable-body-cell>
                                                          {{ value }}
@@ -64,11 +64,10 @@
                                                         let-offset="offset"
                                                       >
                                                         <div style="padding: 2px 2px; width:100%">
-                                                          <div><strong>Summary</strong>: Preps you have staked your icx to </div>
+                                                          <div><strong>Network Summary</strong></div>
                                                           <hr />
-                                                          <div style="text-align: right;">
-                                                            Total Preps: {{ rowCount }}
-                                                          </div>
+                                                          <div><strong>Total Supply: </strong> {{totalSupply}} | <strong>Total ICX Staked: </strong> {{totalICXDelegated}}</div>
+                                                          <div><strong>Network Staked %: </strong> {{totalNetworkDelegated}} | <strong>Total PReps: </strong>{{totalNumPreps}} </div>           
                                                         </div>
                                                       </ng-template>
                                                   </ngx-datatable-footer>
