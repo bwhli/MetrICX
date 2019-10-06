@@ -20,7 +20,7 @@ export class WalletPage implements OnInit {
   public stake = 0;
   public claim = 0;
   public networkedStaked = 0;
-  public unstakePeriod = 0;
+  public unstakePeriod: string;
   private barChart: Chart;
   public loaded: boolean = false;
 
@@ -40,6 +40,7 @@ export class WalletPage implements OnInit {
         this.presentLoading();
         this.loadWallet();
         this.loadStake();
+        this.loadUnstake();
         this.loadClaim();
         this.loadChart();
         this.loaded = true;
@@ -68,8 +69,26 @@ export class WalletPage implements OnInit {
     this.stake = await this.iconContract.getStakedAmount(this.address);
   }
 
+  async loadUnstake() {
+   const hours = await this.iconContract.getUnstackedPeriod(this.address);
+   if (hours > 0) {
+     const splitTime = this.SplitTime(hours);
+     this.unstakePeriod = splitTime[0]['d'] + 'd : ' + splitTime[0]['h'] + 'h : ' + splitTime[0]['m'] + 'm';;
+   } else {
+     this.unstakePeriod = 'N/A';
+   }
+  }
+
   async loadClaim() {
     this.claim = await this.iconContract.getClaimableRewards(this.address);
+  }
+
+  SplitTime(numberOfHours : number): object[] {
+    var Days = Math.floor(numberOfHours/24);
+    var Remainder = numberOfHours % 24;
+    var Hours = Math.floor(Remainder);
+    var Minutes = Math.floor(60*(Remainder-Hours));
+    return [{'d':Days,'h': Hours, 'm':Minutes}]
   }
 
   doRefresh(event) {
