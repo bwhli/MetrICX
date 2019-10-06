@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import IconService, { HttpProvider, IconBuilder } from 'icon-sdk-js';
+import IconService, { HttpProvider, IconBuilder, IconAmount, IconConverter } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
 import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
 @Injectable({
@@ -10,7 +10,7 @@ export class IconContractService {
   private iconService = new IconService(this.httpProvider);
 
   public toBigInt(hexValue): number {
-    return 1 * hexValue / 10**18;
+      return IconConverter.toNumber(IconAmount.of(hexValue, IconAmount.Unit.LOOP).convertUnit(IconAmount.Unit.ICX));
   }
 
   public toInt(hexValue): number {
