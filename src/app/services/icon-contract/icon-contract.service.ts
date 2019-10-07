@@ -38,7 +38,7 @@ export class IconContractService {
     return this.toBigInt(response['stake']);
   }
 
-  public async getUnstackedPeriod(address: string) : Promise<number> {
+  public async getUnstakedPeriod(address: string) : Promise<number> {
     const call = new CallBuilder()
     .to('cx0000000000000000000000000000000000000000')
     .method('getStake')

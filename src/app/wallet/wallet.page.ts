@@ -70,7 +70,7 @@ export class WalletPage implements OnInit {
   }
 
   async loadUnstake() {
-   const hours = await this.iconContract.getUnstackedPeriod(this.address);
+   const hours = await this.iconContract.getUnstakedPeriod(this.address);
    if (hours > 0) {
      const splitTime = this.SplitTime(hours);
      this.unstakePeriod = splitTime[0]['d'] + 'd : ' + splitTime[0]['h'] + 'h : ' + splitTime[0]['m'] + 'm';;
