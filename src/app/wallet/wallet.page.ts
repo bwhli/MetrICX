@@ -106,57 +106,23 @@ export class WalletPage implements OnInit {
   //  await this.iconContract.getPReps(this.address);
 
     this.barChart = new Chart(this.barCanvas.nativeElement, {
-      type: "bar",
-      data: {
-        labels: ["Aug", "Sept", "Oct", "Nov", "Dec", "Jan"],
-        datasets: [
-          {
-            label: '',
-            data: [5, 10, 25, 100, 252, 400],
-            backgroundColor: [
-              "rgba(255, 99, 132, 0.2)",
-              "rgba(54, 162, 235, 0.2)",
-              "rgba(255, 206, 86, 0.2)",
-              "rgba(75, 192, 192, 0.2)",
-              "rgba(153, 102, 255, 0.2)",
-              "rgba(255, 159, 64, 0.2)"
-            ],
-            borderColor: [
-              "rgba(255,99,132,1)",
-              "rgba(54, 162, 235, 1)",
-              "rgba(255, 206, 86, 1)",
-              "rgba(75, 192, 192, 1)",
-              "rgba(153, 102, 255, 1)",
-              "rgba(255, 159, 64, 1)"
-            ],
-            borderWidth: 1
-          }, 
-          {
-            label: '',
-            data: [5, 10, 25, 100, 252, 400],
-
-            // Changes this dataset to become a line
-            type: 'line'
+      type: 'line',
+			data: {
+				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+				datasets: [{
+					label: '',
+					data: [
+						10000,
+						10007,
+						10012,
+						10020,
+						10030,
+						10041,
+						10055
+					],
+					fill: false,
         }]
-      },
-      options: {
-        legend: {
-          display: false,
-          defaultFontFamily: "'Open Sans',  sans-serif",
-          defaultFontSize: 8
-          
-      },
-        scales: {
-          yAxes: [
-            {
-              ticks: {
-                beginAtZero: true
-              }
-            }
-          ]
-        }
       }
     });
-
   }
 }

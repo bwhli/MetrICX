@@ -139,7 +139,7 @@ export class PrepsPage implements OnInit {
           position: 'right',
           fullWidth: false,
           labels: {
-            fontSize: 8,
+            fontSize: 12,
             boxWidth: 10,
             fontFamily: '"Open Sans",  sans-serif',
           }
@@ -160,7 +160,7 @@ export class PrepsPage implements OnInit {
             {
               render: 'percentage',
               fontColor: '#fff',
-              fontSize: 10,
+              fontSize: 12,
               fontFamily: '"Open Sans",  sans-serif',
             }
           ]
