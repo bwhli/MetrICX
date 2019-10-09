@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
+import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -23,6 +24,12 @@ export class WalletPage implements OnInit {
   public unstakePeriod: string;
   private barChart: Chart;
   public loaded: boolean = false;
+  private pv = 0;
+  private r = 0;
+  private n = 0;
+  private x = new Array();
+  private y = new Array();
+  private v = new Array();
 
   constructor(
     private storage: Storage,
@@ -71,7 +78,6 @@ export class WalletPage implements OnInit {
 
   async loadUnstake() {
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
-   alert(hours);
    if (hours > 0) {
      const splitTime = this.splitTime(hours);
      this.unstakePeriod = splitTime[0]['d'] + 'd : ' + splitTime[0]['h'] + 'h : ' + splitTime[0]['m'] + 'm';;
@@ -101,33 +107,61 @@ export class WalletPage implements OnInit {
     }, 2000);
   }
 
+  calculateY(pv: number, r: number, n: number) : number {
+    const rateOfInterest = r/100;
+    return pv * (Math.pow((1 + (rateOfInterest/52)), n));
+  }
 
-  async loadChart() {
-    const networkStaked = await this.iconContract.getNetworkStaked();
+async generateLineData(){
+    const rewardRate = await this.iconContract.getCurrentRewardRate();
+    this.pv = Math.floor(this.stake);
+    const r = Math.floor(rewardRate);
+    let m = 0;
+    var xmax = 52;
+    var i = 0;
+    var j = 0;
+    let v = [];
+    let ma = [];
+    for (let xt = 0; xt <= xmax; xt++) {
+        this.x[i] = xt;
+        this.y[i] = this.calculateY(this.pv, r, xt);
+        m = xt%4;
+        if(m==0) {  
+          ma[j]=this.y[i];
+          j++;
+        }
+        i++;
+    }
+    return ma;
+}
 
-   
-
-
-
-
-    this.barChart = new Chart(this.barCanvas.nativeElement, {
+  async loadChart() { 
+    this.generateLineData().then(data => {
+   this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'line',
 			data: {
-				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+				labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
 				datasets: [{
+					borderColor: '#32b8bb',
 					label: '',
-					data: [
-						10000,
-						10007,
-						10012,
-						10020,
-						10030,
-						10041,
-						10055
-					],
-					fill: false,
-        }]
-      }
-    });
-  }
+          data: data,
+          fill: true,
+      }]
+    },
+    options: {
+      legend: {
+        display: false
+      },
+      layout: {
+                padding: {
+                    left: 0,
+                    right: 0,
+                    top: 0,
+                    bottom: 0
+                }
+              }
+        }
+  });
+});
+}
 }

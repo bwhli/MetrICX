@@ -10,6 +10,10 @@ ion-card {
   margin-bottom: 5px;
 }
 
+canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
 
 ion-refresher-content {
   background-color: #F5F5F5;
