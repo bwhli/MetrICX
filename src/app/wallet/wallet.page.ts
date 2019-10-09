@@ -71,8 +71,9 @@ export class WalletPage implements OnInit {
 
   async loadUnstake() {
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
+   alert(hours);
    if (hours > 0) {
-     const splitTime = this.SplitTime(hours);
+     const splitTime = this.splitTime(hours);
      this.unstakePeriod = splitTime[0]['d'] + 'd : ' + splitTime[0]['h'] + 'h : ' + splitTime[0]['m'] + 'm';;
    } else {
      this.unstakePeriod = 'N/A';
@@ -83,12 +84,12 @@ export class WalletPage implements OnInit {
     this.claim = await this.iconContract.getClaimableRewards(this.address);
   }
 
-  SplitTime(numberOfHours : number): object[] {
-    var Days = Math.floor(numberOfHours/24);
-    var Remainder = numberOfHours % 24;
-    var Hours = Math.floor(Remainder);
-    var Minutes = Math.floor(60*(Remainder-Hours));
-    return [{'d':Days,'h': Hours, 'm':Minutes}]
+  splitTime(numberOfHours: number): object[] {
+    const days = Math.floor(numberOfHours/24);
+    const remainder = numberOfHours % 24;
+    const hours = Math.floor(remainder);
+    const minutes = Math.floor(60*(remainder-hours));
+    return [{'d':days,'h': hours, 'm':minutes}]
   }
 
   doRefresh(event) {
@@ -102,8 +103,12 @@ export class WalletPage implements OnInit {
 
 
   async loadChart() {
+    const networkStaked = await this.iconContract.getNetworkStaked();
 
-  //  await this.iconContract.getPReps(this.address);
+   
+
+
+
 
     this.barChart = new Chart(this.barCanvas.nativeElement, {
       type: 'line',

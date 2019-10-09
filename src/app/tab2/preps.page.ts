@@ -79,11 +79,9 @@ export class PrepsPage implements OnInit {
 
     this.totalSupply = totalSupply.toLocaleString();
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
-    this.totalNetworkDelegated = Math.round((preps.totalDelegated / totalSupply * 100) *100)/100;
+    this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
     this.totalNumPreps = preps.preps.length;
    }
-
-  
 
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number) {
      var prepArray: PrepTable[] = [];
