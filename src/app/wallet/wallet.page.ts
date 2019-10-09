@@ -143,14 +143,16 @@ async generateLineData(){
 				labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
 				datasets: [{
 					borderColor: '#32b8bb',
-					label: '',
           data: data,
-          fill: true,
       }]
     },
     options: {
       legend: {
         display: false
+      },
+      title: {
+        display: true,
+        text: 'Monthly reward estimation (i-score claimed weekly)'
       },
       layout: {
                 padding: {
