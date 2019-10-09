@@ -38,6 +38,25 @@ export class IconContractService {
     return this.toBigInt(response['stake']);
   }
 
+  public async getUnstakedPeriod(address: string) : Promise<number> {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getStake')
+    .params({address: address})				
+    .build();
+
+  var response = await this.iconService.call(call).execute();
+  if (response['unstakeBlockHeight']) {
+    const latest = await this.iconService.getBlock("latest").execute();
+    const targetBH = parseInt(response['unstakeBlockHeight'], 16);
+    const diffBlocks = targetBH - latest['height'];
+    const diffSeconds = diffBlocks * 2;
+    return (diffSeconds / 3600.0);
+  } else {
+    return -1;
+  }
+}
+
   public async getClaimableRewards(address: string) {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')

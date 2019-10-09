@@ -70,14 +70,15 @@ ion-refresher-content {
 .card-content-chart {
   background-color: #fff !important;
   --color: #000;
-  font-size: 8px;
+  font-size: 10px;
   //padding-top: px !important;
 }
 
 .total-amount {
   background-color: #fff !important;
   --color: #000;
-  font-size: 18px;
+  font-size: 20px;
+
  padding-right: 5px !important;
 }
 
@@ -88,6 +89,11 @@ ion-refresher-content {
 .dark {
   background-color: #1f2120;
   color: #fff;
+}
+
+.iconSize {
+  font-size: 40px;
+  color: #000;
 }
 
 .light {
