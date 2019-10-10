@@ -24,12 +24,6 @@ export class WalletPage implements OnInit {
   public unstakePeriod: string;
   private barChart: Chart;
   public loaded: boolean = false;
-  private pv = 0;
-  private r = 0;
-  private n = 0;
-  private x = new Array();
-  private y = new Array();
-  private v = new Array();
 
   constructor(
     private storage: Storage,
@@ -112,58 +106,55 @@ export class WalletPage implements OnInit {
     return pv * (Math.pow((1 + (rateOfInterest/52)), n));
   }
 
-async generateLineData(){
+  async generateLineData(){
     const rewardRate = await this.iconContract.getCurrentRewardRate();
-    this.pv = Math.floor(this.stake);
+    const pv = Math.floor(this.stake);
     const r = Math.floor(rewardRate);
+    let y = new Array();
     let m = 0;
-    var xmax = 52;
-    var i = 0;
-    var j = 0;
-    let v = [];
+    const xmax = 52; //weekly
+    let j = 0;
     let ma = [];
-    for (let xt = 0; xt <= xmax; xt++) {
-        this.x[i] = xt;
-        this.y[i] = this.calculateY(this.pv, r, xt);
-        m = xt%4;
+    for (let i = 0; i <= xmax; i++) {
+        y[i] = this.calculateY(pv, r, i);
+        m = i%4; //roughly every 4 weeks (monthly)
         if(m==0) {  
-          ma[j]=this.y[i];
+          ma[j]=y[i];
           j++;
         }
-        i++;
     }
     return ma;
-}
+  }
 
   async loadChart() { 
     this.generateLineData().then(data => {
-   this.barChart = new Chart(this.barCanvas.nativeElement, {
-      type: 'line',
-			data: {
-				labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
-				datasets: [{
-					borderColor: '#32b8bb',
-          data: data,
-      }]
-    },
-    options: {
-      legend: {
-        display: false
-      },
-      title: {
-        display: true,
-        text: 'Monthly reward estimation (i-score claimed weekly)'
-      },
-      layout: {
-                padding: {
-                    left: 0,
-                    right: 0,
-                    top: 0,
-                    bottom: 0
-                }
-              }
+      this.barChart = new Chart(this.barCanvas.nativeElement, {
+          type: 'line',
+          data: {
+            labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
+            datasets: [{
+              borderColor: '#32b8bb',
+              data: data,
+          }]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Monthly reward estimation (i-score claimed weekly)'
+          },
+          layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+          }     
         }
-  });
-});
-}
+      });
+    });
+  }
 }
