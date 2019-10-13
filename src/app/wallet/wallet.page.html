@@ -105,12 +105,12 @@
                           <ion-col>
                                 <ion-row>
                                   <ion-col text-left><strong>Reward Summary</strong></ion-col>
-                                  <ion-col text-right><strong>Rate: 22%</strong> </ion-col>
+                                  <ion-col text-right><strong>Rate: </strong> {{rewardRate |  number : '1.2-2'}}% </ion-col>
                                           <hr />
                                 </ion-row>
                                   <ion-row>
-                                    <ion-col text-left><strong>Monthly: </strong>~24,232 </ion-col>
-                                    <ion-col text-right><strong>Yearly: </strong>~232,343</ion-col>
+                                    <ion-col text-left><strong>Monthy: </strong>~{{monthlyICX | number : '1.2-2'}} </ion-col>
+                                    <ion-col text-right><strong>Yearly: </strong>~{{yearlyICX  | number : '1.2-2'}}</ion-col>
                                   </ion-row>
                             </ion-col>
                         </ion-row>

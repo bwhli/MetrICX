@@ -46,7 +46,6 @@ export class IconContractService {
 
 public async getCurrentRewardRate() {
   const networkStaked = await this.getNetworkStaked();
-  
   const rMax = 0.12;
   const rMin = 0.02;
   const rPoint = 0.7;
@@ -55,7 +54,6 @@ public async getCurrentRewardRate() {
   if (percentStaked > 70) {
       rRep = 0.02;
   }
-
   return rRep * 3 * 100;
 }
 

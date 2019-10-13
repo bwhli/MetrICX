@@ -24,6 +24,9 @@ export class WalletPage implements OnInit {
   public unstakePeriod: string;
   private barChart: Chart;
   public loaded: boolean = false;
+  public rewardRate = 0;
+  public monthlyICX = 0;
+  public yearlyICX = 0;
 
   constructor(
     private storage: Storage,
@@ -107,9 +110,9 @@ export class WalletPage implements OnInit {
   }
 
   async generateLineData(){
-    const rewardRate = await this.iconContract.getCurrentRewardRate();
+    this.rewardRate = await this.iconContract.getCurrentRewardRate();
     const pv = Math.floor(this.stake);
-    const r = Math.floor(rewardRate);
+    const r = this.rewardRate;
     let y = new Array();
     let m = 0;
     const xmax = 52; //weekly
@@ -128,6 +131,8 @@ export class WalletPage implements OnInit {
 
   async loadChart() { 
     this.generateLineData().then(data => {
+      this.yearlyICX = data[11] - this.stake; //array starts at 0 (value after 12 months)
+      this.monthlyICX = this.yearlyICX/12;
       this.barChart = new Chart(this.barCanvas.nativeElement, {
           type: 'line',
           data: {
@@ -152,7 +157,18 @@ export class WalletPage implements OnInit {
                         top: 0,
                         bottom: 0
                     }
-          }     
+          },
+          scales: {
+            yAxes: [
+                {
+                    ticks: {
+                      callback: function (value) {
+                        return value.toLocaleString();
+                      }
+                    }
+                }
+            ]
+        }     
         }
       });
     });
