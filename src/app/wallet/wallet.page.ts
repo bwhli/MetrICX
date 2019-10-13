@@ -22,6 +22,7 @@ export class WalletPage implements OnInit {
   public claim = 0;
   public networkedStaked = 0;
   public unstakePeriod: string;
+  public networkUnstakePeriod: 0;
   private barChart: Chart;
   public loaded: boolean = false;
   public rewardRate = 0;
@@ -121,7 +122,7 @@ export class WalletPage implements OnInit {
     for (let i = 0; i <= xmax; i++) {
         y[i] = this.calculateY(pv, r, i);
         m = i%4; //roughly every 4 weeks (monthly)
-        if(m==0) {  
+        if(m==0 && i > 0) {  
           ma[j]=y[i];
           j++;
         }
@@ -131,7 +132,7 @@ export class WalletPage implements OnInit {
 
   async loadChart() { 
     this.generateLineData().then(data => {
-      this.yearlyICX = data[12] - this.stake; //array starts at 0 (value after 12 months)
+      this.yearlyICX = data[11] - this.stake; //array starts at 0 (value after 12 months)
       this.monthlyICX = this.yearlyICX/12;
       this.barChart = new Chart(this.barCanvas.nativeElement, {
           type: 'line',
