@@ -131,7 +131,7 @@ export class WalletPage implements OnInit {
 
   async loadChart() { 
     this.generateLineData().then(data => {
-      this.yearlyICX = data[11] - this.stake; //array starts at 0 (value after 12 months)
+      this.yearlyICX = data[12] - this.stake; //array starts at 0 (value after 12 months)
       this.monthlyICX = this.yearlyICX/12;
       this.barChart = new Chart(this.barCanvas.nativeElement, {
           type: 'line',
