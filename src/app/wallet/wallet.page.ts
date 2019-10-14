@@ -22,7 +22,7 @@ export class WalletPage implements OnInit {
   public claim = 0;
   public networkedStaked = 0;
   public unstakePeriod: string;
-  public networkUnstakePeriod: 0;
+  public networkUnstakePeriod = '';
   private barChart: Chart;
   public loaded: boolean = false;
   public rewardRate = 0;
@@ -75,10 +75,14 @@ export class WalletPage implements OnInit {
   }
 
   async loadUnstake() {
+    const networkUnstakePeriod = await this.iconContract.getNetworkStakedPeriod();
+    const networkUnstakePeriodDays= this.splitTime(networkUnstakePeriod *24);
+    this.networkUnstakePeriod = networkUnstakePeriodDays[0]['d'] + 'd: ' + networkUnstakePeriodDays[0]['h'] + 'h: ' + networkUnstakePeriodDays[0]['m'] + 'm';;
+
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
    if (hours > 0) {
      const splitTime = this.splitTime(hours);
-     this.unstakePeriod = splitTime[0]['d'] + 'd : ' + splitTime[0]['h'] + 'h : ' + splitTime[0]['m'] + 'm';;
+     this.unstakePeriod = splitTime[0]['d'] + 'd: ' + splitTime[0]['h'] + 'h: ' + splitTime[0]['m'] + 'm';;
    } else {
      this.unstakePeriod = 'N/A';
    }

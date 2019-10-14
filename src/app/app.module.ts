@@ -11,6 +11,7 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

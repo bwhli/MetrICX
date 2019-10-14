@@ -30,24 +30,24 @@
                                        Your PRep Status
                                 </ion-card-title>
                                   <ion-card-content class="card-content-table">
-                                        <ngx-datatable [headerHeight]="50"  [footerHeight]="100" [rows]="rows" class="bootstrap" [columnMode]="flex">
+                                        <ngx-datatable class="bootstrap" [headerHeight]="50" [footerHeight]="100" [rows]="rows" [columnMode]="flex">
                                                 <ngx-datatable-column name="Rank" [width]="30">
-                                                    <ng-template let-value="value" ngx-datatable-body-cell>
+                                                    <ng-template let-value="value">
                                                          {{ value }}
-                                                        </ng-template>
+                                                    </ng-template>
                                                  </ngx-datatable-column>
                                                  <ngx-datatable-column name="Name" [width]="80">
-                                                        <ng-template let-row="row" let-value="value" ngx-datatable-body-cell>
+                                                        <ng-template let-row="row" let-value="value">
                                                           {{ value }}
                                                         </ng-template>
                                                   </ngx-datatable-column>
                                                   <ngx-datatable-column name="Production" [width]="80">
-                                                        <ng-template let-value="value"ngx-datatable-body-cell>
+                                                        <ng-template let-value="value"l>
                                                           {{ value }}
                                                         </ng-template>
                                                   </ngx-datatable-column>
                                                   <ngx-datatable-column name="Votes" class="total" [width]="200">
-                                                        <ng-template let-value="value" ngx-datatable-body-cell>
+                                                        <ng-template let-value="value">
                                                           {{ value }} 
                                                         </ng-template>
                                                   </ngx-datatable-column>
