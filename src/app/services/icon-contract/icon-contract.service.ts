@@ -8,6 +8,7 @@ import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
 export class IconContractService {
   private httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
   private iconService = new IconService(this.httpProvider);
+  private rPoint = 0.7;
 
   public toBigInt(hexValue): number {
       return IconConverter.toNumber(IconAmount.of(hexValue, IconAmount.Unit.LOOP).convertUnit(IconAmount.Unit.ICX));
@@ -38,12 +39,41 @@ export class IconContractService {
     return this.toBigInt(response['stake']);
   }
 
-  public async getUnstakedPeriod(address: string) : Promise<number> {
+  public async getNetworkStaked() { 
+    var preps = await this.getPReps();
+    var totalSupply = await this.getTotalSupply(); 
+    return Math.round((preps.totalDelegated / totalSupply * 100) *100)/100;   
+  }
+
+public async getCurrentRewardRate() {
+  const networkStaked = await this.getNetworkStaked();
+  const rMax = 0.12;
+  const rMin = 0.02;
+
+  const percentStaked = networkStaked;
+  let rRep = ((rMax - rMin) / (Math.pow(this.rPoint, 2))) * (Math.pow(percentStaked / 100 - this.rPoint, 2)) + rMin;
+  if (percentStaked > 70) {
+      rRep = 0.02;
+  }
+  return rRep * 3 * 100;
+}
+
+public async getNetworkStakedPeriod() {
+  const lMin = 5;
+  const lMax = 20;
+  const percentStaked: number = await this.getNetworkStaked();
+  let lPeriod = ((lMax - lMin) / (Math.pow(this.rPoint, 2))) * (Math.pow(percentStaked / 100 - this.rPoint, 2)) + lMin;
+  
+  return Math.round(lPeriod * 100) / 100;;
+}
+
+
+public async getUnstakedPeriod(address: string) : Promise<number> {
     const call = new CallBuilder()
     .to('cx0000000000000000000000000000000000000000')
     .method('getStake')
-    .params({address: address})				
-    .build();
+    .params({address: address})	
+    .build();			
 
   var response = await this.iconService.call(call).execute();
   if (response['unstakeBlockHeight']) {
@@ -57,7 +87,7 @@ export class IconContractService {
   }
 }
 
-  public async getClaimableRewards(address: string) {
+public async getClaimableRewards(address: string) {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')
       .method('queryIScore')

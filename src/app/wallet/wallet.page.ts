@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
+import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
@@ -21,8 +22,12 @@ export class WalletPage implements OnInit {
   public claim = 0;
   public networkedStaked = 0;
   public unstakePeriod: string;
+  public networkUnstakePeriod = '';
   private barChart: Chart;
   public loaded: boolean = false;
+  public rewardRate = 0;
+  public monthlyICX = 0;
+  public yearlyICX = 0;
 
   constructor(
     private storage: Storage,
@@ -70,10 +75,14 @@ export class WalletPage implements OnInit {
   }
 
   async loadUnstake() {
+    const networkUnstakePeriod = await this.iconContract.getNetworkStakedPeriod();
+    const networkUnstakePeriodDays= this.splitTime(networkUnstakePeriod *24);
+    this.networkUnstakePeriod = networkUnstakePeriodDays[0]['d'] + 'd: ' + networkUnstakePeriodDays[0]['h'] + 'h: ' + networkUnstakePeriodDays[0]['m'] + 'm';;
+
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
    if (hours > 0) {
-     const splitTime = this.SplitTime(hours);
-     this.unstakePeriod = splitTime[0]['d'] + 'd : ' + splitTime[0]['h'] + 'h : ' + splitTime[0]['m'] + 'm';;
+     const splitTime = this.splitTime(hours);
+     this.unstakePeriod = splitTime[0]['d'] + 'd: ' + splitTime[0]['h'] + 'h: ' + splitTime[0]['m'] + 'm';;
    } else {
      this.unstakePeriod = 'N/A';
    }
@@ -83,12 +92,12 @@ export class WalletPage implements OnInit {
     this.claim = await this.iconContract.getClaimableRewards(this.address);
   }
 
-  SplitTime(numberOfHours : number): object[] {
-    var Days = Math.floor(numberOfHours/24);
-    var Remainder = numberOfHours % 24;
-    var Hours = Math.floor(Remainder);
-    var Minutes = Math.floor(60*(Remainder-Hours));
-    return [{'d':Days,'h': Hours, 'm':Minutes}]
+  splitTime(numberOfHours: number): object[] {
+    const days = Math.floor(numberOfHours/24);
+    const remainder = numberOfHours % 24;
+    const hours = Math.floor(remainder);
+    const minutes = Math.floor(60*(remainder-hours));
+    return [{'d':days,'h': hours, 'm':minutes}]
   }
 
   doRefresh(event) {
@@ -100,29 +109,73 @@ export class WalletPage implements OnInit {
     }, 2000);
   }
 
+  calculateY(pv: number, r: number, n: number) : number {
+    const rateOfInterest = r/100;
+    return pv * (Math.pow((1 + (rateOfInterest/52)), n));
+  }
 
-  async loadChart() {
+  async generateLineData(){
+    this.rewardRate = await this.iconContract.getCurrentRewardRate();
+    const pv = Math.floor(this.stake);
+    const r = this.rewardRate;
+    let y = new Array();
+    let m = 0;
+    const xmax = 52; //weekly
+    let j = 0;
+    let ma = [];
+    for (let i = 0; i <= xmax; i++) {
+        y[i] = this.calculateY(pv, r, i);
+        m = i%4; //roughly every 4 weeks (monthly)
+        if(m==0 && i > 0) {  
+          ma[j]=y[i];
+          j++;
+        }
+    }
+    return ma;
+  }
 
-  //  await this.iconContract.getPReps(this.address);
-
-    this.barChart = new Chart(this.barCanvas.nativeElement, {
-      type: 'line',
-			data: {
-				labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-				datasets: [{
-					label: '',
-					data: [
-						10000,
-						10007,
-						10012,
-						10020,
-						10030,
-						10041,
-						10055
-					],
-					fill: false,
-        }]
-      }
+  async loadChart() { 
+    this.generateLineData().then(data => {
+      this.yearlyICX = data[11] - this.stake; //array starts at 0 (value after 12 months)
+      this.monthlyICX = this.yearlyICX/12;
+      this.barChart = new Chart(this.barCanvas.nativeElement, {
+          type: 'line',
+          data: {
+            labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
+            datasets: [{
+              borderColor: '#32b8bb',
+              data: data,
+          }]
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          title: {
+            display: true,
+            text: 'Monthly reward estimation (i-score claimed weekly)'
+          },
+          layout: {
+                    padding: {
+                        left: 0,
+                        right: 0,
+                        top: 0,
+                        bottom: 0
+                    }
+          },
+          scales: {
+            yAxes: [
+                {
+                    ticks: {
+                      callback: function (value) {
+                        return value.toLocaleString();
+                      }
+                    }
+                }
+            ]
+        }     
+        }
+      });
     });
   }
 }
