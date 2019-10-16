@@ -13,29 +13,29 @@ Mobile application that provides a personalised view of the ICON public blockcha
 
 ![License](https://img.shields.io/badge/license-GPL%20(%3E%3D%202)-blue)
 
-Core Features
+<h1>Core Features</h1>
 
 Simply input your public wallet address into MetrICX, and you'll be able to view:
 
-Available Balance - The total amount of liquid ICX held in your wallet at that moment. This figure does not include currently-staked ICX, as it is not liquid.
+ **Available Balance** - The total amount of liquid ICX held in your wallet at that moment. This figure does not include currently-staked ICX, as it is not liquid.
 
-Un-staking Period - The number of days you have remaining before being able to access your ICX if you've elected to un-stake.
+**Un-staking Period** - The number of days you have remaining before being able to access your ICX if you've elected to un-stake.
 
-Staked - The total amount of ICX you've staked in this wallet.
+**Staked** - The total amount of ICX you've staked in this wallet.
 
-Total & Unclaimed ICX - This figure includes the total amount of ICX you own (both liquid and staked), as well as the total amount of ICX that is currently unclaimed in the form of your I_Score. This way, you can view how much ICX is waiting for you without having to login to your wallet to check.
+**Total & Unclaimed ICX** - This figure includes the total amount of ICX you own (both liquid and staked), as well as the total amount of ICX that is currently unclaimed in the form of your I_Score. This way, you can view how much ICX is waiting for you without having to login to your wallet to check.
 
-Earnings over time - View the projected amount of ICX you'd generate via compound interest at the current reward rate. Currently, this is calculated on a weekly basis, but presented as a monthly figure.
+**Staking Overview** - View the projected amount of ICX you'd generate via compound interest at the current reward rate. Currently, this is calculated on a weekly basis, but presented as a monthly figure.
 
-Reward Summary - View the total rewards you're projected to receive for the year at the current reward rate, which is also present in this section. This section also displays the current "un-stake period" for the network, indicating how many days you'd need to wait before being able to access your ICX if you decide to un-stake.
+**Reward Summary** - View the total rewards you're projected to receive for the year at the current reward rate, which is also present in this section. This section also displays the current "un-stake period" for the network, indicating how many days you'd need to wait before being able to access your ICX if you decide to un-stake.
 
-Staking Distribution - View a visual representation of your allocated delegation toward P-Rep candidates.
+**Staking Distribution** - View a visual representation of your allocated delegation toward P-Rep candidates.
 
-P-Rep Status - View the current status of the P-Reps you have voted for. This includes their productivity ratio, total vote allocation, and vote % among all ICONists.
+**P-Rep Status** - View the current status of the P-Reps you have voted for. This includes their productivity ratio, total vote allocation, and vote % among all ICONists.
 
-Network Summary - View the number of ICX currently staked and % of network staked, as well as the current number of P-Rep candidates.
+**Network Summary** - View the number of ICX currently staked and % of network staked, as well as the current number of P-Rep candidates.
 
-##Additional Features##
+</h1>Additional Features </h1>
 
 Among one of the features in development for future release is a portal to allow P-Reps to send updates and information (via the public chain) to their delegators (should the user wish to receive such updates) via MetrICX. This will allow users to receive important information from the P-Reps they're currently voting for.
 
