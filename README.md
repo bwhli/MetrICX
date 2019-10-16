@@ -5,7 +5,7 @@
     alt="Rhizome logo">
 </p>
 
-<h1 align="center">MetrICX : <a href="https://github.com/iconation/Daedric" />ICON within the palm of your hand </a> </h1>
+<h1 align="center">MetrICX : <a href="https://rhizomeicx.com/introducing-metricx/" />ICON within the palm of your hand </a> </h1>
 
 
 # MetrICX
