@@ -13,7 +13,7 @@ Mobile application that provides a personalised view of the ICON public blockcha
 
 ![License](https://img.shields.io/badge/license-GPL%20(%3E%3D%202)-blue)
 
-<h1>Core Features</h1>
+<h1><strong>Core Features</strong></h1>
 
 Simply input your public wallet address into MetrICX, and you'll be able to view:
 
@@ -35,7 +35,7 @@ Simply input your public wallet address into MetrICX, and you'll be able to view
 
 **Network Summary** - View the number of ICX currently staked and % of network staked, as well as the current number of P-Rep candidates.
 
-</h1>Additional Features </h1>
+<h1><strong>Additional Features</strong></h1>
 
 Among one of the features in development for future release is a portal to allow P-Reps to send updates and information (via the public chain) to their delegators (should the user wish to receive such updates) via MetrICX. This will allow users to receive important information from the P-Reps they're currently voting for.
 
