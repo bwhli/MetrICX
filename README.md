@@ -1,6 +1,6 @@
 <p align="center">
   <img 
-    src="https://photos.app.goo.gl/TFwfP3BFJa1cnsoCA" 
+    src="https://photos.google.com/search/_tra_/photo/AF1QipMlP5eu7yJnbcztYF0gtbzJb6IFb6-fjNLGcZ2N" 
     width="180px"
     alt="Rhizome logo">
 </p>
