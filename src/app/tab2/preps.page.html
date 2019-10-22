@@ -15,6 +15,10 @@
                     <ion-card>
                         <ion-card-title class="card-title-primary">
                                Your Staking Distribution
+                               <span class="tooltip" tooltip="Visual representation of your allocated delegation toward P-Rep candidates." 
+                                                    placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
+                                   <ion-icon name="information-circle-outline"></ion-icon> 
+                                </span>
                         </ion-card-title>
                           <ion-card-content class="card-content-chart"> 
                             <canvas #dnChart></canvas> 
@@ -27,10 +31,14 @@
                   <ion-col>
                         <ion-card>
                                 <ion-card-title class="card-title-primary">
-                                       Your PRep Status
+                                      Governance Overview
+                                      <span class="tooltip" tooltip="Shows the current P-Rep candidates you have voted on, as well as a general overview of the ICON Network governance status" 
+                                                            placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
+                                          <ion-icon name="information-circle-outline"></ion-icon> 
+                                      </span>
                                 </ion-card-title>
                                   <ion-card-content class="card-content-table">
-                                        <ngx-datatable class="bootstrap" [headerHeight]="50" [footerHeight]="100" [rows]="rows" [columnMode]="flex">
+                                        <ngx-datatable class="bootstrap" [headerHeight]="50" [footerHeight]="110" [rows]="rows" [columnMode]="flex">
                                                 <ngx-datatable-column name="Rank" [width]="30">
                                                     <ng-template let-value="value">
                                                          {{ value }}
@@ -61,16 +69,26 @@
                                                         let-curPage="curPage"
                                                         let-offset="offset"
                                                       >
-                                                        <div style="padding: 2px 2px; width:100%">
-                                                          <div><strong>Network Summary</strong></div>
-                                                          <hr />
-                                                          <div><strong>Total Supply: </strong> {{totalSupply}} | <strong>Total ICX Staked: </strong> {{totalICXDelegated}}</div>
-                                                          <div><strong>Network Staked %: </strong> {{totalNetworkDelegated}} | <strong>Total PReps: </strong>{{totalNumPreps}} </div>           
+                                                        <div style="padding: 2px 2px; width:100%">                                                
+                                                          <ion-col>
+                                                              <ion-row>
+                                                                  <ion-col text-left><strong>Total Supply: </strong>  <br />~{{totalSupply}}</ion-col>
+                                                                  <ion-col text-right> <strong>Total ICX Staked: </strong> <br /> {{totalICXDelegated}}</ion-col>
+                                                                  <hr />
+                                                              </ion-row>
+                                                                <ion-row>
+                                                                    <ion-col text-left><strong>Network Staked: </strong> <br />  {{totalNetworkDelegated}}% </ion-col>
+                                                                    <ion-col text-right><strong>Total PReps: </strong> <br />{{totalNumPreps}} </ion-col>
+                                                                </ion-row>
+                                                          </ion-col>
                                                         </div>
                                                       </ng-template>
                                                   </ngx-datatable-footer>
                                         </ngx-datatable>
                                   </ion-card-content>
+                                  <ion-row class="card-footer">
+                                     
+                                    </ion-row>
                                 </ion-card>
                   </ion-col>
               </ion-row>    
