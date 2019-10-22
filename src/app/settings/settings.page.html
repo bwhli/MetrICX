@@ -5,8 +5,8 @@
 	<form [formGroup]="settingsForm" (ngSubmit)="save()" >
 		<ion-list lines="full" class="ion-no-margin ion-no-padding">
 			<ion-item>
-				<ion-label position="stacked">Your ICX Public Key</ion-label>
-				<ion-input type="text" placeholder="hx0000000000000001.." formControlName="address"></ion-input>
+				<ion-label class="addressLabel" position="stacked">Your ICX Public Address</ion-label>
+				<ion-input type="text" class="addressInput" placeholder="hx0000000000000001.." formControlName="address"></ion-input>
 			</ion-item>		
 		</ion-list>
 		<div class="ion-padding">
