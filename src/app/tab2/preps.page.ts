@@ -1,11 +1,10 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
-
+import { PrepTable } from './prep-table';
 
 @Component({
   selector: 'app-preps',
@@ -20,67 +19,38 @@ export class PrepsPage implements OnInit {
   dn: Chart;
   public delegatedPrep: DelegatedPRep;
   public preps: PReps;
+  public totalSupply: string;
+  public totalNumPreps: number;
+  public totalICXDelegated: string;
+  public totalNetworkDelegated: number;
 
   public address: string;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService) {}
 
-  ionViewWillEnter() {
-    this.storage.get('address').then(address => {
-      this.address = address;     
-      this.getAllPreps();
-      this.getMyPreps();
-      this.createDnChart();  
+
+   ionViewWillEnter() {
+    this.storage.get('address').then(address => {   
+      this.loadPageData(address);
     });
-  }
-
-  ngOnInit() {
-     this.rows = [
-      {
-        "rank": '#2',
-        "name": "Ubik",
-        "production": "0/0",
-        "votes": "13.6% / 13,545,552"
-      },
-      {
-        "rank": '#4',
-        "name": "ICONation",
-        "production": "0/0",
-        "votes": "9.7% / 10,256,556"
-      },
-      {
-        "rank": "#5",
-        "name": "RHIZOME",
-        "production": "0/0",
-        "votes": "8.1% / 9,654,225"
-      }
-    ];
-  }
-
-  async getMyPreps() {
-    this.delegatedPrep = await this.iconContract.getDelegatedPReps(this.address);
-  }
-
-   async getAllPreps() {
-      this.preps = await this.iconContract.getPReps();
    }
 
-   doRefresh(event) {
-    console.log('Begin async operation');
+  ngOnInit() { 
+   
+  }
 
+   doRefresh(event: any) {
     setTimeout(() => {
-      this.createDnChart();
-      this.ionViewWillEnter();
+      this.storage.get('address').then(address => {   
+        this.loadPageData(address);
+      });
       event.target.complete();
     }, 2000);
   }
 
-
-  async filterPrepsList(delegatedPrepList: Delegations[]) : Promise<PrepDetails[]> {
-    var preps = await this.iconContract.getPReps();
-
-    var filteredArrayPreps  = preps.preps.filter(function(array_el) {
+  async filterPrepsList(delegatedPrepList: Delegations[], allPreps: PReps) : Promise<PrepDetails[]> {
+    var filteredArrayPreps  = allPreps.preps.filter(function(array_el) {
       return delegatedPrepList.filter(function(anotherOne_el) {
          return anotherOne_el.address == array_el.address;
       }).length > 0
@@ -88,8 +58,10 @@ export class PrepsPage implements OnInit {
     return filteredArrayPreps
    }
 
-  async createDnChart() {
-    var delegatedPReps = await this.iconContract.getDelegatedPReps(this.address);
+   async loadPageData(address: string) {
+    var preps = await this.iconContract.getPReps();
+    var delegatedPReps = await this.iconContract.getDelegatedPReps(address);
+    var totalSupply = await this.iconContract.getTotalSupply();
     var votedPreps: number = delegatedPReps.delegations.length;
     let data: number[] = [votedPreps];
     for(var i = 0; i < votedPreps; i++) {
@@ -97,19 +69,48 @@ export class PrepsPage implements OnInit {
     }
     var labels: string[] = [];
     
-    var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations);   
+    var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
     for(var i = 0; i < delegatedPrepDetail.length; i++) {
       labels[i] = delegatedPrepDetail[i].name;
     }
 
+    await this.createDnChart(data, labels);
+    await this.createTableData(delegatedPrepDetail, preps.totalDelegated);
+
+    this.totalSupply = totalSupply.toLocaleString();
+    this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
+    this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
+    this.totalNumPreps = preps.preps.length;
+   }
+
+  async createTableData(prepDetail: PrepDetails[], totalDelegated: number) {
+     var prepArray: PrepTable[] = [];
+
+     for(var i = 0; i < prepDetail.length; i++) {
+      var prepTable = new PrepTable();
+       prepTable.rank = "#"+prepDetail[i].rank;
+       prepTable.name = prepDetail[i].name;
+       var productivityPerc = prepDetail[i].validatedBlocks /  prepDetail[i].totalBlocks * 100;
+       if(!productivityPerc) {
+        productivityPerc = 0;
+       }
+       var votePrec = prepDetail[i].delegated / totalDelegated * 100;
+       prepTable.production = prepDetail[i].validatedBlocks + '/' + prepDetail[i].totalBlocks + ' (' + productivityPerc + '%)';
+       prepTable.votes = Math.round(votePrec  * 100)/100 + '%' + ' | ' + Math.round(prepDetail[i].delegated).toLocaleString();
+       prepArray.push(prepTable);
+    }
+    this.rows = prepArray;
+  }
+
+  async createDnChart(chartData: number[], labelData: string[]) {
     this.dn = new Chart(this.dnChart.nativeElement, {
       type: 'pie',
       circumference: Math.PI,
       data: {
-        labels: labels,
+        labels: labelData,
         datasets: [{
           label: '',
-          data: data,
+          data: chartData,
           backgroundColor: [
             '#729192',
             '#84d4d6',
@@ -136,7 +137,7 @@ export class PrepsPage implements OnInit {
           position: 'right',
           fullWidth: false,
           labels: {
-            fontSize: 8,
+            fontSize: 12,
             boxWidth: 10,
             fontFamily: '"Open Sans",  sans-serif',
           }
@@ -145,7 +146,7 @@ export class PrepsPage implements OnInit {
       layout: {
         padding: {
             left: 0,
-            right: 80,
+            right: 50,
             top: 0,
             bottom: 0
         }
@@ -157,7 +158,7 @@ export class PrepsPage implements OnInit {
             {
               render: 'percentage',
               fontColor: '#fff',
-              fontSize: 10,
+              fontSize: 12,
               fontFamily: '"Open Sans",  sans-serif',
             }
           ]

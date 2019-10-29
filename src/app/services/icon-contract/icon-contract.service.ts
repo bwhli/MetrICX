@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import IconService, { HttpProvider, IconBuilder } from 'icon-sdk-js';
+import IconService, { HttpProvider, IconBuilder, IconAmount, IconConverter } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
 import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
 @Injectable({
@@ -8,13 +8,19 @@ import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
 export class IconContractService {
   private httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
   private iconService = new IconService(this.httpProvider);
+  private rPoint = 0.7;
 
   public toBigInt(hexValue): number {
-    return 1 * hexValue / 10**18;
+      return IconConverter.toNumber(IconAmount.of(hexValue, IconAmount.Unit.LOOP).convertUnit(IconAmount.Unit.ICX));
   }
 
   public toInt(hexValue): number {
     return 1 * hexValue;
+  }
+
+  public async getTotalSupply() {
+    const bigSupply = await this.iconService.getTotalSupply().execute();
+    return this.toBigInt(bigSupply);
   }
 
   public async getBalance(address: string) {
@@ -33,7 +39,55 @@ export class IconContractService {
     return this.toBigInt(response['stake']);
   }
 
-  public async getClaimableRewards(address: string) {
+  public async getNetworkStaked() { 
+    var preps = await this.getPReps();
+    var totalSupply = await this.getTotalSupply(); 
+    return Math.round((preps.totalDelegated / totalSupply * 100) *100)/100;   
+  }
+
+public async getCurrentRewardRate() {
+  const networkStaked = await this.getNetworkStaked();
+  const rMax = 0.12;
+  const rMin = 0.02;
+
+  const percentStaked = networkStaked;
+  let rRep = ((rMax - rMin) / (Math.pow(this.rPoint, 2))) * (Math.pow(percentStaked / 100 - this.rPoint, 2)) + rMin;
+  if (percentStaked > 70) {
+      rRep = 0.02;
+  }
+  return rRep * 3 * 100;
+}
+
+public async getNetworkStakedPeriod() {
+  const lMin = 5;
+  const lMax = 20;
+  const percentStaked: number = await this.getNetworkStaked();
+  let lPeriod = ((lMax - lMin) / (Math.pow(this.rPoint, 2))) * (Math.pow(percentStaked / 100 - this.rPoint, 2)) + lMin;
+  
+  return Math.round(lPeriod * 100) / 100;;
+}
+
+
+public async getUnstakedPeriod(address: string) : Promise<number> {
+    const call = new CallBuilder()
+    .to('cx0000000000000000000000000000000000000000')
+    .method('getStake')
+    .params({address: address})	
+    .build();			
+
+  var response = await this.iconService.call(call).execute();
+  if (response['unstakeBlockHeight']) {
+    const latest = await this.iconService.getBlock("latest").execute();
+    const targetBH = parseInt(response['unstakeBlockHeight'], 16);
+    const diffBlocks = targetBH - latest['height'];
+    const diffSeconds = diffBlocks * 2;
+    return (diffSeconds / 3600.0);
+  } else {
+    return -1;
+  }
+}
+
+public async getClaimableRewards(address: string) {
 	  const call = new CallBuilder()
       .to('cx0000000000000000000000000000000000000000')
       .method('queryIScore')
@@ -84,7 +138,7 @@ export class IconContractService {
       rep.status = this.toInt(item.status);
       rep.totalBlocks = this.toInt(item.totalBlocks);
       rep.validatedBlocks = this.toInt(item.validatedBlocks);
-      rep.rank = i;
+      rep.rank = i+1;
       preps.preps.push(rep);
     }
     

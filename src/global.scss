@@ -28,3 +28,61 @@
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,900");
 
 @import '@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
+//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
+//@import "~@angular/material/prebuilt-themes/purple-green.css";
+
+.header {
+    height: 5%;
+    background-color: black;
+    margin-bottom: 5%;
+}
+
+.flex {
+    -webkit-box-flex: 0 0 40px;
+    -moz-box-flex: 0 0 40px;
+    -ms-box-flex: 0 0 40px;
+    -o-box-flex: 0 0 40px;
+    flex: 0 0 40px;
+}
+
+:host ::ng-deep .datatable-header {
+    height: unset !important;
+ }
+
+ :host ::ng-deep  .ngx-datatable.bootstrap {
+   font-family: 'Open Sans',  sans-serif !important;
+   font-size: 12px;
+   padding: 2px;
+ }
+ 
+ :host ::ng-deep  .ngx-datatable.bootstrap .datatable-header .datatable-header-cell {
+    vertical-align: bottom;
+    padding: 2px !important;
+    background-color: #545454;
+    color: #fff;
+    -webkit-box-flex: 0 0 40px;
+    -moz-box-flex: 0 0 40px;
+    -ms-box-flex: 0 0 40px;
+    -o-box-flex: 0 0 40px;
+    flex: 0 0 40px;
+ }
+ 
+ :host ::ng-deep  .ngx-datatable.bootstrap .datatable-body .datatable-body-row .datatable-body-cell {
+   text-align: left;
+   line-height: 2.6em;
+   border-bottom: 1px solid #545454;
+   height: unset !important;
+   -webkit-box-flex: 0 0 40px;
+   -moz-box-flex: 0 0 40px;
+   -ms-box-flex: 0 0 40px;
+   -o-box-flex: 0 0 40px;
+   flex: 0 0 40px;
+ }
+
+ :host ::ng-deep .datatable-row-even {
+  background-color: #ededed;
+  color: #1f2120
+}

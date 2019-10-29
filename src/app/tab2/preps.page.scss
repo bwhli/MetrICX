@@ -29,8 +29,9 @@
   }
   
   .tooltip {
-    font-size: 14px;
+    font-size: 16px;
   }
+  
   
   .card-title-primary {
     background-color: #32b8bb !important;
@@ -109,8 +110,8 @@
   }
 
   canvas {
-    width: 380px !important;
-    height: 190px !important;
+    width: 100% !important;
+    height: 100% !important;
   }
 
   :host ::ng-deep .datatable-header {
