@@ -11,6 +11,23 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { Firebase } from '@ionic-native/firebase/ngx';
+import { FcmService } from './services/fcm/fcm.service';
+
+// Your web app's Firebase configuration
+const config = {
+  apiKey: "AIzaSyBv05dMw6nVsJkp5UqUbYD444DLsI6kupI",
+  authDomain: "iconomy-pushnotifications.firebaseapp.com",
+  databaseURL: "https://iconomy-pushnotifications.firebaseio.com",
+  projectId: "iconomy-pushnotifications",
+  storageBucket: "iconomy-pushnotifications.appspot.com",
+  messagingSenderId: "91183130894",
+  appId: "1:91183130894:web:62062651d468168e47cf5f",
+  measurementId: "G-04B4CNELPE"
+};
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],
@@ -22,10 +39,14 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    IonicStorageModule.forRoot()],
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(config),
+    AngularFirestoreModule],
   providers: [
     StatusBar,
     SplashScreen,
+    Firebase,
+    FcmService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
