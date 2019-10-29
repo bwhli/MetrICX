@@ -11,7 +11,6 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 
-<<<<<<< HEAD
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Firebase } from '@ionic-native/firebase/ngx';
@@ -28,8 +27,6 @@ const config = {
   appId: "1:91183130894:web:62062651d468168e47cf5f",
   measurementId: "G-04B4CNELPE"
 };
-=======
->>>>>>> a3487256f0b0ab7e01b9400e73488e243b28a4e6
 
 @NgModule({
   declarations: [AppComponent],

@@ -47,12 +47,9 @@ export class AppComponent {
   initializeApp() {
     this.platform.ready().then(() => {
       this.statusBar.styleDefault();
-<<<<<<< HEAD
       this.splashScreen.show();
       this.notificationSetup();
-=======
       this.splashScreen.hide();
->>>>>>> a3487256f0b0ab7e01b9400e73488e243b28a4e6
     });
   }
 }
