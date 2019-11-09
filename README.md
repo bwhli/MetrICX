@@ -15,6 +15,10 @@ MetrICX, developed by RHIZOME, puts the ICON blockchain ecosystem into the palm 
 
 <h1><strong>Core Features</strong></h1>
 
+MetrICX allows you to track and view your own staking data, vote allocation, current i_Score, projected returns, and other information all from your mobile phone. Meanwhile, future releases will include additional features such as push notifications regarding P-Rep productivity, I_Score availability, and P-Rep announcements.
+
+While much of this data is readily available through the ICONex Chrome extension, accessing it requires logging in either via your computer or with cold storage. MetrICX allows you to view this data without requiring any such login.
+
 Simply input your public wallet address into MetrICX, and you'll be able to view:
 
  **Available Balance** - The total amount of liquid ICX held in your wallet at that moment. This figure does not include currently-staked ICX, as it is not liquid.
@@ -31,9 +35,7 @@ Simply input your public wallet address into MetrICX, and you'll be able to view
 
 **Staking Distribution** - View a visual representation of your allocated delegation toward P-Rep candidates.
 
-**P-Rep Status** - View the current status of the P-Reps you have voted for. This includes their productivity ratio, total vote allocation, and vote % among all ICONists.
-
-**Network Summary** - View the number of ICX currently staked and % of network staked, as well as the current number of P-Rep candidates.
+**Governance Overview** - View the current status of the P-Reps you have voted for. This includes their productivity ratio, total vote allocation, and vote % among all ICONists as well as the number of ICX currently staked and % of network staked, as well as the current number of P-Rep candidates.
 
 <h1><strong>Additional Features</strong></h1>
 
