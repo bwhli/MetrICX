@@ -77,7 +77,7 @@ export class PrepsPage implements OnInit {
     await this.createDnChart(data, labels);
     await this.createTableData(delegatedPrepDetail, preps.totalDelegated);
 
-    this.totalSupply = totalSupply.toLocaleString();
+    this.totalSupply = Math.round(totalSupply).toLocaleString();
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
     this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
     this.totalNumPreps = preps.preps.length;
