@@ -10,8 +10,8 @@ export class FcmService {
               private afs: AngularFirestore,
               private platform: Platform) {}
 
-  async getToken() {
-    let token;
+  async getToken():Promise<string> {
+    let token: string;
 
     if (this.platform.is('android')) {
       token = await this.firebase.getToken();
@@ -22,20 +22,7 @@ export class FcmService {
       await this.firebase.grantPermission();
     }
 
-    this.saveToken(token);
-  }
-
-  private saveToken(token) {
-    if (!token) return;
-
-    const devicesRef = this.afs.collection('devices');
-
-    const data = {
-      token,
-      userId: 'testUserId'
-    };
-
-    return devicesRef.doc(token).set(data);
+    return token;
   }
 
   onNotifications() {
