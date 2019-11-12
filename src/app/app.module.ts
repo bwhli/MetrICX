@@ -16,7 +16,7 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { FcmService } from './services/fcm/fcm.service';
 
-import { config } from '../../firebase-config.js';
+import { FirebaseConfig } from '../../firebase-config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -30,7 +30,7 @@ import { config } from '../../firebase-config.js';
     IonicModule.forRoot(), 
     AppRoutingModule,
     IonicStorageModule.forRoot(),
-    AngularFireModule.initializeApp(config),
+    AngularFireModule.initializeApp(FirebaseConfig.config),
     AngularFirestoreModule],
   providers: [
     StatusBar,
