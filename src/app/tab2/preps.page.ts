@@ -4,7 +4,7 @@ import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
-import { PrepTable } from './prep-table';
+import { PrepTable, PrepPie } from './prep-table';
 
 @Component({
   selector: 'app-preps',
@@ -55,7 +55,7 @@ export class PrepsPage implements OnInit {
          return anotherOne_el.address == array_el.address;
       }).length > 0
     });
-    return filteredArrayPreps
+    return filteredArrayPreps;
    }
 
    async loadPageData(address: string) {
@@ -63,21 +63,24 @@ export class PrepsPage implements OnInit {
     var delegatedPReps = await this.iconContract.getDelegatedPReps(address);
     var totalSupply = await this.iconContract.getTotalSupply();
     var votedPreps: number = delegatedPReps.delegations.length;
-    let data: number[] = [votedPreps];
+    var prepData = new PrepPie();
+    prepData.name = [];
+    prepData.value = [];
+    
     for(var i = 0; i < votedPreps; i++) {
-      data[i] = delegatedPReps.delegations[i].value;
+      prepData.value[i] = delegatedPReps.delegations[i].value;
+      var prep = await this.iconContract.getPRep(delegatedPReps.delegations[i].address);
+      var prepName = prep['name'];
+      prepData.name[i] = prepName;
     }
     var labels: string[] = [];
     
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
-    for(var i = 0; i < delegatedPrepDetail.length; i++) {
-      labels[i] = delegatedPrepDetail[i].name;
-    }
-
-    await this.createDnChart(data, labels);
+  
+    await this.createDnChart(prepData.value, prepData.name);
     await this.createTableData(delegatedPrepDetail, preps.totalDelegated);
 
-    this.totalSupply = totalSupply.toLocaleString();
+    this.totalSupply = Math.round(totalSupply).toLocaleString();
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
     this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
     this.totalNumPreps = preps.preps.length;
