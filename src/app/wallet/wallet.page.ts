@@ -37,7 +37,7 @@ export class WalletPage implements OnInit {
     public navCtrl: NavController
   ) { }
 
-  ngOnInit () { 
+  ionViewWillEnter() { 
     //Update stored address
     this.storage.get('address').then(address => {
       this.address = address; 
@@ -54,6 +54,8 @@ export class WalletPage implements OnInit {
       }
     }); 
   }
+
+  ngOnInit () {}
 
   async presentLoading() {
       if(!this.loaded) {

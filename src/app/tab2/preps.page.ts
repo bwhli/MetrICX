@@ -95,7 +95,7 @@ export class PrepsPage implements OnInit {
         productivityPerc = 0;
        }
        var votePrec = prepDetail[i].delegated / totalDelegated * 100;
-       prepTable.production = prepDetail[i].validatedBlocks + '/' + prepDetail[i].totalBlocks + ' (' + productivityPerc + '%)';
+       prepTable.production = Math.round(productivityPerc * 100)/100 + '%';
        prepTable.votes = Math.round(votePrec  * 100)/100 + '%' + ' | ' + Math.round(prepDetail[i].delegated).toLocaleString();
        prepArray.push(prepTable);
     }

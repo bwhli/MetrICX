@@ -31,6 +31,8 @@ export class SettingsPage {
 
     //Update input value with stored address
     this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
+    this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
+    this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
   }
 
   // Save to storage and display Toaster when done
