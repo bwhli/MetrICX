@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "91183130894",
+    "firebase_url": "https://iconomy-pushnotifications.firebaseio.com",
+    "project_id": "iconomy-pushnotifications",
+    "storage_bucket": "iconomy-pushnotifications.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:91183130894:android:7ceb12c9f816746747cf5f",
+        "android_client_info": {
+          "package_name": "com.rhizome.metricx"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "91183130894-rk16s7beub3ucdrakuoq0t1i9crehs0n.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBKc0iWnxr93RjenFPmkWUiIMQEa_LYbmQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "91183130894-rk16s7beub3ucdrakuoq0t1i9crehs0n.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
