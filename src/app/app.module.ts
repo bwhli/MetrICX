@@ -16,6 +16,20 @@ import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { FcmService } from './services/fcm/fcm.service';
 
+//From google firebase download the web app's config and put it into a new file called
+//firebase-config.ts with this content
+//export class FirebaseConfig {
+//  public static config = {
+//    apiKey: "xxxxx",
+//    authDomain: "xxxxx.firebaseapp.com",
+//    databaseURL: "https://xxxxx.firebaseio.com",
+//    projectId: "xxxxx",
+//    storageBucket: "xxxxx.appspot.com",
+//    messagingSenderId: "xxxxx",
+//    appId: "1:xxxxx:web:xxxxx",
+//    measurementId: "G-xxxxx"
+//  };
+//}
 import { FirebaseConfig } from '../../firebase-config';
 
 @NgModule({
