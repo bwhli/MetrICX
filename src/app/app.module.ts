@@ -10,7 +10,28 @@ import { IonicStorageModule } from '@ionic/storage';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { Firebase } from '@ionic-native/firebase/ngx';
+import { FcmService } from './services/fcm/fcm.service';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 
+//From google firebase download the web app's config and put it into a new file called
+//firebase-config.ts with this content
+//export class FirebaseConfig {
+//  public static config = {
+//    apiKey: "xxxxx",
+//    authDomain: "xxxxx.firebaseapp.com",
+//    databaseURL: "https://xxxxx.firebaseio.com",
+//    projectId: "xxxxx",
+//    storageBucket: "xxxxx.appspot.com",
+//    messagingSenderId: "xxxxx",
+//    appId: "1:xxxxx:web:xxxxx",
+//    measurementId: "G-xxxxx"
+//  };
+//}
+import { FirebaseConfig } from '../../firebase-config';
 
 @NgModule({
   declarations: [AppComponent],
@@ -23,11 +44,17 @@ import { AppComponent } from './app.component';
     ReactiveFormsModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
-    IonicStorageModule.forRoot()],
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(FirebaseConfig.config),
+    AngularFirestoreModule],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    Firebase,
+    FcmService,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    BarcodeScanner,
+    Base64ToGallery
   ],
   bootstrap: [AppComponent]
 })
