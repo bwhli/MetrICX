@@ -5,6 +5,11 @@ import { ToastController } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../services/fcm/fcm.service';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+
+//not used at the moment but if we want to show the QR Canvas we can use this
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
+
 
 @Component({
   selector: 'app-settings',
@@ -15,13 +20,21 @@ export class SettingsPage {
 
   public settingsForm: FormGroup;
 
+  //this is used for drawing the QR Code
+  public elementType: 'url' | 'canvas' | 'img' = 'canvas';
+
   constructor(
     private formBuilder: FormBuilder,
     private storage: Storage,
     private toastController: ToastController,
     public navCtrl: NavController,
     private afs: AngularFirestore,
-    private fcm: FcmService
+    private fcm: FcmService,
+    private barcodeScanner: BarcodeScanner,
+   
+    //this will be used if we want to show the QR Code as well
+    private base64ToGallery: Base64ToGallery
+   
     ) {
     this.settingsForm = formBuilder.group({
       address: [null],
@@ -67,6 +80,14 @@ export class SettingsPage {
     await this.storage.set('enablePushIScoreChange', enablePushIScoreChange);
     await this.storage.set('enablePushProductivityDrop', enablePushProductivityDrop);
   }
+
+ async scanQR () {
+    this.barcodeScanner.scan().then(
+      barcodeData => {
+       this.settingsForm.patchValue({address: barcodeData.text});
+      }
+    );
+ }
 
   private saveToFcm(token: string, address: string, enablePushIScoreChange: boolean, enablePushProductivityDrop: boolean) {
     if (!token) return;

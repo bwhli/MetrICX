@@ -10,11 +10,12 @@ import { IonicStorageModule } from '@ionic/storage';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { Firebase } from '@ionic-native/firebase/ngx';
 import { FcmService } from './services/fcm/fcm.service';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -51,7 +52,9 @@ import { FirebaseConfig } from '../../firebase-config';
     SplashScreen,
     Firebase,
     FcmService,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    BarcodeScanner,
+    Base64ToGallery
   ],
   bootstrap: [AppComponent]
 })
