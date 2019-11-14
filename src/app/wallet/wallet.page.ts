@@ -106,7 +106,7 @@ export class WalletPage implements OnInit {
     console.log('Begin async operation');
 
     setTimeout(() => {
-      this.ngOnInit();
+      this.ionViewWillEnter();
       event.target.complete();
     }, 2000);
   }
