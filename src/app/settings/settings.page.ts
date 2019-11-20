@@ -92,8 +92,6 @@ export class SettingsPage {
   private saveToFcm(token: string, address: string, enablePushIScoreChange: boolean, enablePushProductivityDrop: boolean) {
     if (!token) return;
 
-    const devicesRef = this.afs.collection('devices');
-
     const data = {
       token: token,
       address: address,
@@ -101,6 +99,15 @@ export class SettingsPage {
       enablePushProductivityDrop: enablePushProductivityDrop
     };
 
-    return devicesRef.doc(token).update(data);
+    const tokenRef = this.afs.collection('devices').doc(token)
+
+    tokenRef.get()
+      .subscribe((docSnapshot) => {
+        if (docSnapshot.exists) {
+          tokenRef.update(data);
+        } else {
+          tokenRef.set(data);
+        }
+    });
   }
 }
