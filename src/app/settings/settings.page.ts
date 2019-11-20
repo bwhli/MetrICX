@@ -101,6 +101,6 @@ export class SettingsPage {
       enablePushProductivityDrop: enablePushProductivityDrop
     };
 
-    return devicesRef.doc(token).set(data);
+    return devicesRef.doc(token).update(data);
   }
 }
