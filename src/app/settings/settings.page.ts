@@ -39,12 +39,14 @@ export class SettingsPage {
     this.settingsForm = formBuilder.group({
       address: [null],
       enablePushIScoreChange: [false],
+      enablePushDeposits: [false],
       enablePushProductivityDrop: [false]}
     );
 
     //Update input value with stored address
     this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
     this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
+    this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
     this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
   }
 
@@ -52,14 +54,15 @@ export class SettingsPage {
   async save() {
     const address = this.settingsForm.controls['address'].value;
     const enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
+    const enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     const enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
     const token = await this.fcm.getToken();
 
     // Save to local storage
-    this.saveToStorage(address, enablePushIScoreChange, enablePushProductivityDrop);
+    this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
 
     // Save this device id and address in FireStore for push Notifications
-    this.saveToFcm(token, address, enablePushIScoreChange, enablePushProductivityDrop);
+    this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
 
     //Save message and redirect
     this.presentToast();
@@ -74,22 +77,23 @@ export class SettingsPage {
     toast.present();
   }
 
-  async saveToStorage(address: string, enablePushIScoreChange: boolean, enablePushProductivityDrop: boolean) {
+  async saveToStorage(address: string, enablePushIScoreChange: boolean, enablePushDeposits: boolean, enablePushProductivityDrop: boolean) {
     //Save local storage settings
     await this.storage.set('address', address);
     await this.storage.set('enablePushIScoreChange', enablePushIScoreChange);
+    await this.storage.set('enablePushDeposits', enablePushDeposits);
     await this.storage.set('enablePushProductivityDrop', enablePushProductivityDrop);
   }
 
- async scanQR () {
+  async scanQR () {
     this.barcodeScanner.scan().then(
       barcodeData => {
        this.settingsForm.patchValue({address: barcodeData.text});
       }
     );
- }
+  }
 
-  private saveToFcm(token: string, address: string, enablePushIScoreChange: boolean, enablePushProductivityDrop: boolean) {
+  private saveToFcm(token: string, address: string, enablePushIScoreChange: boolean, enablePushDeposits: boolean, enablePushProductivityDrop: boolean) {
     if (!token) return;
 
     const devicesRef = this.afs.collection('devices');
@@ -98,9 +102,10 @@ export class SettingsPage {
       token: token,
       address: address,
       enablePushIScoreChange: enablePushIScoreChange,
+      enablePushDeposits: enablePushDeposits,
       enablePushProductivityDrop: enablePushProductivityDrop
     };
 
-    return devicesRef.doc(token).set(data);
+    return devicesRef.doc(token).update(data);
   }
 }
