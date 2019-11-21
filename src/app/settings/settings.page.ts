@@ -73,7 +73,8 @@ export class SettingsPage {
     const toast = await this.toastController.create({
       message: 'Your settings have been saved.',
       duration: 2000,
-      position: 'top'
+      position: 'middle',
+      color: 'primary'
     });
     toast.present();
   }
