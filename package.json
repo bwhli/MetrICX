@@ -46,6 +46,7 @@
     "cordova-ios": "5.0.1",
     "cordova-plugin-androidx": "^1.0.2",
     "cordova-plugin-androidx-adapter": "^1.1.0",
+    "cordova-plugin-firebase": "^2.0.5",
     "cordova-plugin-firebasex": "^6.1.0",
     "core-js": "^2.5.4",
     "firebase": "^7.2.1",
@@ -62,7 +63,7 @@
     "@angular-devkit/build-angular": "~0.801.2",
     "@angular-devkit/core": "~8.1.2",
     "@angular-devkit/schematics": "~8.1.2",
-    "@angular/cli": "~8.1.2",
+    "@angular/cli": "8.1.3",
     "@angular/compiler": "~8.1.2",
     "@angular/compiler-cli": "~8.1.2",
     "@angular/language-service": "~8.1.2",
@@ -156,10 +157,9 @@
         "PLAY-SERVICES-WEARABLE": "17.0.0"
       },
       "cordova-plugin-firebasex": {},
-      "phonegap-plugin-barcodescanner": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
-      "cordova-base64-to-gallery": {}
+      "phonegap-plugin-barcodescanner": {},
+      "cordova-base64-to-gallery": {},
+      "cordova-plugin-firebase": {}
     },
     "platforms": [
       "android",
