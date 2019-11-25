@@ -103,8 +103,6 @@ export class WalletPage implements OnInit {
   }
 
   doRefresh(event) {
-    console.log('Begin async operation');
-
     setTimeout(() => {
       this.ionViewWillEnter();
       event.target.complete();
