@@ -37,3 +37,9 @@ UserInterfaceState.xcuserstate
 google-services.json
 firebase-config.js
 firebase-config.ts
+
+.vs/
+bin/
+obj/
+out/
+firebase-config.json
