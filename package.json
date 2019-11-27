@@ -27,7 +27,7 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.25",
     "@fortawesome/free-regular-svg-icons": "^5.11.2",
     "@fortawesome/free-solid-svg-icons": "^5.11.2",
-    "@ionic-native/barcode-scanner": "^5.16.0",
+    "@ionic-native/barcode-scanner": "^5.17.1",
     "@ionic-native/base64-to-gallery": "^5.16.0",
     "@ionic-native/core": "^5.0.0",
     "@ionic-native/firebase": "^5.15.1",
