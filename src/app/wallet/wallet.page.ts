@@ -28,6 +28,8 @@ export class WalletPage implements OnInit {
   public rewardRate = 0;
   public monthlyICX = 0;
   public yearlyICX = 0;
+  public availSize: number = 12;
+  public hideUnstake: boolean = true;
 
   constructor(
     private storage: Storage,
@@ -84,8 +86,12 @@ export class WalletPage implements OnInit {
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
    if (hours > 0) {
      const splitTime = this.splitTime(hours);
-     this.unstakePeriod = splitTime[0]['d'] + 'd: ' + splitTime[0]['h'] + 'h: ' + splitTime[0]['m'] + 'm';;
+     this.unstakePeriod = splitTime[0]['d'] + 'd: ' + splitTime[0]['h'] + 'h: ' + splitTime[0]['m'] + 'm';
+     this.hideUnstake = false;
+     this.availSize = 6;
    } else {
+     this.hideUnstake = true;
+     this.availSize = 12;
      this.unstakePeriod = 'N/A';
    }
   }

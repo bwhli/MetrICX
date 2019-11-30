@@ -12,7 +12,7 @@
 
     <ion-grid>
       <ion-row class="ion-justify-content-start">
-        <ion-col size="6">
+        <ion-col size="{{availSize}}">
             <ion-card>
                 <ion-card-title class="card-title-primary">
                         Available
@@ -34,7 +34,7 @@
                   </ion-card-content>
                 </ion-card>
         </ion-col>
-          <ion-col size="6">
+          <ion-col [hidden]="hideUnstake" size="6">
               <ion-card>
                   <ion-card-title  class="card-title-primary">
                           Unstake Timer

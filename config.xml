@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.rhizome.metricx" version="1.0.7" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.rhizome.metricx" version="1.0.10" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MetrICX</name>
     <description>Economic view of ICON</description>
     <author email="metricx@rhizomeicx.com" href="http://rhizomeicx.com/">Rhizome P-Rep</author>

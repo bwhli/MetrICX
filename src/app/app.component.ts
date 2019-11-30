@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
@@ -46,8 +45,11 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
       this.splashScreen.show();
+      this.statusBar.backgroundColorByName("black");
+      this.statusBar.styleLightContent();
+      this.statusBar.overlaysWebView(false);
+      //this.statusBar.styleDefault();  
       this.notificationSetup();
       this.splashScreen.hide();
     });
