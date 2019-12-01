@@ -37,11 +37,14 @@ Simply input your public wallet address into MetrICX, and you'll be able to view
 
 **Governance Overview** - View the current status of the P-Reps you have voted for. This includes their productivity ratio, total vote allocation, and vote % among all ICONists as well as the number of ICX currently staked and % of network staked, as well as the current number of P-Rep candidates.
 
+**Push Notifications** - 
+  * MetrICX provides users with the option of receiving push notifications when their I_Score has been made available for a given day,     and the amount of I_Score they are receiving in the form of ICX.
+
 <h1><strong>Additional Features</strong></h1>
 
 Among one of the features in development for future release is a portal to allow P-Reps to send updates and information (via the public chain) to their delegators (should the user wish to receive such updates) via MetrICX. This will allow users to receive important information from the P-Reps they're currently voting for.
 
-In addition, MetrICX will provide users with the option of receiving push notifications when their I_Score has been made available for a given day, and the amount of I_Score they are receiving.
+In addition, 
 
 Users will also have the opportunity to receive push notifications to alert them if one of their P-Rep candidates sees their productivity ratio dip below a certain threshold (to be selected by the user).
 
