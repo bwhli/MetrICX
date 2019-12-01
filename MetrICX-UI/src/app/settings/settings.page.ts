@@ -72,9 +72,7 @@ export class SettingsPage {
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Your settings have been saved.',
-      duration: 1500,
-      position: 'middle',
-      color: 'primary'
+      duration: 2000
     });
     toast.present();
   }

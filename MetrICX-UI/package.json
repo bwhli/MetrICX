@@ -156,7 +156,11 @@
         "PLAY-SERVICES-WALLET": "17.0.0",
         "PLAY-SERVICES-WEARABLE": "17.0.0"
       },
-      "cordova-plugin-firebasex": {},
+      "cordova-plugin-firebasex": {
+        "FIREBASE_ANALYTICS_COLLECTION_ENABLED": "true",
+        "FIREBASE_PERFORMANCE_COLLECTION_ENABLED": "true",
+        "FIREBASE_CRASHLYTICS_COLLECTION_ENABLED": "true"
+      },
       "phonegap-plugin-barcodescanner": {},
       "cordova-base64-to-gallery": {},
       "cordova-plugin-firebase": {}

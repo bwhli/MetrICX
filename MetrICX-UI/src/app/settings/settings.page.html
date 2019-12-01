@@ -1,14 +1,14 @@
 <div class="header"></div>
 
 <ion-content class="bg-class" style="z-index: 0;">
-	<ion-grid>
-			<ion-row class="ion-justify-content-start">
+		<ion-grid>
+				<ion-row class="ion-justify-content-start">
 	<form style="width: 100%; margin: 1%;" [formGroup]="settingsForm" (ngSubmit)="save()" >
 		<ion-list lines="full" class="ion-no-margin ion-no-padding">
 			<ion-item>
 				<ion-label class="formLabel" position="floating">Enter or Scan ICX Public Address</ion-label>
 				<div style="display:flex; width:100%">
-					<ion-input type="text" class="formInput" formControlName="address" placeholder="ICX Address...."></ion-input>
+					<ion-input type="text" class="formInput" formControlName="address" placeholder="hx5000000000000000"></ion-input>
 					<ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">
 							<fa-icon class="fa-lg" [icon]="['fas', 'qrcode']" slot="end"></fa-icon>
 					</ion-button>
@@ -16,16 +16,21 @@
 			</ion-item>
 			<ion-item>
 				<ion-checkbox  class="formCheckBox" color="secondary" slot="start" formControlName="enablePushIScoreChange"></ion-checkbox>
-				<ion-label class="formLabelCheckbox">Notify me when staking rewards are available</ion-label>
+				<ion-label class="formLabelCheckbox">Notify me when staking rewards become available</ion-label>
 			</ion-item>
-		<ion-item>
+			<ion-item>
 				<ion-checkbox class="formCheckBox" color="secondary" slot="start" formControlName="enablePushDeposits"></ion-checkbox>
-				<ion-label class="formLabelCheckbox">Notify me when I receive an ICX Deposit</ion-label>
+				<ion-label class="formLabelCheckbox">Notify me when I receive a Deposit</ion-label>
 			</ion-item>
-		<!--	<ion-item>
-				<ion-checkbox  class="formCheckBox" color="secondary" checked slot="start" formControlName="enablePushProductivityDrop"></ion-checkbox>
-				<ion-label class="formLabelCheckbox">Notify me if PRep productivity drops</ion-label>	
-			</ion-item>-->
+			<ion-item>
+				<ion-label class="formSelect">Notify me if P-Rep productivity drops below</ion-label>
+				<ion-select class="formSelect" value="disabled" okText="Okay" cancelText="Dismiss" formControlName="enablePushProductivityDrop">
+					<ion-select-option value="disabled">No Thanks</ion-select-option>
+					<ion-select-option value="98">98 %</ion-select-option>
+					<ion-select-option value="95">95 %</ion-select-option>
+					<ion-select-option value="90">90 %</ion-select-option>
+				</ion-select>
+			  </ion-item>
 		</ion-list>
 		<div class="ion-padding">
 			<ion-button expand="block" type="submit" class="ion-no-margin">
@@ -34,7 +39,6 @@
 			</ion-button>
 		</div>
 	</form>
-	</ion-row>
-	</ion-grid>
-
+				</ion-row>
+		</ion-grid>
 </ion-content>
