@@ -32,7 +32,7 @@ namespace MetrICXServerPush.Entities
         public DateTime? lastDepositPushSentDate { get; set; }
 
         [FirestoreProperty] 
-        public bool? enablePushProductivityDrop { get; set; }
+        public string enablePushProductivityDrop { get; set; }
 
         [FirestoreProperty]
         public DateTime? lastProductivityPushSentDate { get; set; }
