@@ -40,7 +40,7 @@ export class SettingsPage {
       address: [null],
       enablePushIScoreChange: [false],
       enablePushDeposits: [false],
-      enablePushProductivityDrop: [false]}
+      enablePushProductivityDrop: ["disabled"]}
     );
 
     //Update input value with stored address

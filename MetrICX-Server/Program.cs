@@ -120,31 +120,30 @@ namespace MetrICXServerPush
                 }
             }
 
-            if (device.enablePushProductivityDrop == true && AllPReps != null)
+            if (!string.IsNullOrEmpty(device.enablePushProductivityDrop) && device.enablePushProductivityDrop != "disabled" && AllPReps != null)
             {
-                if (AllPReps != null)
+                lock (AllPReps)
                 {
-                    lock (AllPReps)
+                    var prodDrop = decimal.Parse(device.enablePushProductivityDrop);
+                    var pReps = IconGateway.GetDelegatedPReps(device.address);
+                    if (pReps != null && pReps.Delegations != null && pReps.Delegations.Length > 0)
                     {
-                        var pReps = IconGateway.GetDelegatedPReps(device.address);
-                        if (pReps != null && pReps.Delegations != null && pReps.Delegations.Length > 0)
+                        foreach (var prep in pReps.Delegations)
                         {
-                            foreach (var prep in pReps.Delegations)
+                            var findPrep = AllPReps.Preps.SingleOrDefault(p => p.Address == prep.Address);
+                            if (findPrep != null && findPrep.Productivity < prodDrop)
                             {
-                                var findPrep = AllPReps.Preps.SingleOrDefault(p => p.Address == prep.Address);
-                                if (findPrep != null && findPrep.Productivity < 95)
+                                if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
                                 {
-                                    if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
-                                    {
-                                        FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
-                                        //Now update firestore so we dont send the user duplicate messages
-                                        device.lastProductivityPushSentDate = DateTime.UtcNow;
-                                        FirebaseGateway.UpdateDevice(device);
-                                    }
+                                    FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
+                                    //Now update firestore so we dont send the user duplicate messages
+                                    device.lastProductivityPushSentDate = DateTime.UtcNow;
+                                    FirebaseGateway.UpdateDevice(device);
                                 }
                             }
                         }
                     }
+                    
                 }
             }
 
