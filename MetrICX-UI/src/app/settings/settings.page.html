@@ -1,8 +1,9 @@
 <div class="header"></div>
 
-<ion-content>
-	<br>
-	<form [formGroup]="settingsForm" (ngSubmit)="save()" >
+<ion-content class="bg-class" style="z-index: 0;">
+		<ion-grid>
+				<ion-row class="ion-justify-content-start">
+	<form style="width: 100%; margin: 1%;" [formGroup]="settingsForm" (ngSubmit)="save()" >
 		<ion-list lines="full" class="ion-no-margin ion-no-padding">
 			<ion-item>
 				<ion-label class="formLabel" position="floating">Enter or Scan ICX Public Address</ion-label>
@@ -38,5 +39,6 @@
 			</ion-button>
 		</div>
 	</form>
-
+				</ion-row>
+		</ion-grid>
 </ion-content>

@@ -37,7 +37,7 @@ export class AppComponent {
     this.fcm.onNotifications().subscribe(
       (msg) => {
         if (this.platform.is('ios')) {
-          this.presentToast(msg.aps.alert);
+          this.presentToast(msg.aps.body);
         } else {
           this.presentToast(msg.body);
         }
@@ -46,8 +46,11 @@ export class AppComponent {
 
   initializeApp() {
     this.platform.ready().then(() => {
-      this.statusBar.styleDefault();
       this.splashScreen.show();
+      this.statusBar.backgroundColorByName("black");
+      this.statusBar.styleLightContent();
+      this.statusBar.overlaysWebView(false);
+      //this.statusBar.styleDefault();  
       this.notificationSetup();
       this.splashScreen.hide();
     });
