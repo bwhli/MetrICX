@@ -72,7 +72,9 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                return (Decimal)ValidatedBlocks / (Decimal)TotalBlocks * 100;
+                if (TotalBlocks > 0)
+                    return (Decimal)ValidatedBlocks / (Decimal)TotalBlocks * 100;
+                else return 100;
             }
         }
     }

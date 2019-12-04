@@ -8,10 +8,10 @@ namespace MetrICXServerPush
 {
     class Program
     {
-        static int timerInterval = 30; //Seconds
+        static int timerInterval = 90; //Seconds
         static Timer timer = new Timer();
 
-        static int timerPrepInterval = 60; //Seconds
+        static int timerPrepInterval = 600; //Seconds
         static Timer timerPrep = new Timer();
 
         static PReps AllPReps;
@@ -78,72 +78,92 @@ namespace MetrICXServerPush
 
             if (device.enablePushIScoreChange == true)
             {
-                var icxTotalRewards = IconGateway.GetAvailableRewards(device.address);
-                if (device.availableRewardsAsDecimal < icxTotalRewards)
+                try
                 {
-                    decimal awardedICX = icxTotalRewards - device.availableRewardsAsDecimal;
-                    FirebaseGateway.SendPush(device.token, device.address, "ICX Rewards Available", $"Congratulations! your reward of {icxTotalRewards.ToString("0.##")} ICX is ready to be claimed");
-                    //Now update firestore so we dont send the user duplicate messages
-                    device.availableRewards = icxTotalRewards.ToString();
-                    device.lastIScorePushSentDate = DateTime.UtcNow;
-                    FirebaseGateway.UpdateDevice(device);
-                }
-                else if (device.availableRewardsAsDecimal > icxTotalRewards)
+                    var icxTotalRewards = IconGateway.GetAvailableRewards(device.address);
+                    if (device.availableRewardsAsDecimal < icxTotalRewards)
+                    {
+                        decimal awardedICX = icxTotalRewards - device.availableRewardsAsDecimal;
+                        FirebaseGateway.SendPush(device.token, device.address, "ICX Rewards Available", $"Congratulations! your reward of {icxTotalRewards.ToString("0.##")} ICX is ready to be claimed");
+                        //Now update firestore so we dont send the user duplicate messages
+                        device.availableRewards = icxTotalRewards.ToString();
+                        device.lastIScorePushSentDate = DateTime.UtcNow;
+                        FirebaseGateway.UpdateDevice(device);
+                    }
+                    else if (device.availableRewardsAsDecimal > icxTotalRewards)
+                    {
+                        device.availableRewards = icxTotalRewards.ToString();
+                        FirebaseGateway.UpdateDevice(device);
+                    }
+                } catch (Exception ex)
                 {
-                    device.availableRewards = icxTotalRewards.ToString();
-                    FirebaseGateway.UpdateDevice(device);
+                    Console.WriteLine($"[MAIN] EXCEPTION processing IScore check {ex.Message}");
                 }
             }
 
             if (device.enablePushDeposits == true)
             {
-                var balance = IconGateway.GetICXBalance(device.address);
-                if (string.IsNullOrEmpty(device.balance))
+                try
                 {
-                    //Store current balance without sending a notification
-                    device.balance = balance.ToString();
-                    FirebaseGateway.UpdateDevice(device);
+                    var balance = IconGateway.GetICXBalance(device.address);
+                    if (string.IsNullOrEmpty(device.balance))
+                    {
+                        //Store current balance without sending a notification
+                        device.balance = balance.ToString();
+                        FirebaseGateway.UpdateDevice(device);
+                    }
+                    else if (device.balanceAsDecimal < balance)
+                    {
+                        decimal depositReceived = balance - device.balanceAsDecimal;
+                        FirebaseGateway.SendPush(device.token, device.address, "ICX Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} ICX");
+                        //Now update firestore so we dont send the user duplicate messages
+                        device.balance = balance.ToString();
+                        device.lastDepositPushSentDate = DateTime.UtcNow;
+                        FirebaseGateway.UpdateDevice(device);
+                    }
+                    else if (device.balanceAsDecimal > balance)
+                    {
+                        device.balance = balance.ToString();
+                        FirebaseGateway.UpdateDevice(device);
+                    }
                 }
-                else if (device.balanceAsDecimal < balance)
+                catch (Exception ex)
                 {
-                    decimal depositReceived = balance - device.balanceAsDecimal;
-                    FirebaseGateway.SendPush(device.token, device.address, "ICX Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} ICX");
-                    //Now update firestore so we dont send the user duplicate messages
-                    device.balance = balance.ToString();
-                    device.lastDepositPushSentDate = DateTime.UtcNow;
-                    FirebaseGateway.UpdateDevice(device);
-                }
-                else if (device.balanceAsDecimal > balance)
-                {
-                    device.balance = balance.ToString();
-                    FirebaseGateway.UpdateDevice(device);
+                    Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
                 }
             }
 
             if (!string.IsNullOrEmpty(device.enablePushProductivityDrop) && device.enablePushProductivityDrop != "disabled" && AllPReps != null)
             {
-                lock (AllPReps)
+                try
                 {
-                    var prodDrop = decimal.Parse(device.enablePushProductivityDrop);
-                    var pReps = IconGateway.GetDelegatedPReps(device.address);
-                    if (pReps != null && pReps.Delegations != null && pReps.Delegations.Length > 0)
+                    lock (AllPReps)
                     {
-                        foreach (var prep in pReps.Delegations)
+                        var prodDrop = decimal.Parse(device.enablePushProductivityDrop);
+                        var pReps = IconGateway.GetDelegatedPReps(device.address);
+                        if (pReps != null && pReps.Delegations != null && pReps.Delegations.Length > 0)
                         {
-                            var findPrep = AllPReps.Preps.SingleOrDefault(p => p.Address == prep.Address);
-                            if (findPrep != null && findPrep.Productivity < prodDrop)
+                            foreach (var prep in pReps.Delegations)
                             {
-                                if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
+                                var findPrep = AllPReps.Preps.SingleOrDefault(p => p.Address == prep.Address);
+                                if (findPrep != null && findPrep.Productivity < prodDrop)
                                 {
-                                    FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
-                                    //Now update firestore so we dont send the user duplicate messages
-                                    device.lastProductivityPushSentDate = DateTime.UtcNow;
-                                    FirebaseGateway.UpdateDevice(device);
+                                    if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
+                                    {
+                                        FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
+                                        //Now update firestore so we dont send the user duplicate messages
+                                        device.lastProductivityPushSentDate = DateTime.UtcNow;
+                                        FirebaseGateway.UpdateDevice(device);
+                                    }
                                 }
                             }
                         }
+
                     }
-                    
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[MAIN] EXCEPTION processing ProductivityDrop check {ex.Message}");
                 }
             }
 
