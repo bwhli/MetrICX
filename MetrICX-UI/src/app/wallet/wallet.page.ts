@@ -29,7 +29,7 @@ export class WalletPage implements OnInit {
   public monthlyICX = 0;
   public yearlyICX = 0;
   public hideUnstakeTimer: boolean = true;
-  public rowSize: number = 6;
+  public rowSize: number = 12;
 
   constructor(
     private storage: Storage,
