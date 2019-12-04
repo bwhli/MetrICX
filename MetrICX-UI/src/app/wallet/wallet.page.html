@@ -12,7 +12,7 @@
 
 
     <ion-grid>
-      <ion-row class="ion-justify-content-start">
+      <ion-row>
         <ion-col size="{{rowSize}}">
             <ion-card>
                 <ion-card-title class="card-title-primary">
@@ -25,18 +25,18 @@
                 </ion-card-title>
                   <ion-card-content class="card-content">
                       <ion-row>
-                          <ion-col size="3" text-left>
+                          <ion-col size="{{colSize}}" text-left>
                             <ion-icon name="wallet" class="iconSize"></ion-icon>     
                           </ion-col>
-                          <ion-col text-right>
-                              {{balance.toFixed(2)}} <small>ICX</small>
+                          <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
+                              {{balance | number : '1.2-2'}} <small>ICX</small>
                           </ion-col>
                       </ion-row>
                   </ion-card-content>
                 </ion-card>
         </ion-col>
-          <ion-col size="6">
-              <ion-card [hidden]="hideUnstakeTimer">
+          <ion-col [hidden]="hideUnstakeTimer" size="6">
+              <ion-card>
                   <ion-card-title  class="card-title-primary">
                           Unstake Timer
                           <span class="tooltip" tooltip="If you have unstaked, this box will provide a timer for when your ICX will be available" placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
@@ -56,7 +56,7 @@
                   </ion-card>
           </ion-col>
         </ion-row>
-        <ion-row class="ion-justify-content-start">
+        <ion-row>
             <ion-col>
                 <ion-card>
                     <ion-card-title  class="card-title-primary">
@@ -71,8 +71,8 @@
                               <ion-col size="2" text-left>
                                   <img src="assets/icx_black.png" alt="ICX"/>       
                               </ion-col>
-                              <ion-col class="total-amount" text-right>
-                                  {{stake.toFixed(2)}} <small>ICX</small>
+                              <ion-col class="amount-value" text-right>
+                                  {{stake | number : '1.2-2'}} <small>ICX</small>
                               </ion-col>
                             </ion-row>       
                       </ion-card-content>
@@ -80,7 +80,7 @@
             </ion-col>
         </ion-row>
 
-        <ion-row class="ion-justify-content-start">
+        <ion-row>
           <ion-col>
                   <ion-card>
                       <ion-card-title  class="card-title-primary">
@@ -96,15 +96,15 @@
                                 <ion-col size="2" text-left>
                                     <img src="assets/icx_black.png" alt="ICX"/>       
                                 </ion-col>
-                                <ion-col class="total-amount" text-right>
-                                    {{(stake+balance).toFixed(2)}} (+{{claim.toFixed(2)}}) <small>ICX</small>
+                                <ion-col class="amount-value" text-right>
+                                    {{(stake+balance) | number : '1.2-2'}} (+{{claim | number : '1.2-2'}}) <small>ICX</small>
                                 </ion-col>
                               </ion-row>       
                         </ion-card-content>
                       </ion-card>
               </ion-col>
             </ion-row>
-            <ion-row class="ion-justify-content-start">
+            <ion-row>
               <ion-col>
                   <ion-card>
                       <ion-card-title class="card-title-primary">
