@@ -28,6 +28,9 @@ export class WalletPage implements OnInit {
   public rewardRate = 0;
   public monthlyICX = 0;
   public yearlyICX = 0;
+  public hideUnstakeTimer: boolean = true;
+  public rowSize: number = 12;
+  public colSize: number = 2;
 
   constructor(
     private storage: Storage,
@@ -84,9 +87,14 @@ export class WalletPage implements OnInit {
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
    if (hours > 0) {
      const splitTime = this.splitTime(hours);
-     this.unstakePeriod = splitTime[0]['d'] + 'd: ' + splitTime[0]['h'] + 'h: ' + splitTime[0]['m'] + 'm';;
+     this.unstakePeriod = splitTime[0]['d'] + 'd: ' + splitTime[0]['h'] + 'h: ' + splitTime[0]['m'] + 'm';
+     this.rowSize = 6;
+     this.hideUnstakeTimer = false;
+     this.colSize = 3;
    } else {
-     this.unstakePeriod = 'N/A';
+     this.hideUnstakeTimer = true;
+     this.rowSize = 12;
+     this.colSize = 2;
    }
   }
 
