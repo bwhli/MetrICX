@@ -44,7 +44,7 @@
                                                          {{ value }}
                                                     </ng-template>
                                                  </ngx-datatable-column>
-                                                 <ngx-datatable-column name="Name" [width]="80">
+                                                 <ngx-datatable-column name="Name" [width]="100">
                                                         <ng-template let-row="row" let-value="value">
                                                           {{ value }}
                                                         </ng-template>
@@ -72,13 +72,19 @@
                                                         <div style="padding: 2px 2px; width:100%">                                                
                                                           <ion-col>
                                                               <ion-row>
-                                                                  <ion-col text-left><strong>Total Supply: </strong>  <br />~{{totalSupply}}</ion-col>
-                                                                  <ion-col text-right> <strong>Total ICX Staked: </strong> <br /> {{totalICXDelegated}}</ion-col>
+                                                                  <ion-col text-left><strong>Total ICX Supply: </strong>  <br />
+                                                                    <ion-badge class="badge" color="primary"> {{totalSupply}}</ion-badge>
+                                                                  </ion-col>
+                                                                  <ion-col text-right> <strong>Total ICX Staked: </strong> <br />
+                                                                    <ion-badge class="badge" color="primary">{{totalICXDelegated}} </ion-badge> 
+                                                                  </ion-col>
                                                                   <hr />
                                                               </ion-row>
                                                                 <ion-row>
-                                                                    <ion-col text-left><strong>Network Staked: </strong> <br />  {{totalNetworkDelegated}}% </ion-col>
-                                                                    <ion-col text-right><strong>Total PReps: </strong> <br />{{totalNumPreps}} </ion-col>
+                                                                    <ion-col text-left><strong>Network Staked: </strong> <br />  
+                                                                      <ion-badge class="badge" color="danger">  {{totalNetworkDelegated}}% </ion-badge></ion-col>
+                                                                    <ion-col text-right><strong>Total PReps: </strong> <br />
+                                                                      <ion-badge class="badge" color="warning">   {{totalNumPreps}}</ion-badge> </ion-col>
                                                                 </ion-row>
                                                           </ion-col>
                                                         </div>

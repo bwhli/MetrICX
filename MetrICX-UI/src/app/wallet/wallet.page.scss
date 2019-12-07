@@ -54,7 +54,7 @@ ion-refresher-content {
 .card-content {
   background-color: #fff !important;
   --color: #000;
-  font-size: 16px;
+  font-size: 18px;
  padding: 0px !important;
 }
 
@@ -88,6 +88,10 @@ hr {
   background-color: #fff !important;
   font-size: 12px;
   --color: #000 !important;
+}
+
+.badge {
+  font-size: 12px !important;
 }
 
 

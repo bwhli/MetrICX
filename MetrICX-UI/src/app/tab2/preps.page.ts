@@ -115,12 +115,12 @@ export class PrepsPage implements OnInit {
           label: '',
           data: chartData,
           backgroundColor: [
-            '#729192',
-            '#84d4d6',
             '#545454',
-            '#9999cc',
-            '#cccc99',
-            '#cc9999'
+            '#00A6CC',
+            '#32b8bb',
+            '#7273BF',
+            '#995298',
+            '#A53361'
           ],
           borderColor: [
             '#e9e9e9',
