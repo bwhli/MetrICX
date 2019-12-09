@@ -8,7 +8,7 @@ namespace MetrICXServerPush
 {
     class Program
     {
-        static int timerInterval = 90; //Seconds
+        static int timerInterval = 120; //Seconds
         static Timer timer = new Timer();
 
         static int timerPrepInterval = 600; //Seconds
@@ -18,7 +18,7 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.5");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.6");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();

@@ -37,7 +37,7 @@ namespace MetrICXServerPush.Gateways
             catch (Exception ex)
             {
                 Console.WriteLine($"[ICON] EXCEPTION GetAvailableRewards for address {address} : {ex.Message}");
-                return 0;
+                throw;
             }
         }
 
@@ -70,7 +70,7 @@ namespace MetrICXServerPush.Gateways
             catch (Exception ex)
             {
                 Console.WriteLine($"[ICON] EXCEPTION GetICXBalance for address {address} : {ex.Message}");
-                return 0;
+                throw;
             }
         }
 
@@ -93,7 +93,7 @@ namespace MetrICXServerPush.Gateways
             catch (Exception ex)
             {
                 Console.WriteLine($"[ICON] EXCEPTION GetDelegatedPReps for address {address} : {ex.Message}");
-                return null;
+                throw;
             }
         }
 

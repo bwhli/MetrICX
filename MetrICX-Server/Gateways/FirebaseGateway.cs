@@ -88,8 +88,8 @@ namespace MetrICXServerPush.Gateways
             QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
             foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
             {
-                Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document:");
                 DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
 
                 yield return device;
                 Console.WriteLine("");
