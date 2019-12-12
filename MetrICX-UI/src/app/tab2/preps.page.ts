@@ -5,6 +5,7 @@ import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 import { PrepTable, PrepPie } from './prep-table';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-preps',
@@ -12,7 +13,7 @@ import { PrepTable, PrepPie } from './prep-table';
   styleUrls: ['preps.page.scss',
               '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css']
 })
-export class PrepsPage implements OnInit {
+export class PrepsPage  {
 
   @ViewChild('dnChart', {static:false}) dnChart: ElementRef;
   rows: Object;
@@ -27,27 +28,28 @@ export class PrepsPage implements OnInit {
   public address: string;
 
   constructor( private storage: Storage, 
-               private iconContract: IconContractService) {}
+               private iconContract: IconContractService,
+               public navCtrl: NavController) {}
 
 
    ionViewWillEnter() {
     this.storage.get('address').then(address => {   
-      this.loadPageData(address);
+      if (address) {
+        this.loadPageData(address);
+      }
+      else {
+        this.navCtrl.navigateForward('/tabs/settings');
+      }
     });
    }
 
-  ngOnInit() { 
-   
-  }
-
-   doRefresh(event: any) {
+   doRefresh(event) {
     setTimeout(() => {
-      this.storage.get('address').then(address => {   
-        this.loadPageData(address);
-      });
+      this.ionViewWillEnter();
       event.target.complete();
     }, 2000);
   }
+
 
   async filterPrepsList(delegatedPrepList: Delegations[], allPreps: PReps) : Promise<PrepDetails[]> {
     var filteredArrayPreps  = allPreps.preps.filter(function(array_el) {

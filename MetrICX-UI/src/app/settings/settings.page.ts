@@ -31,6 +31,7 @@ export class SettingsPage {
     private afs: AngularFirestore,
     private fcm: FcmService,
     private barcodeScanner: BarcodeScanner,
+    
    
     //this will be used if we want to show the QR Code as well
     private base64ToGallery: Base64ToGallery
@@ -56,13 +57,15 @@ export class SettingsPage {
     const enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
     const enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     const enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
-    const token = await this.fcm.getToken();
-
-    // Save to local storage
     this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
-
-    // Save this device id and address in FireStore for push Notifications
-    this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+    
+    try {
+      const token = await this.fcm.getToken();
+      // Save to local storage
+      // Save this device id and address in FireStore for push Notifications
+       this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+    }
+    catch {}
 
     //Save message and redirect
     this.presentToast();
