@@ -1,18 +1,17 @@
 import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
+import { ToastController, NavController } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-wallet',
   templateUrl: 'wallet.page.html',
   styleUrls: ['wallet.page.scss']
 })
-export class WalletPage implements OnInit {
+export class WalletPage {
 
   @ViewChild("barCanvas", {static:false}) barCanvas: ElementRef;
 
@@ -57,9 +56,6 @@ export class WalletPage implements OnInit {
       }
     }); 
   }
-
-  ngOnInit () {}
-
   async presentLoading() {
       if(!this.loaded) {
       const loading = await this.loadingController.create({
@@ -111,8 +107,6 @@ export class WalletPage implements OnInit {
   }
 
   doRefresh(event) {
-    console.log('Begin async operation');
-
     setTimeout(() => {
       this.ionViewWillEnter();
       event.target.complete();

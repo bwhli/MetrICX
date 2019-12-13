@@ -31,6 +31,7 @@ export class SettingsPage {
     private afs: AngularFirestore,
     private fcm: FcmService,
     private barcodeScanner: BarcodeScanner,
+    
    
     //this will be used if we want to show the QR Code as well
     private base64ToGallery: Base64ToGallery
@@ -42,12 +43,14 @@ export class SettingsPage {
       enablePushDeposits: [false],
       enablePushProductivityDrop: ["disabled"]}
     );
+  }
 
-    //Update input value with stored address
-    this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
-    this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
-    this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
-    this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
+    ionViewWillEnter()  {
+      //Update input value with stored address
+      this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
+      this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
+      this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
+      this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
   }
 
   // Save to storage and display Toaster when done
@@ -56,23 +59,46 @@ export class SettingsPage {
     const enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
     const enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     const enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
-    const token = await this.fcm.getToken();
 
-    // Save to local storage
-    this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+    try {
+      const token = await this.fcm.getToken();
+      this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+      // Save to local storage
+      // Save this device id and address in FireStore for push Notifications
+       this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+       this.presentToast();
+    }
+    catch {
+      if (enablePushDeposits || enablePushIScoreChange || enablePushProductivityDrop) {
+      const toast = await this.toastController.create({
+        message: 'ICX address saved, however you must allow notifications to be able to receive notifications',
+        duration: 3000,
+        position: 'middle'
+      });
+      
+      toast.present();
+    }
+    else {
+      this.presentToast();
+    }
 
-    // Save this device id and address in FireStore for push Notifications
-    this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+    //firebase failed most likely because of permissions issues for push notifications
+    //reset the settings so the user is not confussed wondering why notifications are not working
+    //even though they are enabled on the UI
+    this.saveToStorage(address, false, false, false);
+
+
+  }
 
     //Save message and redirect
-    this.presentToast();
     this.navCtrl.navigateForward('/tabs/wallet');
   }
   
   async presentToast() {
     const toast = await this.toastController.create({
       message: 'Your settings have been saved.',
-      duration: 2000
+      duration: 2000,
+      position: 'middle'
     });
     toast.present();
   }
