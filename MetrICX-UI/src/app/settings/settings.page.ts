@@ -71,7 +71,7 @@ export class SettingsPage {
     catch {
       if (enablePushDeposits || enablePushIScoreChange || enablePushProductivityDrop) {
       const toast = await this.toastController.create({
-        message: 'ICX address saved, however you must allow notifications for MetrICX for notifications to work',
+        message: 'ICX address saved, however you must allow notifications to be able to receive notifications',
         duration: 3000,
         position: 'middle'
       });
