@@ -1,8 +1,4 @@
 
-  .dark {
-    background-color: #000;
-    color: #fff;
-  }
   
   .dark-header {
      --background: #000;
@@ -13,4 +9,9 @@
     background-color: #32b8bb !important;
     color: #fff;
   }
+
+  .tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
+    color: #32b8bb;
+    background: #000;
+}
 
