@@ -58,7 +58,7 @@ namespace MetrICXServerPush.Gateways
                 {
                     body = message,
                     title = title,
-                    badge = 1
+                    badge = 0
                 }
             };
 
