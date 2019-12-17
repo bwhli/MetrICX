@@ -139,8 +139,8 @@ export class PrepsPage  {
       options: {
         legend: {
           display: true,
-          position: 'right',
-          fullWidth: false,
+          position: 'bottom',
+          fullWidth: true,
           labels: {
             fontSize: 12,
             boxWidth: 10,
@@ -151,8 +151,8 @@ export class PrepsPage  {
       layout: {
         padding: {
             left: 0,
-            right: 50,
-            top: 0,
+            right: 0,
+            top: 20,
             bottom: 0
         }
       },
