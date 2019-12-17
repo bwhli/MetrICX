@@ -146,7 +146,7 @@ namespace MetrICXServerPush
                             foreach (var prep in pReps.Delegations)
                             {
                                 var findPrep = AllPReps.Preps.SingleOrDefault(p => p.Address == prep.Address);
-                                if (findPrep != null && findPrep.Productivity < prodDrop)
+                                if (findPrep != null && findPrep.Productivity < prodDrop && findPrep.Grade == 0)
                                 {
                                     if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
                                     {
