@@ -72,9 +72,6 @@
   .card-content-chart {
     background-color: #fff !important;
     --color: #000;
-    font-size: 12px;
-   padding-top: 3px !important;
-   text-align: right
   }
   
   .total-amount {
@@ -109,10 +106,6 @@
     --background: #F5F5F5 ;
   }
 
-  canvas {
-    width: 100% !important;
-    height: 100% !important;
-  }
 
   :host ::ng-deep .datatable-header {
     height: unset !important;
@@ -120,19 +113,18 @@
 
  :host ::ng-deep  .ngx-datatable.bootstrap {
    font-family: 'Open Sans',  sans-serif !important;
-   font-size: 12px;
-   padding: 2px;
+   font-size: 11px;
+   padding: 1px;
  }
  
  :host ::ng-deep  .ngx-datatable.bootstrap .datatable-header .datatable-header-cell {
     vertical-align: bottom;
-    padding: 2px !important;
+    padding: 1px !important;
     background-color: #545454;
     color: #fff;
  }
  
  :host ::ng-deep  .ngx-datatable.bootstrap .datatable-body .datatable-body-row .datatable-body-cell {
-   text-align: left;
    line-height: 2.6em;
    border-bottom: 1px solid #545454;
    height: unset !important;

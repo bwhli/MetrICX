@@ -110,7 +110,7 @@ export class PrepsPage  {
   async createDnChart(chartData: number[], labelData: string[]) {
     this.dn = new Chart(this.dnChart.nativeElement, {
       type: 'pie',
-      circumference: Math.PI,
+      circumference: 2*Math.PI,
       data: {
         labels: labelData,
         datasets: [{
@@ -122,9 +122,17 @@ export class PrepsPage  {
             '#32b8bb',
             '#7273BF',
             '#995298',
-            '#A53361'
+            '#A53361',
+            '#BB8732',
+            '#32BB8C',
+            '#3245BB',
+            '#A60711'
           ],
           borderColor: [
+            '#e9e9e9',
+            '#e9e9e9',
+            '#e9e9e9',
+            '#e9e9e9',
             '#e9e9e9',
             '#e9e9e9',
             '#e9e9e9',
@@ -139,31 +147,30 @@ export class PrepsPage  {
       options: {
         legend: {
           display: true,
-          position: 'right',
-          fullWidth: false,
+          position: 'bottom',
+          fullWidth: true,
           labels: {
-            fontSize: 12,
-            boxWidth: 10,
+            fontSize: 10,
+            boxWidth: 5,
             fontFamily: '"Open Sans",  sans-serif',
           }
         },
-      cutoutPercentage: 10,
       layout: {
-        padding: {
+        padding: {  
             left: 0,
-            right: 50,
+            right: 0,
             top: 0,
             bottom: 0
         }
       },
       responsive: true,
+      maintainAspectRatio: false,
       plugins: {
           labels: [
-            
             {
               render: 'percentage',
               fontColor: '#fff',
-              fontSize: 12,
+              fontSize: 10,
               fontFamily: '"Open Sans",  sans-serif',
             }
           ]

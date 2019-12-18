@@ -20,9 +20,8 @@
                                    <ion-icon name="information-circle-outline"></ion-icon> 
                                 </span>
                         </ion-card-title>
-                          <ion-card-content class="card-content-chart"> 
-                            <canvas #dnChart></canvas> 
-                            * Click pie segment for more data
+                          <ion-card-content class="card-content-chart">
+                            <canvas width="330" height="250" #dnChart></canvas> 
                           </ion-card-content>
                         </ion-card>
                 </ion-col>
@@ -44,12 +43,12 @@
                                                          {{ value }}
                                                     </ng-template>
                                                  </ngx-datatable-column>
-                                                 <ngx-datatable-column name="Name" [width]="100">
+                                                 <ngx-datatable-column name="Name" [width]="150">
                                                         <ng-template let-row="row" let-value="value">
                                                           {{ value }}
                                                         </ng-template>
                                                   </ngx-datatable-column>
-                                                  <ngx-datatable-column name="Production" [width]="80">
+                                                  <ngx-datatable-column name="Production" [width]="60">
                                                         <ng-template let-value="value"l>
                                                           {{ value }}
                                                         </ng-template>
