@@ -15,10 +15,11 @@ namespace MetrICXServerPush
         static Timer timerPrep = new Timer();
 
         static PReps AllPReps;
+        static int pushNotificationCount = 0;
 
         static void Main(string[] args)
         {
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.6");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.7");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -42,6 +43,7 @@ namespace MetrICXServerPush
             {
                 Console.WriteLine("[MAIN] PREP TIMER ELAPSED, Checking all PReps");
                 AllPReps = IconGateway.GetAllPReps();
+                Console.WriteLine($"[MAIN] Retrieved {AllPReps.Preps.Count} P-Reps");
             }
             finally
             {
@@ -55,12 +57,16 @@ namespace MetrICXServerPush
             try
             {
                 Console.WriteLine("[MAIN] TIMER ELAPSED, Checking all devices");
+                var allDevices = FirebaseGateway.AllDevices();
+                Console.WriteLine($"[MAIN] Processing {allDevices.Count()} devices");
                 var count = 0;
-                foreach (var device in FirebaseGateway.AllDevices())
+                pushNotificationCount = 0;
+                foreach (var device in allDevices)
                 {
                     Console.WriteLine($"[MAIN] Processing Device {count++} with address {device.address}");
                     ProcessDevice(device);
                 }
+                Console.WriteLine($"[MAIN] Finished processing devices, sent {pushNotificationCount} push notifications");
             }
             finally
             {
@@ -89,6 +95,7 @@ namespace MetrICXServerPush
                         device.availableRewards = icxTotalRewards.ToString();
                         device.lastIScorePushSentDate = DateTime.UtcNow;
                         FirebaseGateway.UpdateDevice(device);
+                        pushNotificationCount++;
                     }
                     else if (device.availableRewardsAsDecimal > icxTotalRewards)
                     {
@@ -120,6 +127,7 @@ namespace MetrICXServerPush
                         device.balance = balance.ToString();
                         device.lastDepositPushSentDate = DateTime.UtcNow;
                         FirebaseGateway.UpdateDevice(device);
+                        pushNotificationCount++;
                     }
                     else if (device.balanceAsDecimal > balance)
                     {
@@ -154,6 +162,7 @@ namespace MetrICXServerPush
                                         //Now update firestore so we dont send the user duplicate messages
                                         device.lastProductivityPushSentDate = DateTime.UtcNow;
                                         FirebaseGateway.UpdateDevice(device);
+                                        pushNotificationCount++;
                                     }
                                 }
                             }
