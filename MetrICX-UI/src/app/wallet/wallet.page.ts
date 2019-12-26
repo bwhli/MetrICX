@@ -30,6 +30,7 @@ export class WalletPage {
   public hideUnstakeTimer: boolean = true;
   public rowSize: number = 12;
   public colSize: number = 2;
+  public USDValue: number = 0;
 
   constructor(
     private storage: Storage,
@@ -50,6 +51,7 @@ export class WalletPage {
         this.loadUnstake();
         this.loadClaim();
         this.loadChart();
+        this.loadUSDValue();
         this.loaded = true;
       } else {
         this.navCtrl.navigateForward('/tabs/settings');
@@ -69,6 +71,10 @@ export class WalletPage {
 
   async loadWallet() {
     this.balance = await this.iconContract.getBalance(this.address);
+  }
+
+  async loadUSDValue() {
+    this.USDValue = await this.iconContract.getUSDValue();
   }
 
   async loadStake() {

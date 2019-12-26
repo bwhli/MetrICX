@@ -166,4 +166,14 @@ public async getClaimableRewards(address: string) {
     }
     return delegatedPRep; 
   }
+  
+  public async getUSDValue() {
+	  const call = new CallBuilder()
+      .to('cxc26094b789b82c94305e79590ad39898b0d513a0')
+      .method('value')			
+      .build(); 
+
+    var response = await this.iconService.call(call).execute();
+    return this.toBigInt(response);
+  }
 }
