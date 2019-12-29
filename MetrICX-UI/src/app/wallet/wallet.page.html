@@ -30,10 +30,10 @@
                           </ion-col>
                           <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
                               {{balance | number : '1.2-2'}} <small>ICX</small>
-                              <div class="amount-value-usd">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                              <div class="amount-value-usd" *ngIf="showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
                           </ion-col>
                       </ion-row>
-                  </ion-card-content>
+                  </ion-card-content> 
                 </ion-card>
         </ion-col>
           <ion-col [hidden]="hideUnstakeTimer" size="6">
@@ -74,7 +74,7 @@
                               </ion-col>
                               <ion-col class="amount-value" text-right>
                                   {{stake | number : '1.2-2'}} <small>ICX</small>
-                                  <div class="amount-value-usd">{{stake / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                                  <div class="amount-value-usd" *ngIf="showUSDValue">{{stake / USDValue | number : '1.2-2'}} <small>USD</small></div>
                               </ion-col>
                             </ion-row>       
                       </ion-card-content>
@@ -100,7 +100,7 @@
                                 </ion-col>
                                 <ion-col class="amount-value" text-right>
                                     {{(stake+balance) | number : '1.2-2'}} (+{{claim | number : '1.2-2'}}) <small>ICX</small>
-                                    <div class="amount-value-usd">{{(stake+balance) / USDValue | number : '1.2-2'}} (+{{claim / USDValue | number : '1.2-2'}})  <small>USD</small></div>
+                                    <div class="amount-value-usd" *ngIf="showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} (+{{claim / USDValue | number : '1.2-2'}})  <small>USD</small></div>
                                 </ion-col>
                               </ion-row>       
                         </ion-card-content>

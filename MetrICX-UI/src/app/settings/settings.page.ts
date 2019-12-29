@@ -41,7 +41,8 @@ export class SettingsPage {
       address: [null],
       enablePushIScoreChange: [false],
       enablePushDeposits: [false],
-      enablePushProductivityDrop: ["disabled"]}
+      enablePushProductivityDrop: ["disabled"],
+      showUSDValue: [false]}
     );
   }
 
@@ -51,6 +52,7 @@ export class SettingsPage {
       this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
       this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
+      this.storage.get('showUSDValue').then(showUSDValue => this.settingsForm.patchValue({showUSDValue: showUSDValue}));
   }
 
   // Save to storage and display Toaster when done
@@ -59,10 +61,11 @@ export class SettingsPage {
     const enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
     const enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     const enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
+    const showUSDValue = this.settingsForm.controls['showUSDValue'].value;
 
     try {
       const token = await this.fcm.getToken();
-      this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
+      this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop, showUSDValue);
       // Save to local storage
       // Save this device id and address in FireStore for push Notifications
        this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
@@ -85,13 +88,8 @@ export class SettingsPage {
     //firebase failed most likely because of permissions issues for push notifications
     //reset the settings so the user is not confussed wondering why notifications are not working
     //even though they are enabled on the UI
-    this.saveToStorage(address, false, false, false);
-
-
-  }
-
-    //Save message and redirect
-    this.navCtrl.navigateForward('/tabs/wallet');
+    this.saveToStorage(address, false, false, false, showUSDValue);
+    }
   }
   
   async presentToast() {
@@ -103,12 +101,14 @@ export class SettingsPage {
     toast.present();
   }
 
-  async saveToStorage(address: string, enablePushIScoreChange: boolean, enablePushDeposits: boolean, enablePushProductivityDrop: boolean) {
+  async saveToStorage(address: string, enablePushIScoreChange: boolean, 
+    enablePushDeposits: boolean, enablePushProductivityDrop: boolean, showUSDValue: boolean) {
     //Save local storage settings
     await this.storage.set('address', address);
     await this.storage.set('enablePushIScoreChange', enablePushIScoreChange);
     await this.storage.set('enablePushDeposits', enablePushDeposits);
     await this.storage.set('enablePushProductivityDrop', enablePushProductivityDrop);
+    await this.storage.set('showUSDValue', showUSDValue);
   }
 
   async scanQR () {

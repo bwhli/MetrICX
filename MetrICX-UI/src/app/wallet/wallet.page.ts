@@ -31,6 +31,7 @@ export class WalletPage {
   public rowSize: number = 12;
   public colSize: number = 2;
   public USDValue: number = 0;
+  public showUSDValue: boolean = true;
 
   constructor(
     private storage: Storage,
@@ -40,11 +41,14 @@ export class WalletPage {
     public navCtrl: NavController
   ) { }
 
-  ionViewWillEnter() { 
+  ionViewWillEnter() {
     //Update stored address
     this.storage.get('address').then(address => {
       this.address = address; 
       if (address) {
+        this.storage.get('showUSDValue').then(showUSDValue => {
+          this.showUSDValue = showUSDValue;
+        });
         this.presentLoading();
         this.loadWallet();
         this.loadStake();
@@ -52,7 +56,7 @@ export class WalletPage {
         this.loadClaim();
         this.loadChart();
         this.loadUSDValue();
-        this.loaded = true;
+        this.loaded = true;  
       } else {
         this.navCtrl.navigateForward('/tabs/settings');
       }
