@@ -76,6 +76,8 @@ namespace MetrICXServerPush
 
         public static void ProcessDevice(DeviceRegistration device)
         {
+            SendResponse sendResponse = null;
+
             if (!device.registrationDate.HasValue)
             {
                 device.registrationDate = DateTime.UtcNow;
@@ -90,7 +92,7 @@ namespace MetrICXServerPush
                     if (device.availableRewardsAsDecimal < icxTotalRewards)
                     {
                         decimal awardedICX = icxTotalRewards - device.availableRewardsAsDecimal;
-                        FirebaseGateway.SendPush(device.token, device.address, "ICX Rewards Available", $"Congratulations! your reward of {icxTotalRewards.ToString("0.##")} ICX is ready to be claimed");
+                        sendResponse = FirebaseGateway.SendPush(device.token, device.address, "ICX Rewards Available", $"Congratulations! your reward of {icxTotalRewards.ToString("0.##")} ICX is ready to be claimed");
                         //Now update firestore so we dont send the user duplicate messages
                         device.availableRewards = icxTotalRewards.ToString();
                         device.lastIScorePushSentDate = DateTime.UtcNow;
@@ -122,7 +124,7 @@ namespace MetrICXServerPush
                     else if (device.balanceAsDecimal < balance)
                     {
                         decimal depositReceived = balance - device.balanceAsDecimal;
-                        FirebaseGateway.SendPush(device.token, device.address, "ICX Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} ICX");
+                        sendResponse = FirebaseGateway.SendPush(device.token, device.address, "ICX Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} ICX");
                         //Now update firestore so we dont send the user duplicate messages
                         device.balance = balance.ToString();
                         device.lastDepositPushSentDate = DateTime.UtcNow;
@@ -158,7 +160,7 @@ namespace MetrICXServerPush
                                 {
                                     if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
                                     {
-                                        FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
+                                        sendResponse = FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
                                         //Now update firestore so we dont send the user duplicate messages
                                         device.lastProductivityPushSentDate = DateTime.UtcNow;
                                         FirebaseGateway.UpdateDevice(device);
@@ -173,6 +175,15 @@ namespace MetrICXServerPush
                 catch (Exception ex)
                 {
                     Console.WriteLine($"[MAIN] EXCEPTION processing ProductivityDrop check {ex.Message}");
+                }
+            }
+
+            if (sendResponse != null && sendResponse.failure > 0)
+            {
+                if (sendResponse.results.Any(a => a.error == "NotRegistered"))
+                {
+                    //This token has become stale, need to remove it from firestore
+                    FirebaseGateway.DeleteDevice(device);
                 }
             }
 

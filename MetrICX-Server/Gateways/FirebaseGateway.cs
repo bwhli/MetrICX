@@ -38,7 +38,7 @@ namespace MetrICXServerPush.Gateways
             }
         }
 
-        public static void SendPush(string recipientToken, string address, string title, string message)
+        public static SendResponse SendPush(string recipientToken, string address, string title, string message)
         {
             Console.WriteLine($"[FB] Sending PUSH to {address}, token {recipientToken}, with Title {title}, Message {message}");
 
@@ -62,6 +62,7 @@ namespace MetrICXServerPush.Gateways
                 }
             };
 
+            SendResponse response = null;
             string postbody = JsonConvert.SerializeObject(payload).ToString();
             Byte[] byteArray = Encoding.UTF8.GetBytes(postbody);
             tRequest.ContentLength = byteArray.Length;
@@ -75,11 +76,15 @@ namespace MetrICXServerPush.Gateways
                         if (dataStreamResponse != null) using (StreamReader tReader = new StreamReader(dataStreamResponse))
                         {
                             String sResponseFromServer = tReader.ReadToEnd();
-                            Console.WriteLine($"[FB] RESPONSE : {sResponseFromServer}");                                
+                            Console.WriteLine($"[FB] RESPONSE : {sResponseFromServer}");
+
+                            response = JsonConvert.DeserializeObject<SendResponse>(sResponseFromServer);
                         }
                     }
                 }
             }
+
+            return response;
         }
 
         public static IEnumerable<DeviceRegistration> AllDevices()
@@ -100,6 +105,19 @@ namespace MetrICXServerPush.Gateways
         {
             Console.WriteLine($"[FB] Updating Document data for {device.token}");
             db.Collection("devices").Document(device.token).SetAsync(device).Wait();
+        }
+
+        public static void DeleteDevice(DeviceRegistration device)
+        {
+            try
+            {
+                Console.WriteLine($"[FB] Deleting Document {device.token}");
+                db.Collection("devices").Document(device.token).DeleteAsync().Wait();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[FB] EXCEPTION, unable to delete the document {device.token} : {ex.Message}");
+            }
         }
     }
 }
