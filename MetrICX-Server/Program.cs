@@ -19,7 +19,7 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.7");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.8");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -58,7 +58,7 @@ namespace MetrICXServerPush
             {
                 Console.WriteLine("[MAIN] TIMER ELAPSED, Checking all devices");
                 var allDevices = FirebaseGateway.AllDevices();
-                Console.WriteLine($"[MAIN] Processing {allDevices.Count()} devices");
+                Console.WriteLine($"[MAIN] Processing all devices {allDevices.Count()}");
                 var count = 0;
                 pushNotificationCount = 0;
                 foreach (var device in allDevices)
