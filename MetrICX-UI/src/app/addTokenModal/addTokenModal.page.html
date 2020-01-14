@@ -1,0 +1,40 @@
+
+<ion-content class="bg-class" style="z-index: 0;">
+  <ion-grid>
+    <ion-row>
+      <ion-col>
+         <div>Add a Token</div>
+      </ion-col>
+    </ion-row>
+    <ion-row>
+      <ion-col>
+        <form style="width: 100%; margin: 1%;" [formGroup]="tokenForm">
+          <ion-list lines="full" class="ion-no-margin ion-no-padding">  
+            <ion-item *ngFor="let token of Tokens | keyvalue" style="font-size:small !important;">
+              <ion-checkbox  class="formCheckBox" color="secondary" formControlName="{{token.key}}" slot="start"></ion-checkbox>
+               {{token.key}}
+            </ion-item>
+          </ion-list>
+        </form>
+      </ion-col>
+  </ion-row>
+  <ion-row>
+    <ion-col>
+      <div class="ion-padding">
+        <ion-button expand="block" (click)="closeModal()" type="button" class="ion-no-margin">
+          <ion-icon slot="start" name="close"></ion-icon>
+          Close 
+        </ion-button>
+      </div>
+    </ion-col>
+    <ion-col>
+      <div class="ion-padding">
+        <ion-button expand="block" (click)="save()" type="button" class="ion-no-margin">
+          <ion-icon slot="start" name="save"></ion-icon>
+          Save 
+        </ion-button>
+      </div>
+    </ion-col>
+  </ion-row>
+  </ion-grid>
+</ion-content>

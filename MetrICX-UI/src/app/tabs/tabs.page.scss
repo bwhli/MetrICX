@@ -1,9 +1,13 @@
 
-  
   .dark-header {
      --background: #000;
     color: #fff;
   }
+
+  .tabs {
+    --background: #32b8bb;
+   color: black;
+ }
 
   .primary {
     background-color: #32b8bb !important;
@@ -11,7 +15,47 @@
   }
 
   .tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
-    color: #32b8bb;
+    color: black;
     background: #000;
 }
 
+// Hacks for font awesome icons in tabbar
+// see https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/2
+// the content code of each fa-icon can be found here: 'node_modules/font-awesome/css/font-awesome.css'
+.fa-icons-general {
+  display: inline-block;
+  font: normal normal normal 14px/1 FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transform: translate(0, 0);
+}
+
+.ion-ios-fa-bullhorn::before,
+.ion-ios-fa-bullhorn-outline::before,
+.ion-md-fa-bullhorn::before {
+  @extend .fa-icons-general;
+  content: "\f0a1";
+}
+
+.ion-ios-fa-cutlery::before,
+.ion-ios-fa-cutlery-outline::before,
+.ion-md-fa-cutlery::before {
+  @extend .fa-icons-general;
+  content: "\f0f5";
+}
+
+.ion-ios-fa-graduation-cap::before,
+.ion-ios-fa-graduation-cap-outline::before,
+.ion-md-fa-graduation-cap::before {
+  @extend .fa-icons-general;
+  content: "\f19d";
+}
+
+.ion-ios-fa-calendar::before,
+.ion-ios-fa-calendar-outline::before,
+.ion-md-fa-calendar::before {
+  @extend .fa-icons-general;
+  content: "\f073";
+}

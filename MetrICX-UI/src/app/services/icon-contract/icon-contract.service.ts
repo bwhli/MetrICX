@@ -176,4 +176,20 @@ public async getClaimableRewards(address: string) {
     var response = await this.iconService.call(call).execute();
     return this.toBigInt(response);
   }
+
+  public async getTokenBalance(tokenAddress: string, ownerAddress: string) { 
+    const params = {
+      _owner: ownerAddress
+    };
+    
+    const call = new CallBuilder()
+      .to(tokenAddress)
+      .method('balanceOf')
+      .params(params)
+      .build();
+
+        // Check the wallet balance
+    const bigBalance = await this.iconService.call(call).execute();
+    return this.toBigInt(bigBalance);
+  }
 }
