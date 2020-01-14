@@ -17,6 +17,7 @@ export class MetricsPage {
 
   public address: string;
   public loaded: boolean = false;
+  public barChart: Chart;
   
   constructor(
     private storage: Storage,
