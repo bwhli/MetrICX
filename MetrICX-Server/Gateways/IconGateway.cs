@@ -16,28 +16,36 @@ namespace MetrICXServerPush.Gateways
             return ((decimal)bigInt) / (decimal)Consts.ICX2Loop;
         }
 
-        public static Decimal GetAvailableRewards(string address)
+        public static Decimal GetAvailableRewards(Address address)
         {
             Console.WriteLine($"[ICON] Getting available Rewards for address {address}");
             var call = new Call<IDictionary<string, BigInteger>>(Consts.ApiUrl.MainNet);
 
-            try
+            if (address.Symbol == "ICX")
             {
-                var result = call.Invoke(
-                    address,
-                    "cx0000000000000000000000000000000000000000",
-                    "queryIScore",
-                    ("address", address)
-                ).Result;
+                try
+                {
+                    var result = call.Invoke(
+                        address.address,
+                        "cx0000000000000000000000000000000000000000",
+                        "queryIScore",
+                        ("address", address.address)
+                    ).Result;
 
-                var icx = IntToDecimal(result["estimatedICX"]);
-                Console.WriteLine($"[ICON] ICX for address {address} is {icx}");
-                return icx;
+                    var icx = IntToDecimal(result["estimatedICX"]);
+                    Console.WriteLine($"[ICON] ICX for address {address.address} is {icx}");
+                    return icx;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ICON] EXCEPTION GetAvailableRewards for address {address} : {ex.Message}");
+                    throw;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                Console.WriteLine($"[ICON] EXCEPTION GetAvailableRewards for address {address} : {ex.Message}");
-                throw;
+                Console.WriteLine($"[ICON] EXCEPTION Unknown symbol {address.Symbol}");
+                return 0;
             }
         }
 
@@ -56,45 +64,58 @@ namespace MetrICXServerPush.Gateways
             return preps;
         }
 
-        public static Decimal GetICXBalance(string address)
+        public static Decimal GetBalance(Address address)
         {
-            Console.WriteLine($"[ICON] Getting balance for address {address}");
-            var getBalance = GetBalance.Create(Consts.ApiUrl.MainNet);
+            Console.WriteLine($"[ICON] Getting balance for {address.Symbol} address {address.address}");
+            if (address.Symbol == "ICX")
+            {
+                var getBalance = IconSDK.RPCs.GetBalance.Create(Consts.ApiUrl.MainNet);
 
-            try
+                try
+                {
+                    var balance = IntToDecimal(getBalance(address.address).Result);
+                    Console.WriteLine($"[ICON] ICX Balance for address {address} for {balance}");
+                    return balance;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ICON] EXCEPTION GetICXBalance for address {address} : {ex.Message}");
+                    throw;
+                }
+            } else
             {
-                var balance = IntToDecimal(getBalance(address).Result);
-                Console.WriteLine($"[ICON] ICX Balance for address {address} for {balance}");
-                return balance;
+                //Need to load balance of different tokens
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[ICON] EXCEPTION GetICXBalance for address {address} : {ex.Message}");
-                throw;
-            }
+
+            return 0;
         }
 
-        public static PRepDelegations GetDelegatedPReps(string address)
+        public static PRepDelegations GetDelegatedPReps(Address address)
         {
             Console.WriteLine($"[ICON] Getting Delegated PReps {address}");
-            var call = new Call<PRepDelegations>(Consts.ApiUrl.MainNet);
-
-            try
+            if (address.Symbol == "ICX")
             {
-                var result = call.Invoke(
-                    address,
-                    "cx0000000000000000000000000000000000000000",
-                    "getDelegation",
-                    ("address", address)
-                ).Result;
+                var call = new Call<PRepDelegations>(Consts.ApiUrl.MainNet);
 
-                return result;
+                try
+                {
+                    var result = call.Invoke(
+                        address.address,
+                        "cx0000000000000000000000000000000000000000",
+                        "getDelegation",
+                        ("address", address)
+                    ).Result;
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[ICON] EXCEPTION GetDelegatedPReps for address {address.address} : {ex.Message}");
+                    throw;
+                }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"[ICON] EXCEPTION GetDelegatedPReps for address {address} : {ex.Message}");
-                throw;
-            }
+
+            return null;
         }
 
     }

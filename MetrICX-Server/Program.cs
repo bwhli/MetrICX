@@ -63,8 +63,11 @@ namespace MetrICXServerPush
                 pushNotificationCount = 0;
                 foreach (var device in allDevices)
                 {
-                    Console.WriteLine($"[MAIN] Processing Device {count++} with address {device.address}");
-                    ProcessDevice(device);
+                    foreach (var address in device.addresses)
+                    {
+                        Console.WriteLine($"[MAIN] Processing Device {count++} with address {address.Symbol} {address.address}");
+                        ProcessDeviceAddress(device, address);
+                    }
                 }
                 Console.WriteLine($"[MAIN] Finished processing devices, sent {pushNotificationCount} push notifications");
             }
@@ -74,35 +77,32 @@ namespace MetrICXServerPush
             }
         }
 
-        public static void ProcessDevice(DeviceRegistration device)
+        public static void ProcessDeviceAddress(DeviceRegistration device, Address address)
         {
             SendResponse sendResponse = null;
 
             if (!device.registrationDate.HasValue)
             {
                 device.registrationDate = DateTime.UtcNow;
-                FirebaseGateway.UpdateDevice(device);
             }
 
             if (device.enablePushIScoreChange == true)
             {
                 try
                 {
-                    var icxTotalRewards = IconGateway.GetAvailableRewards(device.address);
-                    if (device.availableRewardsAsDecimal < icxTotalRewards)
+                    var totalRewards = IconGateway.GetAvailableRewards(address);
+                    if (address.availableRewardsAsDecimal < totalRewards)
                     {
-                        decimal awardedICX = icxTotalRewards - device.availableRewardsAsDecimal;
-                        sendResponse = FirebaseGateway.SendPush(device.token, device.address, "ICX Rewards Available", $"Congratulations! your reward of {icxTotalRewards.ToString("0.##")} ICX is ready to be claimed");
+                        decimal awardedICX = totalRewards - address.availableRewardsAsDecimal;
+                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
                         //Now update firestore so we dont send the user duplicate messages
-                        device.availableRewards = icxTotalRewards.ToString();
-                        device.lastIScorePushSentDate = DateTime.UtcNow;
-                        FirebaseGateway.UpdateDevice(device);
+                        address.availableRewards = totalRewards.ToString();
+                        address.lastIScorePushSentDate = DateTime.UtcNow;
                         pushNotificationCount++;
                     }
-                    else if (device.availableRewardsAsDecimal > icxTotalRewards)
+                    else if (address.availableRewardsAsDecimal > totalRewards)
                     {
-                        device.availableRewards = icxTotalRewards.ToString();
-                        FirebaseGateway.UpdateDevice(device);
+                        address.availableRewards = totalRewards.ToString();
                     }
                 } catch (Exception ex)
                 {
@@ -114,27 +114,24 @@ namespace MetrICXServerPush
             {
                 try
                 {
-                    var balance = IconGateway.GetICXBalance(device.address);
-                    if (string.IsNullOrEmpty(device.balance))
+                    var balance = IconGateway.GetBalance(address);
+                    if (string.IsNullOrEmpty(address.balance))
                     {
                         //Store current balance without sending a notification
-                        device.balance = balance.ToString();
-                        FirebaseGateway.UpdateDevice(device);
+                        address.balance = balance.ToString();
                     }
-                    else if (device.balanceAsDecimal < balance)
+                    else if (address.balanceAsDecimal < balance)
                     {
-                        decimal depositReceived = balance - device.balanceAsDecimal;
-                        sendResponse = FirebaseGateway.SendPush(device.token, device.address, "ICX Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} ICX");
+                        decimal depositReceived = balance - address.balanceAsDecimal;
+                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
                         //Now update firestore so we dont send the user duplicate messages
-                        device.balance = balance.ToString();
-                        device.lastDepositPushSentDate = DateTime.UtcNow;
-                        FirebaseGateway.UpdateDevice(device);
+                        address.balance = balance.ToString();
+                        address.lastDepositPushSentDate = DateTime.UtcNow;
                         pushNotificationCount++;
                     }
-                    else if (device.balanceAsDecimal > balance)
+                    else if (address.balanceAsDecimal > balance)
                     {
-                        device.balance = balance.ToString();
-                        FirebaseGateway.UpdateDevice(device);
+                        address.balance = balance.ToString();
                     }
                 }
                 catch (Exception ex)
@@ -150,7 +147,7 @@ namespace MetrICXServerPush
                     lock (AllPReps)
                     {
                         var prodDrop = decimal.Parse(device.enablePushProductivityDrop);
-                        var pReps = IconGateway.GetDelegatedPReps(device.address);
+                        var pReps = IconGateway.GetDelegatedPReps(address);
                         if (pReps != null && pReps.Delegations != null && pReps.Delegations.Length > 0)
                         {
                             foreach (var prep in pReps.Delegations)
@@ -160,10 +157,9 @@ namespace MetrICXServerPush
                                 {
                                     if (device.lastProductivityPushSentDate == null || (DateTime.UtcNow - device.lastProductivityPushSentDate).Value.Days > 1)
                                     {
-                                        sendResponse = FirebaseGateway.SendPush(device.token, device.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
+                                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, "P-Rep Productivity Warning", $"Warning! Your delegated P-Rep {findPrep.Name}'s productivity has dropped to {findPrep.Productivity.ToString("0.##")}%");
                                         //Now update firestore so we dont send the user duplicate messages
                                         device.lastProductivityPushSentDate = DateTime.UtcNow;
-                                        FirebaseGateway.UpdateDevice(device);
                                         pushNotificationCount++;
                                     }
                                 }
@@ -177,6 +173,7 @@ namespace MetrICXServerPush
                     Console.WriteLine($"[MAIN] EXCEPTION processing ProductivityDrop check {ex.Message}");
                 }
             }
+            FirebaseGateway.UpdateDevice(device);
 
             if (sendResponse != null && sendResponse.failure > 0)
             {

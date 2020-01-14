@@ -103,8 +103,12 @@ namespace MetrICXServerPush.Gateways
 
         public static void UpdateDevice(DeviceRegistration device)
         {
-            Console.WriteLine($"[FB] Updating Document data for {device.token}");
-            db.Collection("devices").Document(device.token).SetAsync(device).Wait();
+            if (device.Dirty)
+            {
+                Console.WriteLine($"[FB] Updating Document data for {device.token}");
+                db.Collection("devices").Document(device.token).SetAsync(device).Wait();
+                device.Dirty = false;
+            }
         }
 
         public static void DeleteDevice(DeviceRegistration device)
