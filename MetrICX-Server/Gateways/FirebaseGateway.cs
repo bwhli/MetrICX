@@ -93,10 +93,20 @@ namespace MetrICXServerPush.Gateways
             QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
             foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
             {
-                DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
-                Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
-
-                yield return device;
+                DeviceRegistration device = null;
+                try
+                {
+                    device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[FB] EXCEPTION, unable to deserialize the document {documentSnapshot.Id} : {ex.Message}");
+                }
+                if (device != null)
+                {
+                    Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
+                    yield return device;
+                }
                 Console.WriteLine("");
             }
         }
