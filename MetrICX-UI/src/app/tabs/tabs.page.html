@@ -9,18 +9,28 @@
 <ion-tabs>
   <ion-tab-bar slot="bottom" class="dark-header">
     <ion-tab-button tab="wallet">
-      <ion-icon name="stats"></ion-icon>
-      <ion-label>Dashboard</ion-label>
+      <fa-icon style="padding:2px" size="2x" [icon]="['fas', 'wallet']"></fa-icon>
+      Wallet
     </ion-tab-button>
 
     <ion-tab-button tab="preps">
-      <ion-icon name="business"></ion-icon>
-      <ion-label>Preps</ion-label>
+      <fa-icon style="padding:2px" size="2x" [icon]="['fas', 'building']"></fa-icon>
+      Governance
+    </ion-tab-button>
+
+    <ion-tab-button tab="tokens">
+      <fa-icon style="padding:2px" size="2x" [icon]="['fas', 'coins']"></fa-icon>
+        Tokens
+    </ion-tab-button>
+
+    <ion-tab-button tab="metrics">
+      <fa-icon style="padding:2px" size="2x" [icon]="['fas', 'chart-area']"></fa-icon>
+        Metrics
     </ion-tab-button>
 
     <ion-tab-button tab="settings">
-        <ion-icon name="cog"></ion-icon>
-        <ion-label>Settings</ion-label>
+      <fa-icon style="padding:2px" size="2x" [icon]="['fas', 'cog']"></fa-icon>
+      Settings
       </ion-tab-button>
   </ion-tab-bar>
 

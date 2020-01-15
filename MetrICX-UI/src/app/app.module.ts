@@ -16,6 +16,7 @@ import { Firebase } from '@ionic-native/firebase/ngx';
 import { FcmService } from './services/fcm/fcm.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
+import { AddTokenModalModule } from './addTokenModal/addTokenModal.module';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -44,6 +45,7 @@ import { FirebaseConfig } from '../../firebase-config';
     ReactiveFormsModule, 
     IonicModule.forRoot(), 
     AppRoutingModule,
+    AddTokenModalModule,
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(FirebaseConfig.config),
     AngularFirestoreModule],
