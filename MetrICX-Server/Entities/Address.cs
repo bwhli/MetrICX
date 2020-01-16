@@ -8,7 +8,7 @@ namespace MetrICXServerPush.Entities
     [FirestoreData]
     public class Address
     {
-        internal bool Dirty = false;
+        private bool _dirty = false;
 
         private string _address;
         private DateTime? _lastIScorePushSentDate;
@@ -21,7 +21,7 @@ namespace MetrICXServerPush.Entities
         public string address { get => _address; 
             set
             {
-                Dirty = _address != value;
+                _dirty = _address != value;
                 _address = value;
             }
         }
@@ -30,7 +30,7 @@ namespace MetrICXServerPush.Entities
         public string Symbol { get => _symbol; 
             set
             {
-                Dirty = _symbol != value;
+                _dirty = _symbol != value;
                 _symbol = value;
             }
         }
@@ -39,7 +39,7 @@ namespace MetrICXServerPush.Entities
         public DateTime? lastIScorePushSentDate { get => _lastIScorePushSentDate; 
             set
             {
-                Dirty = _lastIScorePushSentDate != value;
+                _dirty = _lastIScorePushSentDate != value;
                 _lastIScorePushSentDate = value;
             }
         }
@@ -48,7 +48,7 @@ namespace MetrICXServerPush.Entities
         public DateTime? lastDepositPushSentDate { get => _lastDepositPushSentDate;
             set
             {
-                Dirty = _lastDepositPushSentDate != value;
+                _dirty = _lastDepositPushSentDate != value;
                 _lastDepositPushSentDate = value;
             }
         }
@@ -57,7 +57,7 @@ namespace MetrICXServerPush.Entities
         public string availableRewards { get => _availableRewards; 
             set
             {
-                Dirty = _availableRewards != value;
+                _dirty = _availableRewards != value;
                 _availableRewards = value;
             }
         }
@@ -66,7 +66,7 @@ namespace MetrICXServerPush.Entities
         public string balance { get => _balance; 
             set
             {
-                Dirty = _balance != value;
+                _dirty = _balance != value;
                 _balance = value;
             }
         }
@@ -85,6 +85,13 @@ namespace MetrICXServerPush.Entities
             {
                 return Convert.ToDecimal(balance);
             }
+        }
+
+        public bool Dirty { get => _dirty; }
+
+        public void ResetDirty()
+        {
+            _dirty = false;
         }
     }
 }

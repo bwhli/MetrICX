@@ -94,11 +94,20 @@ namespace MetrICXServerPush.Gateways
             foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
             {
                 DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                device.ResetDirty();
                 Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
 
                 yield return device;
                 Console.WriteLine("");
             }
+        }
+
+        public static DeviceRegistration GetDevice(string token)
+        {
+            var documentSnapshot = db.Collection("devices").Document(token).GetSnapshotAsync().Result;
+            DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
+            device.ResetDirty();
+            return device;
         }
 
         public static void UpdateDevice(DeviceRegistration device)
@@ -107,7 +116,7 @@ namespace MetrICXServerPush.Gateways
             {
                 Console.WriteLine($"[FB] Updating Document data for {device.token}");
                 db.Collection("devices").Document(device.token).SetAsync(device).Wait();
-                device.Dirty = false;
+                device.ResetDirty();
             }
         }
 

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 
@@ -10,7 +11,8 @@ namespace MetrICXServerPush.Entities
     [FirestoreData]
     public class DeviceRegistration
     {
-        internal bool Dirty = false;
+        private bool _dirty = false;
+
         private DateTime? _registrationDate;
         private string _token;
         private bool? _enablePushIScoreChange;
@@ -26,28 +28,36 @@ namespace MetrICXServerPush.Entities
         [Obsolete]
         public string address
         {
+            get
+            {
+                if (addresses != null && addresses.Count > 0) 
+                    return addresses[0].address;
+                return null;
+            }
             set
             {
                 CreateDefaultAddress();
+                _dirty = addresses[0].address != value;
                 addresses[0].address = value;
-                Dirty = true;
             }
         }
 
         [FirestoreProperty]
-        public DateTime? registrationDate { get => _registrationDate; 
+        public DateTime? registrationDate { 
+            get => _registrationDate; 
             set 
             {
-                Dirty = _registrationDate != value;
+                _dirty = _registrationDate != value;
                 _registrationDate = value; 
             } 
         }
 
         [FirestoreProperty]
-        public bool? enablePushIScoreChange { get => _enablePushIScoreChange; 
+        public bool? enablePushIScoreChange { 
+            get => _enablePushIScoreChange; 
             set
             {
-                Dirty = _enablePushIScoreChange != value;
+                _dirty = _enablePushIScoreChange != value;
                 _enablePushIScoreChange = value;
             }
         }
@@ -56,19 +66,26 @@ namespace MetrICXServerPush.Entities
         [Obsolete]
         public DateTime? lastIScorePushSentDate
         {
+            get
+            {
+                if (addresses != null && addresses.Count > 0)
+                    return addresses[0].lastIScorePushSentDate;
+                return null;
+            }
             set
             {
                 CreateDefaultAddress();
+                _dirty = addresses[0].lastIScorePushSentDate != value;
                 addresses[0].lastIScorePushSentDate = value;
-                Dirty = true;
             }
         }
 
         [FirestoreProperty]
-        public bool? enablePushDeposits { get => _enablePushDeposits; 
+        public bool? enablePushDeposits { 
+            get => _enablePushDeposits; 
             set
             {
-                Dirty = _enablePushDeposits != value;
+                _dirty = _enablePushDeposits != value;
                 _enablePushDeposits = value;
             }
         }
@@ -77,28 +94,36 @@ namespace MetrICXServerPush.Entities
         [Obsolete]
         public DateTime? lastDepositPushSentDate
         {
+            get
+            {
+                if (addresses != null && addresses.Count > 0)
+                    return addresses[0].lastDepositPushSentDate;
+                return null;
+            }
             set
             {
                 CreateDefaultAddress();
+                _dirty = addresses[0].lastDepositPushSentDate != value;
                 addresses[0].lastDepositPushSentDate = value;
-                Dirty = true;
             }
         }
 
         [FirestoreProperty]
-        public string enablePushProductivityDrop { get => _enablePushProductivityDrop; 
+        public string enablePushProductivityDrop { 
+            get => _enablePushProductivityDrop; 
             set
             {
-                Dirty = _enablePushProductivityDrop != value;
+                _dirty = _enablePushProductivityDrop != value;
                 _enablePushProductivityDrop = value;
             }
         }
 
         [FirestoreProperty]
-        public DateTime? lastProductivityPushSentDate { get => _lastProductivityPushSentDate; 
+        public DateTime? lastProductivityPushSentDate { 
+            get => _lastProductivityPushSentDate; 
             set
             {
-                Dirty = _lastProductivityPushSentDate != value;
+                _dirty = _lastProductivityPushSentDate != value;
                 _lastProductivityPushSentDate = value;
             }
         }
@@ -107,11 +132,17 @@ namespace MetrICXServerPush.Entities
         [Obsolete]
         public string availableRewards
         {
+            get
+            {
+                if (addresses != null && addresses.Count > 0)
+                    return addresses[0].availableRewards;
+                return null;
+            }
             set
             {
                 CreateDefaultAddress();
+                _dirty = addresses[0].availableRewards != value;
                 addresses[0].availableRewards = value;
-                Dirty = true;
             }
         }
 
@@ -119,20 +150,42 @@ namespace MetrICXServerPush.Entities
         [Obsolete]
         public string balance
         {
+            get
+            {
+                if (addresses != null && addresses.Count > 0)
+                    return addresses[0].balance;
+                return null;
+            }
             set
             {
                 CreateDefaultAddress();
+                _dirty = addresses[0].balance != value;
                 addresses[0].balance = value;
-                Dirty = true;
             }
         }
 
-        public List<Address> addresses { get => _addresses; 
+        [FirestoreProperty]
+        public List<Address> addresses { 
+            get => _addresses; 
             set
             {
-                Dirty = _addresses != value;
+                _dirty = _addresses != value;
                 _addresses = value;
             }
+        }
+
+        public bool Dirty {
+            get 
+            {
+                return _dirty || addresses.Any(address => address.Dirty);
+            }
+        }
+
+        public void ResetDirty()
+        {
+            _dirty = false;
+            foreach (var address in addresses)
+                address.ResetDirty();
         }
 
         private void CreateDefaultAddress()

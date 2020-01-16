@@ -19,7 +19,10 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v1.8");
+            //var device = FirebaseGateway.GetDevice("f0gJLDyHKbY:APA91bE3ozkgWVVfURfDpZUvyWz8VRx7EbREgWfTPETMW9syfDrXnIQwTnX9qU8ZZ9VQf85Scx1pmGHs2ypir6Pxt91W93ekjo3G5Y08TqwZFPQD1HijcjQxAMJXo2ZqJvgrWBPMDrro");
+            //ProcessDeviceAddress(device, device.addresses[0]);
+            
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v2.0");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
