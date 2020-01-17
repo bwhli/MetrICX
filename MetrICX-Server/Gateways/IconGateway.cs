@@ -103,7 +103,7 @@ namespace MetrICXServerPush.Gateways
                         address.address,
                         "cx0000000000000000000000000000000000000000",
                         "getDelegation",
-                        ("address", address)
+                        ("address", address.address)
                     ).Result;
 
                     return result;

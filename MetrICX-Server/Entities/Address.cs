@@ -21,7 +21,7 @@ namespace MetrICXServerPush.Entities
         public string address { get => _address; 
             set
             {
-                _dirty = _address != value;
+                _dirty = _dirty || _address != value;
                 _address = value;
             }
         }
@@ -30,7 +30,7 @@ namespace MetrICXServerPush.Entities
         public string Symbol { get => _symbol; 
             set
             {
-                _dirty = _symbol != value;
+                _dirty = _dirty || _symbol != value;
                 _symbol = value;
             }
         }
@@ -39,7 +39,7 @@ namespace MetrICXServerPush.Entities
         public DateTime? lastIScorePushSentDate { get => _lastIScorePushSentDate; 
             set
             {
-                _dirty = _lastIScorePushSentDate != value;
+                _dirty = _dirty || _lastIScorePushSentDate != value;
                 _lastIScorePushSentDate = value;
             }
         }
@@ -48,7 +48,7 @@ namespace MetrICXServerPush.Entities
         public DateTime? lastDepositPushSentDate { get => _lastDepositPushSentDate;
             set
             {
-                _dirty = _lastDepositPushSentDate != value;
+                _dirty = _dirty || _lastDepositPushSentDate != value;
                 _lastDepositPushSentDate = value;
             }
         }
@@ -57,7 +57,7 @@ namespace MetrICXServerPush.Entities
         public string availableRewards { get => _availableRewards; 
             set
             {
-                _dirty = _availableRewards != value;
+                _dirty = _dirty || _availableRewards != value;
                 _availableRewards = value;
             }
         }
@@ -66,7 +66,7 @@ namespace MetrICXServerPush.Entities
         public string balance { get => _balance; 
             set
             {
-                _dirty = _balance != value;
+                _dirty = _dirty || _balance != value;
                 _balance = value;
             }
         }

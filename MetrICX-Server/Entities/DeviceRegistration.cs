@@ -37,7 +37,7 @@ namespace MetrICXServerPush.Entities
             set
             {
                 CreateDefaultAddress();
-                _dirty = addresses[0].address != value;
+                _dirty = _dirty || _addresses[0].address != value;
                 addresses[0].address = value;
             }
         }
@@ -47,7 +47,7 @@ namespace MetrICXServerPush.Entities
             get => _registrationDate; 
             set 
             {
-                _dirty = _registrationDate != value;
+                _dirty = _dirty || _registrationDate != value;
                 _registrationDate = value; 
             } 
         }
@@ -57,7 +57,7 @@ namespace MetrICXServerPush.Entities
             get => _enablePushIScoreChange; 
             set
             {
-                _dirty = _enablePushIScoreChange != value;
+                _dirty = _dirty || _enablePushIScoreChange != value;
                 _enablePushIScoreChange = value;
             }
         }
@@ -75,7 +75,7 @@ namespace MetrICXServerPush.Entities
             set
             {
                 CreateDefaultAddress();
-                _dirty = addresses[0].lastIScorePushSentDate != value;
+                _dirty = _dirty || addresses[0].lastIScorePushSentDate != value;
                 addresses[0].lastIScorePushSentDate = value;
             }
         }
@@ -85,7 +85,7 @@ namespace MetrICXServerPush.Entities
             get => _enablePushDeposits; 
             set
             {
-                _dirty = _enablePushDeposits != value;
+                _dirty = _dirty || _enablePushDeposits != value;
                 _enablePushDeposits = value;
             }
         }
@@ -103,7 +103,7 @@ namespace MetrICXServerPush.Entities
             set
             {
                 CreateDefaultAddress();
-                _dirty = addresses[0].lastDepositPushSentDate != value;
+                _dirty = _dirty || addresses[0].lastDepositPushSentDate != value;
                 addresses[0].lastDepositPushSentDate = value;
             }
         }
@@ -113,7 +113,7 @@ namespace MetrICXServerPush.Entities
             get => _enablePushProductivityDrop; 
             set
             {
-                _dirty = _enablePushProductivityDrop != value;
+                _dirty = _dirty || _enablePushProductivityDrop != value;
                 _enablePushProductivityDrop = value;
             }
         }
@@ -123,7 +123,7 @@ namespace MetrICXServerPush.Entities
             get => _lastProductivityPushSentDate; 
             set
             {
-                _dirty = _lastProductivityPushSentDate != value;
+                _dirty = _dirty || _lastProductivityPushSentDate != value;
                 _lastProductivityPushSentDate = value;
             }
         }
@@ -141,7 +141,7 @@ namespace MetrICXServerPush.Entities
             set
             {
                 CreateDefaultAddress();
-                _dirty = addresses[0].availableRewards != value;
+                _dirty = _dirty || addresses[0].availableRewards != value;
                 addresses[0].availableRewards = value;
             }
         }
@@ -159,7 +159,7 @@ namespace MetrICXServerPush.Entities
             set
             {
                 CreateDefaultAddress();
-                _dirty = addresses[0].balance != value;
+                _dirty = _dirty || addresses[0].balance != value;
                 addresses[0].balance = value;
             }
         }
@@ -169,7 +169,7 @@ namespace MetrICXServerPush.Entities
             get => _addresses; 
             set
             {
-                _dirty = _addresses != value;
+                _dirty = _dirty || _addresses != value;
                 _addresses = value;
             }
         }
