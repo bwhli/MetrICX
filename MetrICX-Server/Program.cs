@@ -60,6 +60,7 @@ namespace MetrICXServerPush
             try
             {
                 Console.WriteLine("[MAIN] TIMER ELAPSED, Checking all devices");
+                
                 var allDevices = FirebaseGateway.AllDevices();
                 Console.WriteLine($"[MAIN] Processing all devices {allDevices.Count()}");
                 var count = 0;

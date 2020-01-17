@@ -1,0 +1,119 @@
+<div class="header"></div>
+
+  <ion-content class="bg-class">
+      <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="50">
+          <ion-refresher-content
+            pullingIcon="arrow-dropdown"
+            pullingText="Pull to refresh"
+            refreshingSpinner="circles"
+            refreshingText="Refreshing...">
+          </ion-refresher-content>
+       </ion-refresher>
+
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="12">
+            <ion-card>
+                <ion-card-title class="card-title-primary">
+                        ICX Transaction Count
+                </ion-card-title>
+                    <ion-card-content class="card-content-chart">
+                      <canvas #barCanvas></canvas> 
+                    </ion-card-content>
+                </ion-card>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+          <ion-col size="6">
+              <ion-card>
+                  <ion-card-title  class="card-title-primary">
+                          Transactions 24hr
+                  </ion-card-title >
+                    <ion-card-content class="card-content">
+                        <ion-row>
+                          <ion-col size="2">
+                             <fa-icon style="padding:2px" [icon]="['fas', 'satellite-dish']"></fa-icon>
+                          </ion-col>
+                            <ion-col text-right>
+                               242,220
+                            </ion-col>
+                          </ion-row>       
+                    </ion-card-content>
+                  </ion-card>
+          </ion-col>
+          <ion-col size="6">
+            <ion-card>
+                <ion-card-title  class="card-title-primary">
+                        Total Fees
+                </ion-card-title >
+                  <ion-card-content class="card-content">
+                      <ion-row>
+                        <ion-col size="2">
+                          <fa-icon style="padding:2px" [icon]="['fas', 'calculator']"></fa-icon>
+                       </ion-col>
+                          <ion-col text-right>
+                              99,303 <small>icx</small>
+                          </ion-col>
+                        </ion-row>       
+                  </ion-card-content>
+                </ion-card>
+        </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="6">
+                 <ion-card>
+                    <ion-card-title  class="card-title-primary">
+                            # Active SCORES
+                    </ion-card-title >
+                      <ion-card-content class="card-content">
+                          <ion-row>
+                            <ion-col size="2">
+                              <fa-icon style="padding:2px" [icon]="['fab', 'python']"></fa-icon>
+                           </ion-col>
+                              <ion-col class="amount-value" text-right>
+                                42
+                              </ion-col>
+                            </ion-row>       
+                      </ion-card-content>
+                    </ion-card>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card>
+                 <ion-card-title  class="card-title-primary">
+                        Block Height
+                 </ion-card-title >
+                   <ion-card-content class="card-content">
+                       <ion-row>
+                        <ion-col size="2">
+                          <fa-icon style="padding:2px" [icon]="['fas', 'cubes']"></fa-icon>
+                       </ion-col>
+                           <ion-col class="amount-value" text-right>
+                             2,333,332
+                           </ion-col>
+                         </ion-row>       
+                   </ion-card-content>
+                 </ion-card>
+         </ion-col>
+        </ion-row>
+        <ion-row>
+          <ion-col>
+                  <ion-card>
+                      <ion-card-title  class="card-title-primary">
+                        Last block created by 
+                      </ion-card-title>
+                        <ion-card-content class="card-content">
+                            <ion-row>
+                              <ion-col size="2">
+                                <fa-icon style="padding:2px" [icon]="['fas', 'cube']"></fa-icon>
+                             </ion-col>
+                                <ion-col class="amount-value" text-right>
+                                RHIZOME
+                                </ion-col>
+                              </ion-row>       
+                        </ion-card-content>
+                      </ion-card>
+            </ion-col>
+          </ion-row>
+    </ion-grid>
+  </ion-content>   

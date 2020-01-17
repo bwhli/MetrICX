@@ -1,24 +1,26 @@
 import { IonicModule } from '@ionic/angular';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { TokensPage } from './tokens.page';
+import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { TabsPageRoutingModule } from './tabs.router.module';
-import { TabsPage } from './tabs.page';
 
 @NgModule({
   imports: [
+    TooltipModule,
     IonicModule,
     FontAwesomeModule,
     CommonModule,
     FormsModule,
-    TabsPageRoutingModule
+    RouterModule.forChild([{ path: '', component: TokensPage }])
   ],
-  declarations: [TabsPage]
+  declarations: [TokensPage]
 })
-export class TabsPageModule {
-constructor(library: FaIconLibrary) {
-     library.addIconPacks(fas);
-  }  
+export class TokensPageModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas);
+ } 
 }

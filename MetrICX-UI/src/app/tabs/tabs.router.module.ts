@@ -28,6 +28,26 @@ const routes: Routes = [
         ]
       },
       {
+        path: 'tokens',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../tokens/tokens.module').then(m => m.TokensPageModule)
+          }
+        ]
+      },
+      {
+        path: 'metrics',
+        children: [
+          {
+            path: '',
+            loadChildren: () =>
+              import('../metrics/metrics.module').then(m => m.MetricsPageModule)
+          }
+        ]
+      },
+      {
         path: 'settings',
         children: [
           {

@@ -3,24 +3,24 @@ import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { SettingsPage } from './settings.page';
+import { AddTokenModalPage } from './addTokenModal.page';
+import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { NgxQRCodeModule } from 'ngx-qrcode2';
 
 @NgModule({
   imports: [
+    TooltipModule,
     IonicModule,
     CommonModule,
-    FormsModule,
-    FontAwesomeModule,
     ReactiveFormsModule,
-    NgxQRCodeModule,
-    RouterModule.forChild([{ path: '', component: SettingsPage }])
+    FontAwesomeModule,
+    FormsModule,
+    RouterModule.forChild([{ path: '', component: AddTokenModalPage }])
   ],
-  declarations: [SettingsPage]
+  declarations: [AddTokenModalPage]
 })
-export class SettingsPageModule {
+export class AddTokenModalModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
  }
