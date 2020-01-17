@@ -55,6 +55,8 @@ export class AddTokenModalPage {
       token.Token = key;
       token.IsSelected = this.tokenForm.controls[key].value;
       token.Balance = 0;
+      const contractAddress: TokenEnum = TokenEnum[key];
+      token.ContractAddress = contractAddress;
       tokens.push(token); 
     });
 

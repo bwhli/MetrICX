@@ -10,13 +10,13 @@
  */
 
 /* Core CSS required for Ionic components to work properly */
+/* Core CSS required for Ionic components to work properly */
 @import "~@ionic/angular/css/core.css";
 
 /* Basic CSS for apps built with Ionic */
 @import "~@ionic/angular/css/normalize.css";
 @import "~@ionic/angular/css/structure.css";
 @import "~@ionic/angular/css/typography.css";
-@import '~@ionic/angular/css/display.css';
 
 /* Optional CSS utils that can be commented out */
 @import "~@ionic/angular/css/padding.css";
@@ -24,15 +24,11 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+@import "~@ionic/angular/css/display.css";
+
+/* Optional CSS utils that can be commented out */
 
 @import url("https://fonts.googleapis.com/css?family=Montserrat:400,900");
-
-@import '@angular/material/prebuilt-themes/deeppurple-amber.css';
-
-@import "~@angular/material/prebuilt-themes/deeppurple-amber.css";
-//@import "~@angular/material/prebuilt-themes/indigo-pink.css";
-//@import "~@angular/material/prebuilt-themes/pink-bluegrey.css";
-//@import "~@angular/material/prebuilt-themes/purple-green.css";
 
 .header {
   height: 9%;
@@ -92,5 +88,25 @@
   top: 10%;
   position: absolute; 
   width:80%;
-
+  box-shadow: 2px 2px 2px #545454;
+  padding: 10px;
+  background: white;
 }
+
+ion-card {
+  overflow: hidden;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+  margin-right: 4% !important;
+  margin-left: 4% !important;
+  border-radius: 2px !important;
+  background-color: #fff !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3) !important; 
+}
+
+ion-grid {
+  padding: 0px !important;
+}
+
+
+

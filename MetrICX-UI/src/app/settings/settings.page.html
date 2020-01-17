@@ -3,7 +3,7 @@
 <ion-content class="bg-class" style="z-index: 0;">
 		<ion-grid>
 				<ion-row class="ion-justify-content-start">
-	<form style="width: 100%; margin: 1%;" [formGroup]="settingsForm" (ngSubmit)="save()" >
+	<form class="formMargin" [formGroup]="settingsForm" (ngSubmit)="save()" >
 		<ion-list lines="full" class="ion-no-margin ion-no-padding">
 			<ion-item>
 				<ion-label class="formLabel" position="floating">Enter or Scan ICX Public Address</ion-label>
@@ -36,12 +36,10 @@
 				<ion-label class="formLabelCheckbox">Display USD value</ion-label>
 			</ion-item>
 		</ion-list>
-		<div class="ion-padding">
-			<ion-button expand="block" type="submit" class="ion-no-margin">
+			<ion-button size="small" expand="full" type="submit">
 				<ion-icon slot="start" name="save"></ion-icon>
 				Save
 			</ion-button>
-		</div>
 	</form>
 				</ion-row>
 		</ion-grid>
