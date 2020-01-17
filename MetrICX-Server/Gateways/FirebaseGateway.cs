@@ -97,6 +97,7 @@ namespace MetrICXServerPush.Gateways
                 try
                 {
                     device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                    device.ResetDirty();
                 }
                 catch (Exception ex)
                 {
@@ -111,10 +112,23 @@ namespace MetrICXServerPush.Gateways
             }
         }
 
+        public static DeviceRegistration GetDevice(string token)
+        {
+            var documentSnapshot = db.Collection("devices").Document(token).GetSnapshotAsync().Result;
+            DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
+            device.ResetDirty();
+            return device;
+        }
+
         public static void UpdateDevice(DeviceRegistration device)
         {
-            Console.WriteLine($"[FB] Updating Document data for {device.token}");
-            db.Collection("devices").Document(device.token).SetAsync(device).Wait();
+            if (device.Dirty)
+            {
+                
+                Console.WriteLine($"[FB] Updating Document data for {device.token}");
+                db.Collection("devices").Document(device.token).SetAsync(device).Wait();
+                device.ResetDirty();
+            }
         }
 
         public static void DeleteDevice(DeviceRegistration device)
