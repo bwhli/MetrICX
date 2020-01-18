@@ -84,16 +84,6 @@ hr {
   background-color: #000 !important;
 }
 
-.card-footer {
-  background-color: #fff !important;
-  font-size: 12px;
-  --color: #000 !important;
-}
-
-.badge {
-  font-size: 12px !important;
-}
-
 
 .amount-value {
   background-color: #fff !important;
@@ -103,23 +93,7 @@ hr {
  padding-right: 5px !important;
 }
 
-.amount-value-usd {
-  font-size: 12px;
-}
 
-.card-image {
-  background-color:  #32b8bb;
-}
-
-.dark {
-  background-color: #1f2120;
-  color: #fff;
-}
-
-.iconSize {
-  font-size: 40px;
-  color: #000;
-}
 
 .light {
   background-color: #fff;
@@ -131,4 +105,9 @@ hr {
 
 .bg-class{
   --background: #F5F5F5 ;
+}
+
+.width {
+  margin-left: 4% !important;
+  margin-right: 4% !important;
 }

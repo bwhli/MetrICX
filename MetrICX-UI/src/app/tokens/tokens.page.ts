@@ -20,8 +20,6 @@ export class TokensPage {
   public tokens: TokenModel;
   public tokenModel: TokenModel[] = [];
   public address: string;
-  public tapBalance: number = 0;
-  public tapContract: string = 'cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782';
   public tokenEnum = TokenEnum;
  
   constructor(
@@ -52,7 +50,7 @@ export class TokensPage {
           const length = this.tokenModel.length; 
           for(let i=0; i<length; i++) {
             if(this.tokenModel[i].IsSelected) {
-              var contractAddress: TokenEnum = TokenEnum[this.tokenModel[i].Token];
+              const contractAddress = this.tokenModel[i].ContractAddress;
               this.tokenModel[i].Balance = await this.iconContract.getTokenBalance(contractAddress, this.address); 
             }
           }

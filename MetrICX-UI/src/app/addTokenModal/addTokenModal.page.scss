@@ -2,25 +2,27 @@
   --background: #F5F5F5 ;
 }
 
-.formInput {
-  font-size:8px !important;
+.formCheckbox {
+  font-size: 8px !important;
+  color: #000;
+  width:100%;
+}
+
+.modalMargin {
+  margin-right:4% !important; 
+  margin-left:4% !important;
+  padding:0px !important;
 }
 
 .formLabelCheckbox {
-  font-size: 8px !important;
+  font-size: 10px !important;
   color: #000;
 }
 
-.formCheckBox {
-  font-size: 4px !important;
-  margin-right: 4px !important;
+button {
+  margin-left: 4% !important; 
+  margin-right: 4% !important;
 }
 
-.formLabel {
-font-size: 8px !important;
-color: #32b8bb;
-}
 
-.formSelect {
-  font-size: 8px !important;
-}
+

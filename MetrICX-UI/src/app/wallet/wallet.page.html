@@ -124,16 +124,16 @@
                         <ion-row class="card-footer">
                           <ion-col>
                                 <ion-row>
-                                    <ion-col text-left><strong>Monthly: </strong> <br />
+                                    <ion-col class="ion-text-start"><strong>Monthly: </strong> <br />
                                       <ion-badge class="badge" color="primary">~{{monthlyICX | number : '1.2-2'}} <small>ICX</small></ion-badge></ion-col>
-                                    <ion-col text-right><strong>Yearly: </strong> <br />
+                                    <ion-col class="ion-text-end"><strong>Yearly: </strong> <br />
                                       <ion-badge class="badge" color="primary">~{{yearlyICX  | number : '1.2-2'}} <small>ICX</small> </ion-badge></ion-col>
                                 <hr />
                                 </ion-row>
                                   <ion-row>
-                                      <ion-col text-left><strong>Unstaking Period:</strong> <br />
+                                      <ion-col class="ion-text-start"><strong>Unstaking Period:</strong> <br />
                                         <ion-badge class="badge" color="success">~{{networkUnstakePeriod}}</ion-badge>  </ion-col>
-                                      <ion-col text-right><strong>Reward Rate: </strong> <br />
+                                      <ion-col class="ion-text-end"><strong>Reward Rate: </strong> <br />
                                         <ion-badge class="badge" color="danger">{{rewardRate |  number : '1.2-2'}}% </ion-badge></ion-col>
                                   </ion-row>
                             </ion-col>
