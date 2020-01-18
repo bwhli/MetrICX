@@ -22,7 +22,7 @@ namespace MetrICXServerPush
             //var device = FirebaseGateway.GetDevice("f0gJLDyHKbY:APA91bE3ozkgWVVfURfDpZUvyWz8VRx7EbREgWfTPETMW9syfDrXnIQwTnX9qU8ZZ9VQf85Scx1pmGHs2ypir6Pxt91W93ekjo3G5Y08TqwZFPQD1HijcjQxAMJXo2ZqJvgrWBPMDrro");
             //ProcessDeviceAddress(device, device.addresses[0]);
             
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v2.0");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v2.1");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -124,7 +124,7 @@ namespace MetrICXServerPush
                         //Store current balance without sending a notification
                         address.balance = balance.ToString();
                     }
-                    else if (address.balanceAsDecimal < balance)
+                    else if (address.balanceAsDecimal < balance && balance - address.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
                     {
                         decimal depositReceived = balance - address.balanceAsDecimal;
                         sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
