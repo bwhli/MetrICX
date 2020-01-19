@@ -11,6 +11,7 @@ namespace MetrICXServerPush.Entities
         private bool _dirty = false;
 
         private string _address;
+        private string _name;
         private DateTime? _lastIScorePushSentDate;
         private DateTime? _lastDepositPushSentDate;
         private string _availableRewards;
@@ -18,11 +19,24 @@ namespace MetrICXServerPush.Entities
         private string _symbol;
 
         [FirestoreProperty]
-        public string address { get => _address; 
+        public string address
+        {
+            get => _address;
             set
             {
                 _dirty = _dirty || _address != value;
                 _address = value;
+            }
+        }
+
+        [FirestoreProperty]
+        public string name
+        {
+            get => _name;
+            set
+            {
+                _dirty = _dirty || _name != value;
+                _name = value;
             }
         }
 
