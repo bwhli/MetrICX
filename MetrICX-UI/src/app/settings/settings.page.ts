@@ -52,12 +52,14 @@ export class SettingsPage {
 
     //Get new data structure if it exists
     this.storage.get('settings').then(settings => { 
+      if (settings) {
         if (settings.addresses && settings.addresses.length > 0) 
           this.settingsForm.patchValue({address: settings.addresses[0].address});
         this.settingsForm.patchValue({enablePushIScoreChange: settings.enablePushIScoreChange});
         this.settingsForm.patchValue({enablePushDeposits: settings.enablePushDeposits});
         this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
         this.settingsForm.patchValue({showUSDValue: settings.showUSDValue});
+      }
     });
   }
 
@@ -65,6 +67,7 @@ export class SettingsPage {
   async save() {
     var deviceSettings = new DeviceSettings(); 
 
+    deviceSettings.addresses = [];
     deviceSettings.addresses.push(new Address());
     deviceSettings.addresses[0].address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
     deviceSettings.enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
