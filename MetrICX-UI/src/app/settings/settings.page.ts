@@ -9,6 +9,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 //not used at the moment but if we want to show the QR Canvas we can use this
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
+import { DeviceSettings, Address } from './settings';
 
 
 @Component({
@@ -17,9 +18,7 @@ import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
   styleUrls: ['settings.page.scss']
 })
 export class SettingsPage {
-
   public settingsForm: FormGroup;
-
   //this is used for drawing the QR Code
   public elementType: 'url' | 'canvas' | 'img' = 'canvas';
 
@@ -30,13 +29,10 @@ export class SettingsPage {
     public navCtrl: NavController,
     private afs: AngularFirestore,
     private fcm: FcmService,
-    private barcodeScanner: BarcodeScanner,
-    
+    private barcodeScanner: BarcodeScanner,    
    
     //this will be used if we want to show the QR Code as well
-    private base64ToGallery: Base64ToGallery
-   
-    ) {
+    private base64ToGallery: Base64ToGallery) {
     this.settingsForm = formBuilder.group({
       address: [null],
       enablePushIScoreChange: [false],
@@ -46,33 +42,50 @@ export class SettingsPage {
     );
   }
 
-    ionViewWillEnter()  {
-      //Update input value with stored address
-      this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
-      this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
-      this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
-      this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
-      this.storage.get('showUSDValue').then(showUSDValue => this.settingsForm.patchValue({showUSDValue: showUSDValue}));
+  ionViewWillEnter()  {
+    //Load OLD Data Structure from storage
+    this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
+    this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
+    this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
+    this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
+    this.storage.get('showUSDValue').then(showUSDValue => this.settingsForm.patchValue({showUSDValue: showUSDValue}));
+
+    //Get new data structure if it exists
+    this.storage.get('settings').then(settings => { 
+      if (settings) {
+        if (settings.addresses && settings.addresses.length > 0) 
+          this.settingsForm.patchValue({address: settings.addresses[0].address});
+        this.settingsForm.patchValue({enablePushIScoreChange: settings.enablePushIScoreChange});
+        this.settingsForm.patchValue({enablePushDeposits: settings.enablePushDeposits});
+        this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
+        this.settingsForm.patchValue({showUSDValue: settings.showUSDValue});
+      }
+    });
   }
 
   // Save to storage and display Toaster when done
   async save() {
-    const address = this.settingsForm.controls['address'].value;
-    const enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
-    const enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
-    const enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
-    const showUSDValue = this.settingsForm.controls['showUSDValue'].value;
+    var deviceSettings = new DeviceSettings(); 
+
+    deviceSettings.addresses = [];
+    deviceSettings.addresses.push(new Address());
+    deviceSettings.addresses[0].address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
+    deviceSettings.enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
+    deviceSettings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
+    deviceSettings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
+    deviceSettings.showUSDValue = this.settingsForm.controls['showUSDValue'].value;
 
     try {
+      //Save to local storage
+      this.saveToStorage(deviceSettings);
+
       const token = await this.fcm.getToken();
-      this.saveToStorage(address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop, showUSDValue);
-      // Save to local storage
       // Save this device id and address in FireStore for push Notifications
-       this.saveToFcm(token, address, enablePushIScoreChange, enablePushDeposits, enablePushProductivityDrop);
-       this.presentToast();
+      this.saveToFcm(deviceSettings);
+      this.presentToast();
     }
     catch {
-      if (enablePushDeposits || enablePushIScoreChange || enablePushProductivityDrop) {
+      if (deviceSettings.enablePushDeposits || deviceSettings.enablePushIScoreChange || deviceSettings.enablePushProductivityDrop) {
       const toast = await this.toastController.create({
         message: 'ICX address saved, however you must allow notifications to be able to receive notifications',
         duration: 3000,
@@ -88,7 +101,7 @@ export class SettingsPage {
     //firebase failed most likely because of permissions issues for push notifications
     //reset the settings so the user is not confussed wondering why notifications are not working
     //even though they are enabled on the UI
-    this.saveToStorage(address, false, false, false, showUSDValue);
+    this.saveToStorage(deviceSettings);
     }
   }
   
@@ -101,14 +114,9 @@ export class SettingsPage {
     toast.present();
   }
 
-  async saveToStorage(address: string, enablePushIScoreChange: boolean, 
-    enablePushDeposits: boolean, enablePushProductivityDrop: boolean, showUSDValue: boolean) {
+  async saveToStorage(deviceSettings: DeviceSettings) {
     //Save local storage settings
-    await this.storage.set('address', address);
-    await this.storage.set('enablePushIScoreChange', enablePushIScoreChange);
-    await this.storage.set('enablePushDeposits', enablePushDeposits);
-    await this.storage.set('enablePushProductivityDrop', enablePushProductivityDrop);
-    await this.storage.set('showUSDValue', showUSDValue);
+    await this.storage.set('settings', deviceSettings);
   }
 
   async scanQR () {
@@ -119,25 +127,17 @@ export class SettingsPage {
     );
   }
 
-  private saveToFcm(token: string, address: string, enablePushIScoreChange: boolean, enablePushDeposits: boolean, enablePushProductivityDrop: boolean) {
-    if (!token) return;
+  private saveToFcm(deviceSettings: DeviceSettings) {
+    if (!deviceSettings.token) return;
 
-    const data = {
-      token: token,
-      address: address,
-      enablePushIScoreChange: enablePushIScoreChange,
-      enablePushDeposits: enablePushDeposits,
-      enablePushProductivityDrop: enablePushProductivityDrop
-    };
-
-    const tokenRef = this.afs.collection('devices').doc(token)
+    const tokenRef = this.afs.collection('devices').doc(deviceSettings.token)
 
     tokenRef.get()
       .subscribe((docSnapshot) => {
         if (docSnapshot.exists) {
-          tokenRef.update(data);
+          tokenRef.update(deviceSettings);
         } else {
-          tokenRef.set(data);
+          tokenRef.set(deviceSettings);
         }
     });
   }
