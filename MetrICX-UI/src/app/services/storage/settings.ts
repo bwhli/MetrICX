@@ -1,3 +1,5 @@
+import { TokenModel } from './tokenModel';
+
 export class DeviceSettings {
     token: string;
     enablePushIScoreChange: boolean;
@@ -5,6 +7,7 @@ export class DeviceSettings {
     enablePushProductivityDrop: boolean;    
     addresses: Address[];
     showUSDValue: boolean;
+    tokens: TokenModel[];
 }
 
 export class Address {
