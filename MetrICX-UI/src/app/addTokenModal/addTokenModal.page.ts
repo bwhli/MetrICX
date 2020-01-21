@@ -3,9 +3,7 @@ import { ModalController, NavParams, AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { TokenEnum } from '../services/settings/tokens'
 import { TokenModel } from '../services/settings/tokenModel';
-import { Storage } from '@ionic/storage';
 import { SettingsService } from '../services/settings/settings.service';
-import { FcmService } from '../services/fcm/fcm.service';
 
 @Component({
   selector: 'app-addTokenModal',
@@ -20,11 +18,8 @@ export class AddTokenModalPage {
    
   constructor(
     private modalController: ModalController,
-    private navParams: NavParams,
-    private formBuilder: FormBuilder,
-    private storage: Storage,   
-    private settingsService: SettingsService,
-    private fcm: FcmService
+    private formBuilder: FormBuilder,  
+    private settingsService: SettingsService
   ) {
     this.tokenForm = formBuilder.group({
       AC3: [false],
