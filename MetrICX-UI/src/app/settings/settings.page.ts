@@ -9,8 +9,8 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 
 //not used at the moment but if we want to show the QR Canvas we can use this
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
-import { DeviceSettings, Address } from '../services/storage/settings';
-import { SettingsService } from '../services/storage/settings.service';
+import { DeviceSettings, Address } from '../services/settings/settings';
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-settings',

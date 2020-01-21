@@ -71,7 +71,15 @@ namespace MetrICXServerPush
                     {
                         Console.WriteLine($"[MAIN] Processing Device {count++} with address {address.Symbol} {address.address}");
                         ProcessDeviceAddress(device, address);
+
+                        foreach (var token in address.tokens)
+                        {
+                            Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
+                            ProcessDeviceToken(device, token);
+                        }
                     }
+                    
+                    FirebaseGateway.UpdateDevice(device);
                 }
                 Console.WriteLine($"[MAIN] Finished processing devices, sent {pushNotificationCount} push notifications");
             }
@@ -177,7 +185,6 @@ namespace MetrICXServerPush
                     Console.WriteLine($"[MAIN] EXCEPTION processing ProductivityDrop check {ex.Message}");
                 }
             }
-            FirebaseGateway.UpdateDevice(device);
 
             if (sendResponse != null && sendResponse.failure > 0)
             {
@@ -187,9 +194,50 @@ namespace MetrICXServerPush
                     FirebaseGateway.DeleteDevice(device);
                 }
             }
-
-            Console.WriteLine("");
         }
 
+        public static void ProcessDeviceToken(DeviceRegistration device, Token token)
+        {
+            SendResponse sendResponse = null;
+            
+            if (device.enablePushDeposits == true)
+            {
+                try
+                {
+                    var balance = IconGateway.GetBalance(device.addresses[0], token);
+                    if (string.IsNullOrEmpty(token.lastBalance))
+                    {
+                        //Store current balance without sending a notification
+                        token.lastBalance = balance.ToString();
+                    }
+                    else if (token.balanceAsDecimal < balance && balance - token.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
+                    {
+                        decimal depositReceived = balance - token.balanceAsDecimal;
+                        sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
+                        //Now update firestore so we dont send the user duplicate messages
+                        token.lastBalance = balance.ToString();
+                        token.lastDepositPushSentDate = DateTime.UtcNow;
+                        pushNotificationCount++;
+                    }
+                    else if (token.balanceAsDecimal > balance)
+                    {
+                        token.lastBalance = balance.ToString();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
+                }
+            }
+
+            if (sendResponse != null && sendResponse.failure > 0)
+            {
+                if (sendResponse.results.Any(a => a.error == "NotRegistered"))
+                {
+                    //This token has become stale, need to remove it from firestore
+                    FirebaseGateway.DeleteDevice(device);
+                }
+            }
+        }
     }
 }

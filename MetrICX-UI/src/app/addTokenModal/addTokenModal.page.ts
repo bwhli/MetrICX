@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { TokenEnum } from '../services/storage/tokens'
-import { TokenModel } from '../services/storage/tokenModel';
+import { TokenEnum } from '../services/settings/tokens'
+import { TokenModel } from '../services/settings/tokenModel';
 import { Storage } from '@ionic/storage';
-import { SettingsService } from '../services/storage/settings.service';
+import { SettingsService } from '../services/settings/settings.service';
 import { FcmService } from '../services/fcm/fcm.service';
 
 @Component({
@@ -39,16 +39,16 @@ export class AddTokenModalPage {
  
   ionViewWillEnter() {
     this.settingsService.get().then(settings => {   
-      if (settings && settings.tokens) {
+      if (settings && settings.addresses[0].tokens) {
         let tokenModel: TokenModel[] = [];
-        tokenModel = settings.tokens
+        tokenModel = settings.addresses[0].tokens
         const length = tokenModel.length; 
         for(let i=0; i<length; i++) {
           this.tokenForm.patchValue({[tokenModel[i].Token]: tokenModel[i].IsSelected});
         }
       }
-  })
-}
+    });
+  }
 
   async save() {
     var settings = await this.settingsService.get()
@@ -64,7 +64,7 @@ export class AddTokenModalPage {
       token.ContractAddress = contractAddress;
       tokens.push(token); 
     });
-    settings.tokens = tokens;
+    settings.addresses[0].tokens = tokens;
     await this.modalController.dismiss();
 
     try {

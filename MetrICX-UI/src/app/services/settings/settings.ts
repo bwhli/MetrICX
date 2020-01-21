@@ -6,12 +6,12 @@ export class DeviceSettings {
     enablePushDeposits: boolean;
     enablePushProductivityDrop: boolean;    
     addresses: Address[];
-    showUSDValue: boolean;
-    tokens: TokenModel[];
+    showUSDValue: boolean;    
 }
 
 export class Address {
     address: string;
     Symbol: string;
     name: string;
+    tokens: TokenModel[];
 }

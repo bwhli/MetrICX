@@ -20,6 +20,7 @@ namespace MetrICXServerPush.Entities
         private string _enablePushProductivityDrop;
         private DateTime? _lastProductivityPushSentDate;
         private List<Address> _addresses;
+        private List<Token> _tokens;
 
         [FirestoreProperty]
         public string token { get => _token; set => _token = value; }

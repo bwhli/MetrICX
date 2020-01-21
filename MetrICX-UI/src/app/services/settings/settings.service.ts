@@ -22,7 +22,7 @@ export class SettingsService {
       this.storage.get('enablePushDeposits').then(enablePushDeposits => this.deviceSettings.enablePushDeposits = enablePushDeposits);
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.deviceSettings.enablePushProductivityDrop = enablePushProductivityDrop);
       this.storage.get('showUSDValue').then(showUSDValue => this.deviceSettings.showUSDValue = showUSDValue);
-      this.storage.get('tokens').then(tokens => this.deviceSettings.tokens = tokens);
+      this.storage.get('tokens').then(tokens => this.deviceSettings.addresses[0].tokens = tokens);
       //Get new data structure if it exists
       this.storage.get('settings').then(settings => {
         if (settings) {

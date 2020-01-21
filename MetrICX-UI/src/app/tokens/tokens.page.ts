@@ -4,8 +4,8 @@ import { ToastController, NavController, ModalController  } from '@ionic/angular
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { AddTokenModalPage } from '../addTokenModal/addTokenModal.page';
-import { TokenModel } from '../services/storage/tokenModel'
-import { TokenEnum } from '../services/storage/tokens'
+import { TokenModel } from '../services/settings/tokenModel'
+import { TokenEnum } from '../services/settings/tokens'
 import { stringify } from 'querystring';
 import { FcmService } from '../services/fcm/fcm.service';
 
