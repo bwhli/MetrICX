@@ -14,6 +14,7 @@ namespace MetrICXServerPush.Entities
         private string _contractAddress;
         private DateTime? _lastDepositPushSentDate;
         private string _lastBalance;
+        private bool? _isSelected;
 
         [FirestoreProperty("Token")]
         public string token
@@ -34,6 +35,17 @@ namespace MetrICXServerPush.Entities
             {
                 _dirty = _dirty || _contractAddress != value;
                 _contractAddress = value;
+            }
+        }
+
+        [FirestoreProperty("IsSelected")]
+        public bool? isSelected
+        {
+            get => _isSelected;
+            set
+            {
+                _dirty = _dirty || _isSelected != value;
+                _isSelected = value;
             }
         }
 

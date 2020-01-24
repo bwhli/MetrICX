@@ -2,11 +2,12 @@ import { Injectable } from '@angular/core';
 import { DeviceSettings, Address } from './settings';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
+import { Storage } from '@ionic/storage';
 
 @Injectable()
 export class SettingsService {
 
-  private deviceSettings = new DeviceSettings();
+  private deviceSettings: DeviceSettings = null;
 
   constructor(private storage: Storage,
               private afs: AngularFirestore,
@@ -15,6 +16,7 @@ export class SettingsService {
   public async get(): Promise<DeviceSettings> {
     if (!this.deviceSettings) {
       //Load OLD Data Structure from storage
+      this.deviceSettings = new DeviceSettings();
       this.deviceSettings.addresses = [];
       this.deviceSettings.addresses.push(new Address());
       this.storage.get('address').then(address => this.deviceSettings.addresses[0].address = address);
@@ -23,12 +25,14 @@ export class SettingsService {
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.deviceSettings.enablePushProductivityDrop = enablePushProductivityDrop);
       this.storage.get('showUSDValue').then(showUSDValue => this.deviceSettings.showUSDValue = showUSDValue);
       this.storage.get('tokens').then(tokens => this.deviceSettings.addresses[0].tokens = tokens);
+
       //Get new data structure if it exists
-      this.storage.get('settings').then(settings => {
-        if (settings) {
-          this.deviceSettings = settings;
-        }
-      });
+      let settings = await this.storage.get('settings')
+      if (settings) {
+        this.deviceSettings = settings;
+        if (!this.deviceSettings.addresses) this.deviceSettings.addresses = [];
+        if (this.deviceSettings.addresses.length == 0) this.deviceSettings.addresses.push(new Address());
+      }
     }
     return this.deviceSettings;
   }

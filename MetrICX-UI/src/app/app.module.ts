@@ -33,6 +33,7 @@ import { AddTokenModalModule } from './addTokenModal/addTokenModal.module';
 //  };
 //}
 import { FirebaseConfig } from '../../firebase-config';
+import { SettingsService } from './services/settings/settings.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -56,7 +57,8 @@ import { FirebaseConfig } from '../../firebase-config';
     FcmService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BarcodeScanner,
-    Base64ToGallery
+    Base64ToGallery,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

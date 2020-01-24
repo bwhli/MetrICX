@@ -99,8 +99,8 @@ namespace MetrICXServerPush.Gateways
             {
                 var call = new Call<BigInteger>(Consts.ApiUrl.MainNet);
                 var result = call.Invoke(
+                    address.address,
                     token.contractAddress,
-                    "cx0000000000000000000000000000000000000000",
                     "balanceOf",
                     ("_owner", address.address)
                 ).Result;

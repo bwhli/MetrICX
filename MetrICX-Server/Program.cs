@@ -19,9 +19,16 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("f0gJLDyHKbY:APA91bE3ozkgWVVfURfDpZUvyWz8VRx7EbREgWfTPETMW9syfDrXnIQwTnX9qU8ZZ9VQf85Scx1pmGHs2ypir6Pxt91W93ekjo3G5Y08TqwZFPQD1HijcjQxAMJXo2ZqJvgrWBPMDrro");
-            //ProcessDeviceAddress(device, device.addresses[0]);
+            var device = FirebaseGateway.GetDevice("c7H-TUPSWYM:APA91bFV_WsMgSaz3XhWNj5y6ixppxkEAWDtkCDuRK5CnS2N-heopE3xyHD0DE9G6qZFhjb_6NWHZxJIzipRN40gWCRyl1biYEdhkVLNDAwgLKI9FHjikHZbstbT8v4DWvT1rxMmZph1");
+            device.addresses[0].tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
             
+            ProcessDeviceAddress(device, device.addresses[0]);
+
+            foreach (var token in device.addresses[0].tokens)
+            {
+                ProcessDeviceToken(device, token);
+            }
+
             Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v2.1");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
@@ -200,7 +207,7 @@ namespace MetrICXServerPush
         {
             SendResponse sendResponse = null;
             
-            if (device.enablePushDeposits == true)
+            if (device.enablePushDeposits == true && token.isSelected == true)
             {
                 try
                 {

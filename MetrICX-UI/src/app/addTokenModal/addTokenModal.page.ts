@@ -28,26 +28,24 @@ export class AddTokenModalPage {
       TAP:[false],
       VELT: [false],
       WOK: [false]
-    }
-    );
+    });
   }
  
-  ionViewWillEnter() {
-    this.settingsService.get().then(settings => {   
-      if (settings && settings.addresses[0].tokens) {
-        let tokenModel: TokenModel[] = [];
-        tokenModel = settings.addresses[0].tokens
-        const length = tokenModel.length; 
-        for(let i=0; i<length; i++) {
-          this.tokenForm.patchValue({[tokenModel[i].Token]: tokenModel[i].IsSelected});
-        }
+  async ionViewWillEnter() {
+    var settings = await this.settingsService.get();
+
+    if (settings && settings.addresses[0].tokens) {
+      let tokenModel: TokenModel[] = [];
+      tokenModel = settings.addresses[0].tokens
+      const length = tokenModel.length; 
+      for(let i=0; i<length; i++) {
+        this.tokenForm.patchValue({[tokenModel[i].Token]: tokenModel[i].IsSelected});
       }
-    });
+    }
   }
 
   async save() {
     var settings = await this.settingsService.get()
-
     const tokens: TokenModel[] = [];
 
     Object.keys(this.tokenForm.controls).forEach(key => {

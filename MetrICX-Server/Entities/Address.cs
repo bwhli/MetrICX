@@ -117,8 +117,11 @@ namespace MetrICXServerPush.Entities
         public void ResetDirty()
         {
             _dirty = false;
-            foreach (var token in tokens)
-                token.ResetDirty();
+            if (tokens != null)
+            {
+                foreach (var token in tokens)
+                    token.ResetDirty();
+            }
         }
     }
 }
