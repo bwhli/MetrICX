@@ -29,7 +29,7 @@ namespace MetrICXServerPush
             //    ProcessDeviceToken(device, token);
             //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER  v2.1");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.2");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -79,10 +79,13 @@ namespace MetrICXServerPush
                         Console.WriteLine($"[MAIN] Processing Device {count++} with address {address.Symbol} {address.address}");
                         ProcessDeviceAddress(device, address);
 
-                        foreach (var token in address.tokens)
+                        if (address.tokens != null)
                         {
-                            Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
-                            ProcessDeviceToken(device, token);
+                            foreach (var token in address.tokens)
+                            {
+                                Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
+                                ProcessDeviceToken(device, token);
+                            }
                         }
                     }
                     
