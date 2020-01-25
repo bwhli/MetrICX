@@ -85,7 +85,7 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                return _dirty || tokens.Any(token => token.Dirty);
+                return _dirty || (tokens != null && tokens.Any(token => token.Dirty));
             }
         }
 
