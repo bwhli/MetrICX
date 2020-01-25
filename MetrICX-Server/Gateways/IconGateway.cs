@@ -82,13 +82,43 @@ namespace MetrICXServerPush.Gateways
                     Console.WriteLine($"[ICON] EXCEPTION GetICXBalance for address {address} : {ex.Message}");
                     throw;
                 }
-            } else
+            }
+            else
             {
                 //Need to load balance of different tokens
             }
 
             return 0;
         }
+
+        public static Decimal GetBalance(Address address, Token token)
+        {
+            Console.WriteLine($"[ICON] Getting balance for {token.token} address {token.contractAddress}");
+
+            try
+            {
+                var call = new Call<BigInteger>(Consts.ApiUrl.MainNet);
+                var result = call.Invoke(
+                    address.address,
+                    token.contractAddress,
+                    "balanceOf",
+                    ("_owner", address.address)
+                ).Result;
+
+            
+                var balance = IntToDecimal(result);
+                Console.WriteLine($"[ICON] ICX Balance for address of {token.token} for {balance}");
+                return balance;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[ICON] EXCEPTION ICX Balance for address of {token.token} : {ex.Message}");
+                throw;
+            }
+
+            return 0;
+        }
+
 
         public static PRepDelegations GetDelegatedPReps(Address address)
         {

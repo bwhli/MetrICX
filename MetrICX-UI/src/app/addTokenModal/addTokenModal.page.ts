@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, AlertController } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
-import { TokenEnum } from '../enums/tokens'
-import { TokenModel } from './tokenModel';
-import { Storage } from '@ionic/storage';
+import { TokenEnum } from '../services/settings/tokens'
+import { TokenModel } from '../services/settings/tokenModel';
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-addTokenModal',
@@ -15,13 +15,11 @@ export class AddTokenModalPage {
   
   public Tokens = TokenEnum;
   public tokenForm: FormGroup;
-  public
- 
+   
   constructor(
     private modalController: ModalController,
-    private navParams: NavParams,
-    private formBuilder: FormBuilder,
-    private storage: Storage,
+    private formBuilder: FormBuilder,  
+    private settingsService: SettingsService
   ) {
     this.tokenForm = formBuilder.group({
       AC3: [false],
@@ -30,25 +28,25 @@ export class AddTokenModalPage {
       TAP:[false],
       VELT: [false],
       WOK: [false]
-    }
-    );
-   }
+    });
+  }
  
-   ionViewWillEnter() {
-    this.storage.get('tokens').then(tokens => {   
-      if (tokens) {
-        let tokenModel: TokenModel[] = [];
-        tokenModel = tokens
-        const length = tokenModel.length; 
-        for(let i=0; i<length; i++) {
-          this.tokenForm.patchValue({[tokenModel[i].Token]: tokenModel[i].IsSelected});
-        }
-      }
-  })
-}
+  async ionViewWillEnter() {
+    var settings = await this.settingsService.get();
 
- async save() {
-  const tokens: TokenModel[] = [];
+    if (settings && settings.addresses[0].tokens) {
+      let tokenModel: TokenModel[] = [];
+      tokenModel = settings.addresses[0].tokens
+      const length = tokenModel.length; 
+      for(let i=0; i<length; i++) {
+        this.tokenForm.patchValue({[tokenModel[i].Token]: tokenModel[i].IsSelected});
+      }
+    }
+  }
+
+  async save() {
+    var settings = await this.settingsService.get()
+    const tokens: TokenModel[] = [];
 
     Object.keys(this.tokenForm.controls).forEach(key => {
       const token = new TokenModel();
@@ -59,11 +57,16 @@ export class AddTokenModalPage {
       token.ContractAddress = contractAddress;
       tokens.push(token); 
     });
-
-    await this.storage.set('tokens', tokens);
+    settings.addresses[0].tokens = tokens;
     await this.modalController.dismiss();
- }
 
+    try {
+      this.settingsService.save(settings);
+    }
+    catch {
+      //Do nothing if we could not update firestore, it probably due to token not being available
+    }
+  }
 
   async closeModal() {
     await this.modalController.dismiss();

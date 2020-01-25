@@ -33,7 +33,7 @@
                 </ion-row>  
                 </ion-card-title>
                 <ion-card-content class="card-content">
-                  <ion-row *ngFor="let t of tokenModel">
+                  <ion-row *ngFor="let t of tokens">
                     <ion-col *ngIf="t.IsSelected" size="4" text-left>
                       {{t.Token}}
                     </ion-col>
@@ -46,11 +46,4 @@
         </ion-col>         
       </ion-row>
     </ion-grid>
-
-    <ion-list lines="full" class="ion-no-margin ion-no-padding">  
-      <ion-item *ngFor="let t of tokens">
-        <ion-checkbox  class="formCheckBox" color="secondary"slot="start"></ion-checkbox>
-         {{t.value}}
-      </ion-item>
-    </ion-list>
   </ion-content>   

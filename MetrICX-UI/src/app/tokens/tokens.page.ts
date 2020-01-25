@@ -1,13 +1,11 @@
 import { Component  } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { ToastController, NavController, ModalController  } from '@ionic/angular';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { AddTokenModalPage } from '../addTokenModal/addTokenModal.page';
-import { TokenModel } from '../addTokenModal/tokenModel'
-import { TokenEnum } from '../enums/tokens'
-import { stringify } from 'querystring';
-
+import { TokenModel } from '../services/settings/tokenModel'
+import { TokenEnum } from '../services/settings/tokens'
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-tokens',
@@ -17,46 +15,40 @@ import { stringify } from 'querystring';
 export class TokensPage {
 
   dataReturned:any[];
-  public tokens: TokenModel;
-  public tokenModel: TokenModel[] = [];
-  public address: string;
+  public tokens: TokenModel[] = [];
   public tokenEnum = TokenEnum;
  
   constructor(
-    private storage: Storage,
     private toastController: ToastController,
     private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    public modalController: ModalController
+    public modalController: ModalController,  
+    private settingsService: SettingsService
   ) { }
 
-  ionViewWillEnter() {
-    //Update stored address
-    this.storage.get('address').then(address => {
-      this.address = address; 
-      if (address) {
-        this.loadTokenBalances();
-      } else {
-        this.navCtrl.navigateForward('/tabs/settings');
-      }
-    }); 
+  async ionViewWillEnter() {
+    var settings = await this.settingsService.get();
+ 
+    if (settings && settings.addresses[0].tokens) {
+      let tokens = settings.addresses[0].tokens;
+      this.tokens = tokens;
+      this.loadTokenBalances(settings.addresses[0].address, tokens);
+    }
   }
 
-  async loadTokenBalances() {
-    await this.storage.get('tokens').then(async tokens => {   
-        this.tokenModel = tokens;
-        if (this.tokenModel) {
-          const length = this.tokenModel.length; 
-          for(let i=0; i<length; i++) {
-            if(this.tokenModel[i].IsSelected) {
-              const contractAddress = this.tokenModel[i].ContractAddress;
-              this.tokenModel[i].Balance = await this.iconContract.getTokenBalance(contractAddress, this.address); 
-            }
-          }
+  async loadTokenBalances(ownerAddress: string, tokens: TokenModel[]) {
+    this.tokens = tokens;
+    if (this.tokens) {
+      const length = this.tokens.length; 
+      for(let i=0; i<length; i++) {
+        if(this.tokens[i].IsSelected) {
+          const contractAddress = this.tokens[i].ContractAddress;
+          this.tokens[i].Balance = await this.iconContract.getTokenBalance(contractAddress, ownerAddress); 
         }
-      });
+      }
     }
+  }
 
   doRefresh(event) {
     setTimeout(() => {
