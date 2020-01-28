@@ -2,6 +2,10 @@
   .dark-header {
      --background: #000;
     color: #fff;
+    padding: 0px !important;
+  }
+  .ion-title {
+    padding: 0px !important;
   }
 
   .tabs {
@@ -58,4 +62,12 @@
 .ion-md-fa-calendar::before {
   @extend .fa-icons-general;
   content: "\f073";
+}
+
+.activeWallet {
+  font-size: 12px;
+  display: flex!important;
+  align-content: center!important;
+  align-items: center!important;
+  padding:0px !important;
 }

@@ -60,6 +60,7 @@ export class SettingsPage {
     settings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     settings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
     settings.showUSDValue = this.settingsForm.controls['showUSDValue'].value;
+    settings.addresses[0].Nickname = "TAPWallet";
 
     try {
       //Save to local storage

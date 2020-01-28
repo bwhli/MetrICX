@@ -10,6 +10,7 @@ export class DeviceSettings {
 }
 
 export class Address {
+    Nickname: string;
     address: string;
     Symbol: string;
     name: string;

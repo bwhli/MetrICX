@@ -3,15 +3,20 @@ import { DeviceSettings, Address } from './settings';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
+import { SharedService } from '../shared/shared.service';
+import { Router } from '@angular/router';
 
 @Injectable()
-export class SettingsService {
+export class SettingsService  {
 
   private deviceSettings: DeviceSettings = null;
+  data: DeviceSettings = null;
 
   constructor(private storage: Storage,
               private afs: AngularFirestore,
-              private fcm: FcmService) { }
+              private fcm: FcmService,
+              private sharedService: SharedService,
+              private router: Router) { }
 
   public async get(): Promise<DeviceSettings> {
     if (!this.deviceSettings) {
@@ -34,14 +39,18 @@ export class SettingsService {
         if (this.deviceSettings.addresses.length == 0) this.deviceSettings.addresses.push(new Address());
       }
     }
+
     return this.deviceSettings;
+
   }
 
   public async save(deviceSettings: DeviceSettings) {
     //Save local storage settings
     await this.storage.set('settings', deviceSettings);
     //Save to firestore if possible
-    await this.saveToFcm(deviceSettings);    
+    await this.sharedService.changeData(deviceSettings);
+    //await this.saveToFcm(deviceSettings);   
+   
   }
   
   private async saveToFcm(deviceSettings: DeviceSettings) {

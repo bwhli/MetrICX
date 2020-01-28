@@ -17,6 +17,7 @@ import { FcmService } from './services/fcm/fcm.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { AddTokenModalModule } from './addTokenModal/addTokenModal.module';
+import { SharedService } from './services/shared/shared.service';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -58,7 +59,8 @@ import { SettingsService } from './services/settings/settings.service';
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     BarcodeScanner,
     Base64ToGallery,
-    SettingsService
+    SettingsService,
+    SharedService
   ],
   bootstrap: [AppComponent]
 })
