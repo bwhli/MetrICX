@@ -7,7 +7,7 @@ import { DeviceSettings } from '../settings/settings'
 export class SharedService {
 
     private dataSource = new Subject<DeviceSettings>();
-    public newData: Observable<any>;
+    public newData: Observable<DeviceSettings>;
    
     constructor() {
        this.newData = this.dataSource.asObservable();
