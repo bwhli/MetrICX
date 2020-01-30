@@ -48,11 +48,11 @@ export class SettingsPage {
 
     ionViewWillEnter()  {
       //Update input value with stored address
-      this.storage.get('address').then(address => this.settingsForm.patchValue({address: address}));
-      this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
-      this.storage.get('enablePushDeposits').then(enablePushDeposits => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
-      this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
-      this.storage.get('showUSDValue').then(showUSDValue => this.settingsForm.patchValue({showUSDValue: showUSDValue}));
+      this.storage.get('address').then((address) => this.settingsForm.patchValue({address: address}));
+      this.storage.get('enablePushIScoreChange').then((enablePushIScoreChange) => this.settingsForm.patchValue({enablePushIScoreChange: enablePushIScoreChange}));
+      this.storage.get('enablePushDeposits').then((enablePushDeposits) => this.settingsForm.patchValue({enablePushDeposits: enablePushDeposits}));
+      this.storage.get('enablePushProductivityDrop').then((enablePushProductivityDrop) => this.settingsForm.patchValue({enablePushProductivityDrop: enablePushProductivityDrop}));
+      this.storage.get('showUSDValue').then((showUSDValue) => this.settingsForm.patchValue({showUSDValue: showUSDValue}));
   }
 
   // Save to storage and display Toaster when done
@@ -112,8 +112,7 @@ export class SettingsPage {
   }
 
   async scanQR () {
-    this.barcodeScanner.scan().then(
-      barcodeData => {
+    this.barcodeScanner.scan().then((barcodeData) => {
        this.settingsForm.patchValue({address: barcodeData.text});
       }
     );

@@ -33,7 +33,7 @@ export class PrepsPage  {
 
 
    ionViewWillEnter() {
-    this.storage.get('address').then(address => {   
+    this.storage.get('address').then((address) => {   
       if (address) {
         this.loadPageData(address);
       }

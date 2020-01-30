@@ -35,7 +35,7 @@ export class AddTokenModalPage {
    }
  
    ionViewWillEnter() {
-    this.storage.get('tokens').then(tokens => {   
+    this.storage.get('tokens').then((tokens) => {   
       if (tokens) {
         let tokenModel: TokenModel[] = [];
         tokenModel = tokens

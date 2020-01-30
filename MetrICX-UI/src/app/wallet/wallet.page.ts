@@ -43,10 +43,10 @@ export class WalletPage {
 
   ionViewWillEnter() {
     //Update stored address
-    this.storage.get('address').then(address => {
+    this.storage.get('address').then((address) => {
       this.address = address; 
       if (address) {
-        this.storage.get('showUSDValue').then(showUSDValue => {
+        this.storage.get('showUSDValue').then((showUSDValue) => {
           this.showUSDValue = showUSDValue;
         });
         this.presentLoading();
