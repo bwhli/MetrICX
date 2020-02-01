@@ -33,12 +33,12 @@
                 </ion-row>  
                 </ion-card-title>
                 <ion-card-content class="card-content">
-                  <ion-row *ngFor="let t of tokens">
-                    <ion-col *ngIf="t.IsSelected" size="4" text-left>
-                      {{t.Token}}
+                  <ion-row *ngFor="let token of Tokens | keyvalue">
+                    <ion-col *ngIf="token.value.IsSelected" size="4" text-left>
+                      {{token.value.Token}}
                     </ion-col>
-                    <ion-col *ngIf="t.IsSelected" class="amount-value" text-right>
-                     {{t.Balance | number : '1.2-2'}}
+                    <ion-col *ngIf="token.value.IsSelected" class="amount-value" text-right>
+                      {{token.value.Balance | number : '1.2-2'}}
                     </ion-col>
                 </ion-row> 
               </ion-card-content> 

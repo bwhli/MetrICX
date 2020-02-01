@@ -17,8 +17,6 @@ export class SettingsService {
     if (!this.deviceSettings) {
       //Load OLD Data Structure from storage
       this.deviceSettings = new DeviceSettings();
-      this.deviceSettings.addresses = [];
-      this.deviceSettings.addresses.push(new Address());
       this.storage.get('address').then(address => this.deviceSettings.addresses[0].address = address);
       this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.deviceSettings.enablePushIScoreChange = enablePushIScoreChange);
       this.storage.get('enablePushDeposits').then(enablePushDeposits => this.deviceSettings.enablePushDeposits = enablePushDeposits);
@@ -30,8 +28,6 @@ export class SettingsService {
       let settings = await this.storage.get('settings')
       if (settings) {
         this.deviceSettings = settings;
-        if (!this.deviceSettings.addresses) this.deviceSettings.addresses = [];
-        if (this.deviceSettings.addresses.length == 0) this.deviceSettings.addresses.push(new Address());
       }
     }
     return this.deviceSettings;
@@ -58,5 +54,9 @@ export class SettingsService {
           tokenRef.set(deviceSettings);
         }
     });
+  }
+
+  public getActiveAddress() : Address {
+    return this.deviceSettings.addresses[0];
   }
 }

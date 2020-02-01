@@ -93,7 +93,7 @@ namespace MetrICXServerPush.Gateways
 
         public static Decimal GetBalance(Address address, Token token)
         {
-            Console.WriteLine($"[ICON] Getting balance for {token.token} address {token.contractAddress}");
+            Console.WriteLine($"[ICON] Getting token balance for {token.token} address {token.contractAddress}");
 
             try
             {
@@ -104,15 +104,14 @@ namespace MetrICXServerPush.Gateways
                     "balanceOf",
                     ("_owner", address.address)
                 ).Result;
-
             
                 var balance = IntToDecimal(result);
-                Console.WriteLine($"[ICON] ICX Balance for address of {token.token} for {balance}");
+                Console.WriteLine($"[ICON] Token balance for address of {token.token} for {balance}");
                 return balance;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"[ICON] EXCEPTION ICX Balance for address of {token.token} : {ex.Message}");
+                Console.WriteLine($"[ICON] EXCEPTION Token balance for address of {token.token} : {ex.Message}");
                 throw;
             }
 

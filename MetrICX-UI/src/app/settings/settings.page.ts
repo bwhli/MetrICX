@@ -44,11 +44,11 @@ export class SettingsPage {
 
   async ionViewWillEnter()  {
     var settings = await this.settingsService.get();
-    if (settings.addresses && settings.addresses.length > 0) 
-      this.settingsForm.patchValue({address: settings.addresses[0].address});
+    this.settingsForm.patchValue({address: settings.addresses[0].address});
     this.settingsForm.patchValue({enablePushIScoreChange: settings.enablePushIScoreChange});
     this.settingsForm.patchValue({enablePushDeposits: settings.enablePushDeposits});
-    this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
+    if (settings.enablePushProductivityDrop)
+      this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
     this.settingsForm.patchValue({showUSDValue: settings.showUSDValue});
   }
 
