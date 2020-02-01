@@ -35,9 +35,9 @@ export class SettingsService {
 
   public async save(deviceSettings: DeviceSettings) {
     //Save local storage settings
-    await this.storage.set('settings', deviceSettings);
+    await this.storage.set('settings', Object.assign({}, deviceSettings));
     //Save to firestore if possible
-    await this.saveToFcm(deviceSettings);    
+    await this.saveToFcm(Object.assign({}, deviceSettings));    
   }
   
   private async saveToFcm(deviceSettings: DeviceSettings) {

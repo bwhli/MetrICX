@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { ModalController, NavParams, AlertController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
-import { TokenSet } from '../services/settings/settings';
+import { TokenSet, Address } from '../services/settings/settings';
 
 @Component({
   selector: 'app-addTokenModal',
@@ -22,16 +22,23 @@ export class AddTokenModalPage {
  
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
-    this.Tokens = JSON.parse(JSON.stringify(settings.addresses[0].tokens)); //Clone current Token settings
+    if (settings.addresses[0].tokens)
+      this.Tokens = JSON.parse(JSON.stringify(settings.addresses[0].tokens)); //Clone current Token settings
+    else
+      this.Tokens = new TokenSet();
   }
 
   async save() {
-    debugger;
     var settings = await this.settingsService.get()
 
-    Object.keys(this.Tokens).forEach(key => {
-      this.settingsService.getActiveAddress().tokens[key].IsSelected = this.Tokens[key].IsSelected;
-    });
+    if (this.settingsService.getActiveAddress().tokens) {
+      Object.keys(this.Tokens).forEach(key => {
+        this.settingsService.getActiveAddress().tokens[key].IsSelected = this.Tokens[key].IsSelected;
+      });
+    } else {
+      this.settingsService.getActiveAddress().tokens = this.Tokens;
+    }
+
     await this.modalController.dismiss();
 
     try {
