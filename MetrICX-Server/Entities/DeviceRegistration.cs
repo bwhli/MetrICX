@@ -19,8 +19,7 @@ namespace MetrICXServerPush.Entities
         private bool? _enablePushDeposits;
         private string _enablePushProductivityDrop;
         private DateTime? _lastProductivityPushSentDate;
-        private List<Address> _addresses;
-        private List<Token> _tokens;
+        private MapArray<Address> _addresses;
 
         [FirestoreProperty]
         public string token { get => _token; set => _token = value; }
@@ -31,15 +30,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.Count > 0) 
-                    return addresses[0].address;
+                if (addresses != null && addresses._0 != null) 
+                    return addresses._0.address;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || _addresses[0].address != value;
-                addresses[0].address = value;
+                _dirty = _dirty || _addresses._0.address != value;
+                addresses._0.address = value;
             }
         }
 
@@ -69,15 +68,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.Count > 0)
-                    return addresses[0].lastIScorePushSentDate;
+                if (addresses != null && addresses._0 != null)
+                    return addresses._0.lastIScorePushSentDate;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses[0].lastIScorePushSentDate != value;
-                addresses[0].lastIScorePushSentDate = value;
+                _dirty = _dirty || addresses._0.lastIScorePushSentDate != value;
+                addresses._0.lastIScorePushSentDate = value;
             }
         }
 
@@ -97,15 +96,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.Count > 0)
-                    return addresses[0].lastDepositPushSentDate;
+                if (addresses != null && addresses._0 != null)
+                    return addresses._0.lastDepositPushSentDate;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses[0].lastDepositPushSentDate != value;
-                addresses[0].lastDepositPushSentDate = value;
+                _dirty = _dirty || addresses._0.lastDepositPushSentDate != value;
+                addresses._0.lastDepositPushSentDate = value;
             }
         }
 
@@ -135,15 +134,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.Count > 0)
-                    return addresses[0].availableRewards;
+                if (addresses != null && addresses._0 != null)
+                    return addresses._0.availableRewards;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses[0].availableRewards != value;
-                addresses[0].availableRewards = value;
+                _dirty = _dirty || addresses._0.availableRewards != value;
+                addresses._0.availableRewards = value;
             }
         }
 
@@ -153,20 +152,20 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.Count > 0)
-                    return addresses[0].balance;
+                if (addresses != null && addresses._0 != null)
+                    return addresses._0.balance;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses[0].balance != value;
-                addresses[0].balance = value;
+                _dirty = _dirty || addresses._0.balance != value;
+                addresses._0.balance = value;
             }
         }
 
         [FirestoreProperty]
-        public List<Address> addresses { 
+        public MapArray<Address> addresses { 
             get => _addresses; 
             set
             {
@@ -178,23 +177,22 @@ namespace MetrICXServerPush.Entities
         public bool Dirty {
             get 
             {
-                return _dirty || addresses.Any(address => address.Dirty);
+                return _dirty || addresses.AsEnumerator().Any(address => address.Dirty);
             }
         }
 
         public void ResetDirty()
         {
             _dirty = false;
-            foreach (var address in addresses)
+            foreach (var address in addresses.AsEnumerator())
                 address.ResetDirty();
         }
 
         private void CreateDefaultAddress()
         {
             //Some fields will auto-map to the first address in the list, so create that item
-            if (addresses == null) addresses = new List<Address>();
-            if (addresses.Count == 0) addresses.Add(new Address() { Symbol = "ICX" });
+            if (addresses == null) addresses = new MapArray<Address>();
+            addresses._1 = new Address() { Symbol = "ICX" };
         }
-
     }
 }

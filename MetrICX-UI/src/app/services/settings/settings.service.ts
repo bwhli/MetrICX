@@ -17,12 +17,12 @@ export class SettingsService {
     if (!this.deviceSettings) {
       //Load OLD Data Structure from storage
       this.deviceSettings = new DeviceSettings();
-      this.storage.get('address').then(address => this.deviceSettings.addresses[0].address = address);
+      this.storage.get('address').then(address => this.deviceSettings.addresses._0.address = address);
       this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.deviceSettings.enablePushIScoreChange = enablePushIScoreChange);
       this.storage.get('enablePushDeposits').then(enablePushDeposits => this.deviceSettings.enablePushDeposits = enablePushDeposits);
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.deviceSettings.enablePushProductivityDrop = enablePushProductivityDrop);
       this.storage.get('showUSDValue').then(showUSDValue => this.deviceSettings.showUSDValue = showUSDValue);
-      this.storage.get('tokens').then(tokens => this.deviceSettings.addresses[0].tokens = tokens);
+      this.storage.get('tokens').then(tokens => this.deviceSettings.addresses._0.tokens = tokens);
 
       //Get new data structure if it exists
       let settings = await this.storage.get('settings')
@@ -49,14 +49,14 @@ export class SettingsService {
     tokenRef.get()
       .subscribe((docSnapshot) => {
         if (docSnapshot.exists) {
-          tokenRef.update(deviceSettings);
+          tokenRef.update(Object.assign({}, deviceSettings));
         } else {
-          tokenRef.set(deviceSettings);
+          tokenRef.set(Object.assign({}, deviceSettings));
         }
     });
   }
 
   public getActiveAddress() : Address {
-    return this.deviceSettings.addresses[0];
+    return this.deviceSettings.addresses._0;
   }
 }

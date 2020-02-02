@@ -10,16 +10,16 @@ export class DeviceSettings {
         
     constructor() {
         this.addresses = new MapArray<Address>();
-        this.addresses[0] = new Address();
+        this.addresses._0 = new Address();
     }
 }
 
 export class MapArray<T> {
-    0: T;
-    1: T;
-    2: T;
-    3: T;
-    4: T;
+    _0: T;
+    _1: T;
+    _2: T;
+    _3: T;
+    _4: T;
 }
 
 export class Address {
