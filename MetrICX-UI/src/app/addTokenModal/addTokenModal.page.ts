@@ -22,8 +22,8 @@ export class AddTokenModalPage {
  
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
-    if (settings.addresses._0.tokens)
-      this.Tokens = JSON.parse(JSON.stringify(settings.addresses._0.tokens)); //Clone current Token settings
+    if (settings.addresses.p0.tokens)
+      this.Tokens = JSON.parse(JSON.stringify(settings.addresses.p0.tokens)); //Clone current Token settings
     else
       this.Tokens = new TokenSet();
   }

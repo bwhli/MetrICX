@@ -28,8 +28,8 @@ export class TokensPage {
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
  
-    if (settings && settings.addresses._0.tokens) {
-      this.loadTokenBalances(settings.addresses._0);
+    if (settings && settings.addresses.p0.tokens) {
+      this.loadTokenBalances(settings.addresses.p0);
     }
   }
 

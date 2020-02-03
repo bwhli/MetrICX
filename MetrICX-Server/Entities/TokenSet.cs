@@ -5,9 +5,10 @@ using System.Text;
 
 namespace MetrICXServerPush.Entities
 {
+    [FirestoreData]
     public class TokenSet
     {
-        private Token aCS;
+        private Token aC3;
         private Token sPORT;
         private Token sSX;
         private Token tAP;
@@ -16,7 +17,7 @@ namespace MetrICXServerPush.Entities
         private bool _dirty;
 
         [FirestoreProperty]
-        public Token ACS { get => aCS; set => aCS = value; }
+        public Token AC3 { get => aC3; set => aC3 = value; }
         [FirestoreProperty]
         public Token SPORT { get => sPORT; set => sPORT = value; }
         [FirestoreProperty]
@@ -32,14 +33,14 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                return _dirty || ACS.Dirty || SPORT.Dirty || SSX.Dirty || TAP.Dirty || VELT.Dirty || WOK.Dirty;
+                return _dirty || AC3.Dirty || SPORT.Dirty || SSX.Dirty || TAP.Dirty || VELT.Dirty || WOK.Dirty;
             }
         }
 
         internal void ResetDirty()
         {
             _dirty = false;
-            ACS.ResetDirty();
+            AC3.ResetDirty();
             SPORT.ResetDirty();
             SSX.ResetDirty();
             TAP.ResetDirty();
@@ -49,12 +50,12 @@ namespace MetrICXServerPush.Entities
 
         public IEnumerable<Token> AsEnumerator()
         {
-            yield return ACS;
-            yield return SPORT;
-            yield return SSX;
-            yield return TAP;
-            yield return VELT;
-            yield return WOK;
+            if (AC3 != null && AC3.isSelected == true) yield return AC3;
+            if (SPORT != null && SPORT.isSelected == true) yield return SPORT;
+            if (SSX != null && SSX.isSelected == true) yield return SSX;
+            if (TAP != null && TAP.isSelected == true) yield return TAP;
+            if (VELT != null && VELT.isSelected == true) yield return VELT;
+            if (WOK != null && WOK.isSelected == true) yield return WOK;
         }
     }
 }

@@ -89,6 +89,7 @@ namespace MetrICXServerPush.Entities
             }
         }
 
+
         [FirestoreProperty]
         public string balance { get => _balance; 
             set

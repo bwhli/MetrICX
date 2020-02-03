@@ -30,15 +30,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses._0 != null) 
-                    return addresses._0.address;
+                if (addresses != null && addresses.p0 != null) 
+                    return addresses.p0.address;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || _addresses._0.address != value;
-                addresses._0.address = value;
+                _dirty = _dirty || _addresses.p0.address != value;
+                addresses.p0.address = value;
             }
         }
 
@@ -68,15 +68,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses._0 != null)
-                    return addresses._0.lastIScorePushSentDate;
+                if (addresses != null && addresses.p0 != null)
+                    return addresses.p0.lastIScorePushSentDate;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses._0.lastIScorePushSentDate != value;
-                addresses._0.lastIScorePushSentDate = value;
+                _dirty = _dirty || addresses.p0.lastIScorePushSentDate != value;
+                addresses.p0.lastIScorePushSentDate = value;
             }
         }
 
@@ -96,15 +96,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses._0 != null)
-                    return addresses._0.lastDepositPushSentDate;
+                if (addresses != null && addresses.p0 != null)
+                    return addresses.p0.lastDepositPushSentDate;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses._0.lastDepositPushSentDate != value;
-                addresses._0.lastDepositPushSentDate = value;
+                _dirty = _dirty || addresses.p0.lastDepositPushSentDate != value;
+                addresses.p0.lastDepositPushSentDate = value;
             }
         }
 
@@ -134,15 +134,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses._0 != null)
-                    return addresses._0.availableRewards;
+                if (addresses != null && addresses.p0 != null)
+                    return addresses.p0.availableRewards;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses._0.availableRewards != value;
-                addresses._0.availableRewards = value;
+                _dirty = _dirty || addresses.p0.availableRewards != value;
+                addresses.p0.availableRewards = value;
             }
         }
 
@@ -152,15 +152,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses._0 != null)
-                    return addresses._0.balance;
+                if (addresses != null && addresses.p0 != null)
+                    return addresses.p0.balance;
                 return null;
             }
             set
             {
                 CreateDefaultAddress();
-                _dirty = _dirty || addresses._0.balance != value;
-                addresses._0.balance = value;
+                _dirty = _dirty || addresses.p0.balance != value;
+                addresses.p0.balance = value;
             }
         }
 
@@ -192,7 +192,7 @@ namespace MetrICXServerPush.Entities
         {
             //Some fields will auto-map to the first address in the list, so create that item
             if (addresses == null) addresses = new MapArray<Address>();
-            addresses._1 = new Address() { Symbol = "ICX" };
+            addresses.p0 = new Address() { Symbol = "ICX" };
         }
     }
 }

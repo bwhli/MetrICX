@@ -19,17 +19,17 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            var device = FirebaseGateway.GetDevice("Unknown");
-            //device.addresses._0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
+            //var device = FirebaseGateway.GetDevice("Unknown");
+            //device.addresses.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
             
-            //ProcessDeviceAddress(device, device.addresses._0);
+            //ProcessDeviceAddress(device, device.addresses.p0);
 
-            //foreach (var token in device.addresses._0.tokens)
+            //foreach (var token in device.addresses.p0.tokens)
             //{
             //    ProcessDeviceToken(device, token);
             //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.2");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.3");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -214,7 +214,7 @@ namespace MetrICXServerPush
             {
                 try
                 {
-                    var balance = IconGateway.GetBalance(device.addresses._0, token);
+                    var balance = IconGateway.GetBalance(device.addresses.p0, token);
                     if (string.IsNullOrEmpty(token.lastBalance))
                     {
                         //Store current balance without sending a notification
