@@ -22,6 +22,13 @@ namespace MetrICXServerPush.Entities
         private List<Address> _addresses;
         private MapArray<Address> _addresses_v2;
 
+        //Remember legacy fields
+        private string _legacyAddress;
+        private string _legacyBalance;
+        private DateTime? _legacylastIScorePushSentDate;
+        private DateTime? _legacylastDepositPushSentDate;
+        private string _legacyavailableRewards;
+
         [FirestoreProperty]
         public string token { get => _token; set => _token = value; }
 
@@ -33,13 +40,12 @@ namespace MetrICXServerPush.Entities
             {
                 if (addresses_v2 != null && addresses_v2.p0 != null) 
                     return addresses_v2.p0.address;
-                return null;
+                return _legacyAddress;
             }
             set
             {
-                //CreateDefaultAddress();
-                //_dirty = _dirty || _addresses_v2.p0.address != value;
-                //addresses_v2.p0.address = value;
+                _dirty = _dirty || _legacyAddress != value;
+                _legacyAddress = value;
             }
         }
 
@@ -71,13 +77,12 @@ namespace MetrICXServerPush.Entities
             {
                 if (addresses_v2 != null && addresses_v2.p0 != null)
                     return addresses_v2.p0.lastIScorePushSentDate;
-                return null;
+                return _legacylastIScorePushSentDate;
             }
             set
             {
-                //CreateDefaultAddress();
-                //_dirty = _dirty || addresses_v2.p0.lastIScorePushSentDate != value;
-                //addresses_v2.p0.lastIScorePushSentDate = value;
+                _dirty = _dirty || _legacylastIScorePushSentDate != value;
+                _legacylastIScorePushSentDate = value;
             }
         }
 
@@ -99,13 +104,12 @@ namespace MetrICXServerPush.Entities
             {
                 if (addresses_v2 != null && addresses_v2.p0 != null)
                     return addresses_v2.p0.lastDepositPushSentDate;
-                return null;
+                return _legacylastDepositPushSentDate;
             }
             set
             {
-                //CreateDefaultAddress();
-                //_dirty = _dirty || addresses_v2.p0.lastDepositPushSentDate != value;
-                //addresses_v2.p0.lastDepositPushSentDate = value;
+                _dirty = _dirty || _legacylastDepositPushSentDate != value;
+                _legacylastDepositPushSentDate = value;
             }
         }
 
@@ -137,13 +141,12 @@ namespace MetrICXServerPush.Entities
             {
                 if (addresses_v2 != null && addresses_v2.p0 != null)
                     return addresses_v2.p0.availableRewards;
-                return null;
+                return _legacyavailableRewards;
             }
             set
             {
-                //CreateDefaultAddress();
-                //_dirty = _dirty || addresses_v2.p0.availableRewards != value;
-                //addresses_v2.p0.availableRewards = value;
+                _dirty = _dirty || _legacyavailableRewards != value;
+                _legacyavailableRewards = value;
             }
         }
 
@@ -155,13 +158,12 @@ namespace MetrICXServerPush.Entities
             {
                 if (addresses_v2 != null && addresses_v2.p0 != null)
                     return addresses_v2.p0.balance;
-                return null;
+                return _legacyBalance;
             }
             set
             {
-                //CreateDefaultAddress();
-                //_dirty = _dirty || addresses_v2.p0.balance != value;
-                //addresses_v2.p0.balance = value;
+                _dirty = _dirty || _legacyBalance != value;
+                _legacyBalance = value;
             }
         }
 
@@ -203,15 +205,18 @@ namespace MetrICXServerPush.Entities
         public bool Dirty {
             get 
             {
-                return _dirty || addresses_v2.AsEnumerator().Any(address => address.Dirty);
+                return _dirty || (addresses_v2 != null && addresses_v2.AsEnumerator().Any(address => address.Dirty));
             }
         }
 
         public void ResetDirty()
         {
             _dirty = false;
-            foreach (var address in addresses_v2.AsEnumerator())
-                address.ResetDirty();
+            if (addresses_v2 != null)
+            {
+                foreach (var address in addresses_v2.AsEnumerator())
+                    address.ResetDirty();
+            }
         }
 
         //private void CreateDefaultAddress()
@@ -224,7 +229,18 @@ namespace MetrICXServerPush.Entities
 
         public void MigrateData()
         {
-
+            //This is only for really old data structure to hopefully resolve into newer structures
+            if (addresses == null && addresses_v2 == null)
+            {
+                addresses_v2 = new MapArray<Address>();
+                addresses_v2.p0 = new Address() { Symbol = "ICX" };
+                addresses_v2.p0.address = _legacyAddress;
+                addresses_v2.p0.balance = _legacyBalance;
+                addresses_v2.p0.lastIScorePushSentDate = _legacylastIScorePushSentDate;
+                addresses_v2.p0.lastDepositPushSentDate = _legacylastDepositPushSentDate;
+                addresses_v2.p0.availableRewards = _legacyavailableRewards;
+                _dirty = true;
+            }
         }
     }
 }

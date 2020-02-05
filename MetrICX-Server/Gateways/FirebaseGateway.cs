@@ -117,6 +117,7 @@ namespace MetrICXServerPush.Gateways
             var documentSnapshot = db.Collection("devices").Document(token).GetSnapshotAsync().Result;
             DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
             device.ResetDirty();
+            device.MigrateData(); 
             return device;
         }
 
