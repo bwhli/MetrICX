@@ -21,7 +21,7 @@ namespace MetrICXServerPush.Gateways
             Console.WriteLine($"[ICON] Getting available Rewards for address {address}");
             var call = new Call<IDictionary<string, BigInteger>>(Consts.ApiUrl.MainNet);
 
-            if (address.Symbol == "ICX")
+            if (address.Symbol == "ICX" || string.IsNullOrEmpty(address.Symbol))
             {
                 try
                 {
@@ -67,7 +67,7 @@ namespace MetrICXServerPush.Gateways
         public static Decimal GetBalance(Address address)
         {
             Console.WriteLine($"[ICON] Getting balance for {address.Symbol} address {address.address}");
-            if (address.Symbol == "ICX")
+            if (address.Symbol == "ICX" || string.IsNullOrEmpty(address.Symbol))
             {
                 var getBalance = IconSDK.RPCs.GetBalance.Create(Consts.ApiUrl.MainNet);
 
@@ -122,7 +122,7 @@ namespace MetrICXServerPush.Gateways
         public static PRepDelegations GetDelegatedPReps(Address address)
         {
             Console.WriteLine($"[ICON] Getting Delegated PReps {address}");
-            if (address.Symbol == "ICX")
+            if (address.Symbol == "ICX" || string.IsNullOrEmpty(address.Symbol))
             {
                 var call = new Call<PRepDelegations>(Consts.ApiUrl.MainNet);
 

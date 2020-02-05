@@ -20,11 +20,13 @@ namespace MetrICXServerPush
         static void Main(string[] args)
         {
             //var device = FirebaseGateway.GetDevice("Unknown");
-            //device.addresses.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
-            
-            //ProcessDeviceAddress(device, device.addresses.p0);
+            //FirebaseGateway.UpdateDevice(device);
 
-            //foreach (var token in device.addresses.p0.tokens)
+            //device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
+
+            //ProcessDeviceAddress(device, device.addresses_v2.p0);
+
+            //foreach (var token in device.addresses_v2.p0.tokens)
             //{
             //    ProcessDeviceToken(device, token);
             //}
@@ -74,18 +76,18 @@ namespace MetrICXServerPush
                 pushNotificationCount = 0;
                 foreach (var device in allDevices)
                 {
-                    foreach (var address in device.addresses.AsEnumerator())
+                    foreach (var address in device.addresses_v2.AsEnumerator())
                     {
                         Console.WriteLine($"[MAIN] Processing Device {count++} with address {address.Symbol} {address.address}");
                         ProcessDeviceAddress(device, address);
 
                         if (address.tokens != null)
                         {
-                            //foreach (var token in address.tokens)
-                            //{
-                            //    Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
-                            //    ProcessDeviceToken(device, token);
-                            //}
+                            foreach (var token in address.tokens)
+                            {
+                                Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
+                                ProcessDeviceToken(device, token);
+                            }
                         }
                     }
                     
@@ -214,7 +216,7 @@ namespace MetrICXServerPush
             {
                 try
                 {
-                    var balance = IconGateway.GetBalance(device.addresses.p0, token);
+                    var balance = IconGateway.GetBalance(device.addresses_v2.p0, token);
                     if (string.IsNullOrEmpty(token.lastBalance))
                     {
                         //Store current balance without sending a notification

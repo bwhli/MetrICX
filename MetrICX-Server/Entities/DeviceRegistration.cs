@@ -19,7 +19,8 @@ namespace MetrICXServerPush.Entities
         private bool? _enablePushDeposits;
         private string _enablePushProductivityDrop;
         private DateTime? _lastProductivityPushSentDate;
-        private MapArray<Address> _addresses;
+        private List<Address> _addresses;
+        private MapArray<Address> _addresses_v2;
 
         [FirestoreProperty]
         public string token { get => _token; set => _token = value; }
@@ -30,15 +31,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.p0 != null) 
-                    return addresses.p0.address;
+                if (addresses_v2 != null && addresses_v2.p0 != null) 
+                    return addresses_v2.p0.address;
                 return null;
             }
             set
             {
-                CreateDefaultAddress();
-                _dirty = _dirty || _addresses.p0.address != value;
-                addresses.p0.address = value;
+                //CreateDefaultAddress();
+                //_dirty = _dirty || _addresses_v2.p0.address != value;
+                //addresses_v2.p0.address = value;
             }
         }
 
@@ -68,15 +69,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.p0 != null)
-                    return addresses.p0.lastIScorePushSentDate;
+                if (addresses_v2 != null && addresses_v2.p0 != null)
+                    return addresses_v2.p0.lastIScorePushSentDate;
                 return null;
             }
             set
             {
-                CreateDefaultAddress();
-                _dirty = _dirty || addresses.p0.lastIScorePushSentDate != value;
-                addresses.p0.lastIScorePushSentDate = value;
+                //CreateDefaultAddress();
+                //_dirty = _dirty || addresses_v2.p0.lastIScorePushSentDate != value;
+                //addresses_v2.p0.lastIScorePushSentDate = value;
             }
         }
 
@@ -96,15 +97,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.p0 != null)
-                    return addresses.p0.lastDepositPushSentDate;
+                if (addresses_v2 != null && addresses_v2.p0 != null)
+                    return addresses_v2.p0.lastDepositPushSentDate;
                 return null;
             }
             set
             {
-                CreateDefaultAddress();
-                _dirty = _dirty || addresses.p0.lastDepositPushSentDate != value;
-                addresses.p0.lastDepositPushSentDate = value;
+                //CreateDefaultAddress();
+                //_dirty = _dirty || addresses_v2.p0.lastDepositPushSentDate != value;
+                //addresses_v2.p0.lastDepositPushSentDate = value;
             }
         }
 
@@ -134,15 +135,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.p0 != null)
-                    return addresses.p0.availableRewards;
+                if (addresses_v2 != null && addresses_v2.p0 != null)
+                    return addresses_v2.p0.availableRewards;
                 return null;
             }
             set
             {
-                CreateDefaultAddress();
-                _dirty = _dirty || addresses.p0.availableRewards != value;
-                addresses.p0.availableRewards = value;
+                //CreateDefaultAddress();
+                //_dirty = _dirty || addresses_v2.p0.availableRewards != value;
+                //addresses_v2.p0.availableRewards = value;
             }
         }
 
@@ -152,47 +153,78 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses != null && addresses.p0 != null)
-                    return addresses.p0.balance;
+                if (addresses_v2 != null && addresses_v2.p0 != null)
+                    return addresses_v2.p0.balance;
                 return null;
             }
             set
             {
-                CreateDefaultAddress();
-                _dirty = _dirty || addresses.p0.balance != value;
-                addresses.p0.balance = value;
+                //CreateDefaultAddress();
+                //_dirty = _dirty || addresses_v2.p0.balance != value;
+                //addresses_v2.p0.balance = value;
             }
         }
 
         [FirestoreProperty]
-        public MapArray<Address> addresses { 
-            get => _addresses; 
+        [Obsolete]
+        public List<Address> addresses
+        {
+            get => _addresses;
             set
             {
-                _dirty = _dirty || _addresses != value;
                 _addresses = value;
+                if (_addresses != null && _addresses.Count > 0 && _addresses_v2 == null)
+                {
+                    addresses_v2 = new MapArray<Address>();
+                    addresses_v2.p0 = _addresses[0];
+                }
+
+            }
+        }
+
+        [FirestoreProperty]
+        public MapArray<Address> addresses_v2
+        {
+            get {
+                if (_addresses_v2 == null && _addresses != null && _addresses.Count > 0)
+                {
+                    _addresses_v2 = new MapArray<Address>();
+                    _addresses_v2.p0 = _addresses[0];
+                }
+                return _addresses_v2; 
+            }
+            set
+            {
+                _dirty = _dirty || _addresses_v2 != value;
+                _addresses_v2 = value;
             }
         }
 
         public bool Dirty {
             get 
             {
-                return _dirty || addresses.AsEnumerator().Any(address => address.Dirty);
+                return _dirty || addresses_v2.AsEnumerator().Any(address => address.Dirty);
             }
         }
 
         public void ResetDirty()
         {
             _dirty = false;
-            foreach (var address in addresses.AsEnumerator())
+            foreach (var address in addresses_v2.AsEnumerator())
                 address.ResetDirty();
         }
 
-        private void CreateDefaultAddress()
+        //private void CreateDefaultAddress()
+        //{
+        //    //Some fields will auto-map to the first address in the list, so create that item
+        //    if (addresses_v2 == null) addresses_v2 = new MapArray<Address>();
+        //    //if (addresses == null) addresses = new List<Address>();
+        //    //addresses_v2.p0 = new Address() { Symbol = "ICX" };
+        //}
+
+        public void MigrateData()
         {
-            //Some fields will auto-map to the first address in the list, so create that item
-            if (addresses == null) addresses = new MapArray<Address>();
-            addresses.p0 = new Address() { Symbol = "ICX" };
+
         }
     }
 }

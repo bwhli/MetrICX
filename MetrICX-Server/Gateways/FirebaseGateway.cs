@@ -126,7 +126,7 @@ namespace MetrICXServerPush.Gateways
             {
                 
                 Console.WriteLine($"[FB] Updating Document data for {device.token}");
-                db.Collection("devices").Document(device.token).SetAsync(device).Wait();
+                db.Collection("devices").Document(device.token).SetAsync(device, SetOptions.MergeAll).Wait();
                 device.ResetDirty();
             }
         }
