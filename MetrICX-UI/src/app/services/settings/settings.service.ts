@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { DeviceSettings, Address } from './settings';
+import { DeviceSettings, Address, MapArray } from './settings';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
@@ -28,8 +28,10 @@ export class SettingsService {
       let settings = await this.storage.get('settings')
       if (settings) {
         this.deviceSettings = settings;
-        if (!this.deviceSettings.addresses_v2 && this.deviceSettings.addresses)
+        if (!this.deviceSettings.addresses_v2 && this.deviceSettings.addresses) {
+          this.deviceSettings.addresses_v2 = new MapArray<Address>();
           this.deviceSettings.addresses_v2.p0 = this.deviceSettings.addresses[0];
+        }
       }
     }
     return this.deviceSettings;
