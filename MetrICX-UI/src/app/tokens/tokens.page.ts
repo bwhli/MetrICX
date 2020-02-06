@@ -3,9 +3,8 @@ import { ToastController, NavController, ModalController  } from '@ionic/angular
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { AddTokenModalPage } from '../addTokenModal/addTokenModal.page';
-import { TokenModel } from '../services/settings/tokenModel'
-import { TokenEnum } from '../services/settings/tokens'
 import { SettingsService } from '../services/settings/settings.service';
+import { DeviceSettings, TokenSet, Address } from '../services/settings/settings';
 
 @Component({
   selector: 'app-tokens',
@@ -15,8 +14,7 @@ import { SettingsService } from '../services/settings/settings.service';
 export class TokensPage {
 
   dataReturned:any[];
-  public tokens: TokenModel[] = [];
-  public tokenEnum = TokenEnum;
+  public Tokens: TokenSet;
  
   constructor(
     private toastController: ToastController,
@@ -30,23 +28,20 @@ export class TokensPage {
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
  
-    if (settings && settings.addresses[0].tokens) {
-      let tokens = settings.addresses[0].tokens;
-      this.tokens = tokens;
-      this.loadTokenBalances(settings.addresses[0].address, tokens);
+    if (settings && settings.addresses_v2.p0.tokens) {
+      this.loadTokenBalances(settings.addresses_v2.p0);
     }
   }
 
-  async loadTokenBalances(ownerAddress: string, tokens: TokenModel[]) {
-    this.tokens = tokens;
-    if (this.tokens) {
-      const length = this.tokens.length; 
-      for(let i=0; i<length; i++) {
-        if(this.tokens[i].IsSelected) {
-          const contractAddress = this.tokens[i].ContractAddress;
-          this.tokens[i].Balance = await this.iconContract.getTokenBalance(contractAddress, ownerAddress); 
+  async loadTokenBalances(address: Address) {
+    this.Tokens = address.tokens;
+    if (this.Tokens) {
+      Object.keys(this.Tokens).forEach(async key => {
+        if(this.Tokens[key].IsSelected) {
+          const contractAddress = this.Tokens[key].ContractAddress;
+          this.Tokens[key].Balance = await this.iconContract.getTokenBalance(contractAddress, address.address); 
         }
-      }
+      });
     }
   }
 

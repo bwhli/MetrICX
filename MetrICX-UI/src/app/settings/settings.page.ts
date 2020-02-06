@@ -44,18 +44,18 @@ export class SettingsPage {
 
   async ionViewWillEnter()  {
     var settings = await this.settingsService.get();
-    if (settings.addresses && settings.addresses.length > 0) 
-      this.settingsForm.patchValue({address: settings.addresses[0].address});
+    this.settingsForm.patchValue({address: this.settingsService.getActiveAddress().address});
     this.settingsForm.patchValue({enablePushIScoreChange: settings.enablePushIScoreChange});
     this.settingsForm.patchValue({enablePushDeposits: settings.enablePushDeposits});
-    this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
+    if (settings.enablePushProductivityDrop)
+      this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
     this.settingsForm.patchValue({showUSDValue: settings.showUSDValue});
   }
 
   // Save to storage and display Toaster when done
   async save() {
     var settings = await this.settingsService.get();
-    settings.addresses[0].address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
+    this.settingsService.getActiveAddress().address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
     settings.enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
     settings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     settings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
