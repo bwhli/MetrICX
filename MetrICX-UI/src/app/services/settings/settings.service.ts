@@ -70,6 +70,7 @@ export class SettingsService {
     var address = await this.get();
 
     Object.keys(address.addresses_v2).forEach(async key =>  { 
+      console.log(address.addresses_v2[key].Address);
       count ++;  
     });
 
