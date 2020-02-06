@@ -5,6 +5,7 @@ import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-wallet',
@@ -34,21 +35,20 @@ export class WalletPage {
   public showUSDValue: boolean = true;
 
   constructor(
-    private storage: Storage,
     private toastController: ToastController,
     private iconContract: IconContractService,
     public loadingController: LoadingController,
-    public navCtrl: NavController
+    public navCtrl: NavController,
+    private settingsService: SettingsService
   ) { }
 
-  ionViewWillEnter() {
-    //Update stored address
-    this.storage.get('address').then(address => {
-      this.address = address; 
-      if (address) {
-        this.storage.get('showUSDValue').then(showUSDValue => {
-          this.showUSDValue = showUSDValue;
-        });
+  async ionViewWillEnter() {
+    var settings = await this.settingsService.get();
+ 
+    if (settings && this.settingsService.getActiveAddress().address) {
+      this.address = this.settingsService.getActiveAddress().address; 
+      if (this.address) {
+        this.showUSDValue = settings.showUSDValue;
         this.presentLoading();
         this.loadWallet();
         this.loadStake();
@@ -60,8 +60,9 @@ export class WalletPage {
       } else {
         this.navCtrl.navigateForward('/tabs/settings');
       }
-    }); 
+    }
   }
+
   async presentLoading() {
       if(!this.loaded) {
       const loading = await this.loadingController.create({

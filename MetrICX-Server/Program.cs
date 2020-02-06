@@ -19,17 +19,19 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("c7H-TUPSWYM:APA91bFV_WsMgSaz3XhWNj5y6ixppxkEAWDtkCDuRK5CnS2N-heopE3xyHD0DE9G6qZFhjb_6NWHZxJIzipRN40gWCRyl1biYEdhkVLNDAwgLKI9FHjikHZbstbT8v4DWvT1rxMmZph1");
-            //device.addresses[0].tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
-            
-            //ProcessDeviceAddress(device, device.addresses[0]);
+            //var device = FirebaseGateway.GetDevice("c3eG3hUNgVk:APA91bG__0nzUvSlf9O0VPKQOkg1sSgZAwYFByksYvYc_u9AFmt6wWwC1tSm2hxsY04NRm2Mf0zcSS6BQQO62yOikfNn8wdNNtf5HTTNeCI7vqobPvPFu3WHNBbkgB5l3IWcwpndLgGG");
+            //FirebaseGateway.UpdateDevice(device);
 
-            //foreach (var token in device.addresses[0].tokens)
+            //device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
+
+            //ProcessDeviceAddress(device, device.addresses_v2.p0);
+
+            //foreach (var token in device.addresses_v2.p0.tokens)
             //{
             //    ProcessDeviceToken(device, token);
             //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.2");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.3");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -74,14 +76,14 @@ namespace MetrICXServerPush
                 pushNotificationCount = 0;
                 foreach (var device in allDevices)
                 {
-                    foreach (var address in device.addresses)
+                    foreach (var address in device.addresses_v2.AsEnumerator())
                     {
                         Console.WriteLine($"[MAIN] Processing Device {count++} with address {address.Symbol} {address.address}");
                         ProcessDeviceAddress(device, address);
 
                         if (address.tokens != null)
                         {
-                            foreach (var token in address.tokens)
+                            foreach (var token in address.tokens.AsEnumerator())
                             {
                                 Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
                                 ProcessDeviceToken(device, token);
@@ -214,7 +216,7 @@ namespace MetrICXServerPush
             {
                 try
                 {
-                    var balance = IconGateway.GetBalance(device.addresses[0], token);
+                    var balance = IconGateway.GetBalance(device.addresses_v2.p0, token);
                     if (string.IsNullOrEmpty(token.lastBalance))
                     {
                         //Store current balance without sending a notification

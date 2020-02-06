@@ -11,7 +11,7 @@ export class FcmService {
               private platform: Platform) {}
 
   async getToken():Promise<string> {
-    let token: string;
+    let token: string = "Unknown";
 
     if (this.platform.is('android')) {
       token = await this.firebase.getToken();

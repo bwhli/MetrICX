@@ -8,11 +8,11 @@
     </ion-row>
     <ion-row>
       <ion-col>
-        <form style="width: 100%;" [formGroup]="tokenForm">
+        <form style="width: 100%;">
           <ion-list lines="full" class="modalMargin">  
             <ion-item *ngFor="let token of Tokens | keyvalue" style="font-size:small !important;">
-              <ion-checkbox  class="formCheckBox" color="secondary" formControlName="{{token.key}}"></ion-checkbox>
-              <ion-label class="formLabelCheckbox">  {{token.key}}</ion-label>
+              <ion-checkbox  class="formCheckBox" color="secondary" [(ngModel)]="token.value.IsSelected" [ngModelOptions]="{standalone: true}"></ion-checkbox>
+              <ion-label class="formLabelCheckbox">  {{token.value.Token}}</ion-label>
             </ion-item>
           </ion-list>
         </form>

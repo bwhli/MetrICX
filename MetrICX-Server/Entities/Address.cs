@@ -18,7 +18,7 @@ namespace MetrICXServerPush.Entities
         private string _availableRewards;
         private string _balance;
         private string _symbol;
-        private List<Token> _tokens;
+        private TokenSet _tokens;
 
         [FirestoreProperty]
         public string address
@@ -79,15 +79,16 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public List<Token> tokens { get => _tokens; set => _tokens = value; }
+        public TokenSet tokens { get => _tokens; set => _tokens = value; }
 
         public bool Dirty
         {
             get
             {
-                return _dirty || (tokens != null && tokens.Any(token => token.Dirty));
+                return _dirty || (tokens != null && tokens.Dirty);
             }
         }
+
 
         [FirestoreProperty]
         public string balance { get => _balance; 
@@ -118,10 +119,7 @@ namespace MetrICXServerPush.Entities
         {
             _dirty = false;
             if (tokens != null)
-            {
-                foreach (var token in tokens)
-                    token.ResetDirty();
-            }
+                tokens.ResetDirty();
         }
     }
 }
