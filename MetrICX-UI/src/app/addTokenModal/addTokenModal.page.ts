@@ -22,8 +22,8 @@ export class AddTokenModalPage {
  
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
-    if (settings.addresses_v2.p0.tokens)
-      this.Tokens = JSON.parse(JSON.stringify(settings.addresses_v2.p0.tokens)); //Clone current Token settings
+    if (settings.addresses_v2.p0.Tokens)
+      this.Tokens = JSON.parse(JSON.stringify(settings.addresses_v2.p0.Tokens)); //Clone current Token settings
     else
       this.Tokens = new TokenSet();
   }
@@ -31,12 +31,12 @@ export class AddTokenModalPage {
   async save() {
     var settings = await this.settingsService.get()
 
-    if (this.settingsService.getActiveAddress().tokens) {
+    if (this.settingsService.getActiveAddress().Tokens) {
       Object.keys(this.Tokens).forEach(key => {
-        this.settingsService.getActiveAddress().tokens[key].IsSelected = this.Tokens[key].IsSelected;
+        this.settingsService.getActiveAddress().Tokens[key].IsSelected = this.Tokens[key].IsSelected;
       });
     } else {
-      this.settingsService.getActiveAddress().tokens = this.Tokens;
+      this.settingsService.getActiveAddress().Tokens = this.Tokens;
     }
 
     await this.modalController.dismiss();
