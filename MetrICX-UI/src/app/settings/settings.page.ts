@@ -6,6 +6,7 @@ import { NavController } from '@ionic/angular';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../services/fcm/fcm.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+import { DeviceSettings, Address } from '../services/settings/settings';
 
 //not used at the moment but if we want to show the QR Canvas we can use this
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
@@ -61,6 +62,37 @@ export class SettingsPage {
     settings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     settings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
     settings.showUSDValue = this.settingsForm.controls['showUSDValue'].value;
+
+   
+    var numberOfAddresses = await this.settingsService.getNumberOfAddresses();
+    switch (numberOfAddresses)
+    {
+      case 1:
+        settings.addresses_v2.p1 = new Address();
+        settings.addresses_v2.p1.Address = this.settingsForm.controls['address'].value; 
+        break;
+      case 2:
+        settings.addresses_v2.p2 = new Address();
+        settings.addresses_v2.p2.Address = this.settingsForm.controls['address'].value; 
+        break;
+      case 3:
+        settings.addresses_v2.p3 = new Address();
+        settings.addresses_v2.p3.Address = this.settingsForm.controls['address'].value; 
+        break;
+      case 4:
+        settings.addresses_v2.p4 = new Address();
+        settings.addresses_v2.p4.Address = this.settingsForm.controls['address'].value; 
+        break;
+      case 5:
+        const toast = await this.toastController.create({
+          message: 'Only 5 address are currently supported',
+          duration: 3000,
+          position: 'middle'
+        });
+        
+        toast.present();
+        break;
+    }
 
     try {
       //Save to local storage
