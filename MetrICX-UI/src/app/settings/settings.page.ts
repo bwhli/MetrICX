@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
 import { ToastController } from '@ionic/angular';
@@ -44,7 +44,7 @@ export class SettingsPage {
 
   async ionViewWillEnter()  {
     var settings = await this.settingsService.get();
-    this.settingsForm.patchValue({address: this.settingsService.getActiveAddress().address});
+    this.settingsForm.patchValue({address: this.settingsService.getActiveAddress().Address});
     this.settingsForm.patchValue({enablePushIScoreChange: settings.enablePushIScoreChange});
     this.settingsForm.patchValue({enablePushDeposits: settings.enablePushDeposits});
     if (settings.enablePushProductivityDrop)
@@ -55,12 +55,12 @@ export class SettingsPage {
   // Save to storage and display Toaster when done
   async save() {
     var settings = await this.settingsService.get();
-    this.settingsService.getActiveAddress().address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
+
+    this.settingsService.getActiveAddress().Address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
     settings.enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
     settings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     settings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
     settings.showUSDValue = this.settingsForm.controls['showUSDValue'].value;
-    settings.addresses[0].Nickname = "TAPWallet";
 
     try {
       //Save to local storage

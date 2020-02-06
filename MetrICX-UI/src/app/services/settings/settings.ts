@@ -12,6 +12,10 @@ export class DeviceSettings {
     constructor() {
         this.addresses_v2 = new MapArray<Address>();
         this.addresses_v2.p0 = new Address();
+        this.addresses_v2.p1 = new Address();
+        this.addresses_v2.p2 = new Address();
+        this.addresses_v2.p3 = new Address();
+        this.addresses_v2.p4 = new Address();
     }
 }
 
@@ -25,13 +29,13 @@ export class MapArray<T> {
 
 export class Address {
     Nickname: string;
-    address: string;
+    Address: string;
     Symbol: string;
-    name: string;
-    tokens: TokenSet;
+    Name: string;
+    Tokens: TokenSet;
     
     constructor() {
-        this.tokens = new TokenSet();
+        this.Tokens = new TokenSet();
     }
 }
 
