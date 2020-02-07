@@ -70,8 +70,8 @@ export class SettingsService {
     Object.keys(address.addresses_v2).forEach(async key =>  { 
       if(address.addresses_v2[key].Address) {
         debugger;
-        var strippedKey: string = key.charAt(1);
-        addressObjects[strippedKey] = key;
+        var keyIndex: number = parseInt(key.charAt(1));
+        addressObjects[keyIndex] = key;
       }
     });
 
