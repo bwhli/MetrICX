@@ -69,7 +69,6 @@ export class SettingsService {
 
     Object.keys(address.addresses_v2).forEach(async key =>  { 
       if(address.addresses_v2[key].Address) {
-        debugger;
         var keyIndex: number = parseInt(key.charAt(1));
         addressObjects[keyIndex] = key;
       }
@@ -81,5 +80,6 @@ export class SettingsService {
           return 'p'+i;
       }
     }
+     return '' //no empty slots available;
   }
 }
