@@ -19,17 +19,17 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("c3eG3hUNgVk:APA91bG__0nzUvSlf9O0VPKQOkg1sSgZAwYFByksYvYc_u9AFmt6wWwC1tSm2hxsY04NRm2Mf0zcSS6BQQO62yOikfNn8wdNNtf5HTTNeCI7vqobPvPFu3WHNBbkgB5l3IWcwpndLgGG");
+            //var device = FirebaseGateway.GetDevice("fgchXFvqqyQ:APA91bHBr-iEiY0vgkAWtZ3j-grdIoW06sNUDGiwauguaJ34-7wia4OA7eXOnuiyQKzFre3rewGJxeK3NLY12-CptFASY-UuFxSMX4fsOVvqv9CR9ZgWj3VrW0PPVGvJlA4eoFBzgb6v");
             //FirebaseGateway.UpdateDevice(device);
 
-            //device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
+            ////device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
 
             //ProcessDeviceAddress(device, device.addresses_v2.p0);
 
-            //foreach (var token in device.addresses_v2.p0.tokens)
-            //{
-            //    ProcessDeviceToken(device, token);
-            //}
+            ////foreach (var token in device.addresses_v2.p0.tokens)
+            ////{
+            ////    ProcessDeviceToken(device, token);
+            ////}
 
             Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.3");
             timer.Elapsed += Timer_Elapsed;
@@ -76,17 +76,21 @@ namespace MetrICXServerPush
                 pushNotificationCount = 0;
                 foreach (var device in allDevices)
                 {
-                    foreach (var address in device.addresses_v2.AsEnumerator())
+                    Console.WriteLine($"[MAIN] Processing Device {count++}");
+                    if (device.addresses_v2 != null)
                     {
-                        Console.WriteLine($"[MAIN] Processing Device {count++} with address {address.Symbol} {address.address}");
-                        ProcessDeviceAddress(device, address);
-
-                        if (address.tokens != null)
+                        foreach (var address in device.addresses_v2.AsEnumerator())
                         {
-                            foreach (var token in address.tokens.AsEnumerator())
+                            Console.WriteLine($"[MAIN] Processing Address {address.Symbol} {address.address}");
+                            ProcessDeviceAddress(device, address);
+
+                            if (address.tokens != null)
                             {
-                                Console.WriteLine($"[MAIN] Processing Device {count++} with token {token.token} {token.contractAddress}");
-                                ProcessDeviceToken(device, token);
+                                foreach (var token in address.tokens.AsEnumerator())
+                                {
+                                    Console.WriteLine($"[MAIN] Processing Token {token.token} {token.contractAddress}");
+                                    ProcessDeviceToken(device, token);
+                                }
                             }
                         }
                     }
