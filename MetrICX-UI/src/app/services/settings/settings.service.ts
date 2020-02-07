@@ -8,6 +8,7 @@ import { Storage } from '@ionic/storage';
 export class SettingsService {
 
   private deviceSettings: DeviceSettings = null;
+  private AvailableAddresses: number = 5;
 
   constructor(private storage: Storage,
               private afs: AngularFirestore,
@@ -42,11 +43,8 @@ export class SettingsService {
     if (!deviceSettings.token) 
       deviceSettings.token = await this.fcm.getToken();
 
-   //  deviceSettings.addresses_v2.p1 = deviceSettings.addresses_v2.p0;
-  
     //Converts the class objects into pure java objects  
     let objectData = JSON.parse(JSON.stringify(deviceSettings));
-
 
     //Save local storage settings
     await this.storage.set('settings', objectData);
@@ -65,15 +63,23 @@ export class SettingsService {
     return this.deviceSettings.addresses_v2.p0;
   }
 
-  public async getNumberOfAddresses() : Promise<number> {
-    let count = 0;
+  public async getNextSlot() : Promise<string> {
+    var addressObjects = new Array(this.AvailableAddresses);
     var address = await this.get();
 
     Object.keys(address.addresses_v2).forEach(async key =>  { 
-      console.log(address.addresses_v2[key].Address);
-      count ++;  
+      if(address.addresses_v2[key].Address) {
+        debugger;
+        var strippedKey: string = key.charAt(1);
+        addressObjects[strippedKey] = key;
+      }
     });
 
-    return count;
+    for(var i = 0; i < addressObjects.length; i++) {
+      if(!addressObjects[i])
+      {
+          return 'p'+i;
+      }
+    }
   }
 }
