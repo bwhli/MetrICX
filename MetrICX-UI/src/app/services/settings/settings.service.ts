@@ -8,7 +8,7 @@ import { Storage } from '@ionic/storage';
 export class SettingsService {
 
   private deviceSettings: DeviceSettings = null;
-  private AvailableAddresses: number = 5;
+  private MaxAddresses: number = 5;
 
   constructor(private storage: Storage,
               private afs: AngularFirestore,
@@ -64,7 +64,7 @@ export class SettingsService {
   }
 
   public async getNextSlot() : Promise<string> {
-    var addressObjects = new Array(this.AvailableAddresses);
+    var addressObjects = new Array(this.MaxAddresses);
     var address = await this.get();
 
     Object.keys(address.addresses_v2).forEach(async key =>  { 
