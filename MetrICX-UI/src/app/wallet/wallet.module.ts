@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WalletPage } from './wallet.page';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   imports: [
@@ -12,8 +14,13 @@ import { TooltipModule } from 'ng2-tooltip-directive';
     IonicModule,
     CommonModule,
     FormsModule,
+    FontAwesomeModule,
     RouterModule.forChild([{ path: '', component: WalletPage }])
   ],
   declarations: [WalletPage]
 })
-export class WalletPageModule {}
+export class WalletPageModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas);
+ }
+}

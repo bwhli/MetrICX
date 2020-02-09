@@ -1,7 +1,7 @@
  import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
+import { ToastController, IonFabButton, IonToggle } from '@ionic/angular';
 import { NavController } from '@ionic/angular';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../services/fcm/fcm.service';
@@ -57,11 +57,16 @@ export class SettingsPage {
   async save() {
     var settings = await this.settingsService.get();
 
+    var nextSlot = await this.settingsService.getNextSlot();
+
     this.settingsService.getActiveAddress().Address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
     settings.enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
     settings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
     settings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
     settings.showUSDValue = this.settingsForm.controls['showUSDValue'].value;
+
+
+    alert(settings.enablePushIScoreChange);
 
     try {
       //Save to local storage

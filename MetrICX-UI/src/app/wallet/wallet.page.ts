@@ -45,9 +45,6 @@ export class WalletPage {
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
 
-    var numAddress = await this.settingsService.getNumberOfAddresses();
-    console.log(numAddress);
- 
     if (settings && this.settingsService.getActiveAddress().Address) {
       this.address = this.settingsService.getActiveAddress().Address; 
       if (this.address) {
@@ -92,7 +89,7 @@ export class WalletPage {
   async loadUnstake() {
     const networkUnstakePeriod = await this.iconContract.getNetworkStakedPeriod();
     const networkUnstakePeriodDays= this.splitTime(networkUnstakePeriod *24);
-    this.networkUnstakePeriod = networkUnstakePeriodDays[0]['d'] + 'd: ' + networkUnstakePeriodDays[0]['h'] + 'h: ' + networkUnstakePeriodDays[0]['m'] + 'm';;
+    this.networkUnstakePeriod = networkUnstakePeriodDays[0]['d'] + 'd: ' + networkUnstakePeriodDays[0]['h'] + 'h';
 
    const hours = await this.iconContract.getUnstakedPeriod(this.address);
    if (hours > 0) {
@@ -161,17 +158,20 @@ export class WalletPage {
           data: {
             labels: ['1', '2', '3', '4', '5', '6', '7','8', '9', '10', '11', '12'],
             datasets: [{
-              borderColor: '#32b8bb',
+              borderColor: '#b9efa4',
               data: data,
+              backgroundColor: '#1d2025'
           }]
         },
         options: {
           legend: {
-            display: false
+            display: false,
+            fontColor: 'white'
           },
           title: {
             display: true,
-            text: 'Monthly reward estimation (i-score claimed weekly)'
+            text: 'Monthly reward estimation (i-score claimed weekly)',
+            fontColor: '#fff'
           },
           layout: {
                     padding: {
@@ -185,11 +185,25 @@ export class WalletPage {
             yAxes: [
                 {
                     ticks: {
+                      stepSize: 5000, // this worked as expected
+                      fontColor: '#fff',
                       callback: function (value) {
                         return value.toLocaleString();
-                      }
+                      },         
+                    },
+                    gridLines: {
+                      display:false   
                     }
-                }
+                }],
+                xAxes: [
+                  {
+                      gridLines: {
+                        display:false
+                    },
+                    ticks: {
+                      fontColor: '#fff'
+                  }
+                  } 
             ]
         }     
         }

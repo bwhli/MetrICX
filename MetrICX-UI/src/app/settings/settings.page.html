@@ -1,46 +1,64 @@
 <div class="header"></div>
 
 <ion-content class="bg-class" style="z-index: 0;">
-		<ion-grid>
-				<ion-row class="ion-justify-content-start">
-	<form class="formMargin" [formGroup]="settingsForm" (ngSubmit)="save()" >
-		<ion-list lines="full" class="ion-no-margin ion-no-padding">
-			<ion-item>
-				<ion-label class="formLabel" position="floating">Enter or Scan ICX Public Address</ion-label>
-				<div style="display:flex; width:100%">
-					<ion-input type="text" class="formInput" formControlName="address" placeholder="hx5000000000000000"></ion-input>
-					<ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">
-							<fa-icon class="fa-lg" [icon]="['fas', 'qrcode']" slot="end"></fa-icon>
-					</ion-button>
-				</div>
-			</ion-item>
-			<ion-item>
-				<ion-checkbox  class="formCheckBox" color="secondary" slot="start" formControlName="enablePushIScoreChange"></ion-checkbox>
-				<ion-label class="formLabelCheckbox">Notify me when staking rewards become available</ion-label>
-			</ion-item>
-			<ion-item>
-				<ion-checkbox class="formCheckBox" color="secondary" slot="start" formControlName="enablePushDeposits"></ion-checkbox>
-				<ion-label class="formLabelCheckbox">Notify me when I receive a deposit</ion-label>
-			</ion-item>
-			<ion-item>
-				<ion-label class="formSelect">Notify me if Main P-Rep productivity drops below</ion-label>
-				<ion-select class="formSelect" value="disabled" okText="Okay" cancelText="Dismiss" formControlName="enablePushProductivityDrop">
-					<ion-select-option value="disabled">No Thanks</ion-select-option>
-					<ion-select-option value="98">98 %</ion-select-option>
-					<ion-select-option value="95">95 %</ion-select-option>
-					<ion-select-option value="90">90 %</ion-select-option>
-				</ion-select>
-			</ion-item>
-			<ion-item>
-				<ion-checkbox class="formCheckBox" color="secondary" slot="start" formControlName="showUSDValue"></ion-checkbox>
-				<ion-label class="formLabelCheckbox">Display USD value</ion-label>
-			</ion-item>
-		</ion-list>
-		<ion-button size="small" expand="full" type="submit">
-			<ion-icon slot="start" name="save"></ion-icon>
-			Save
-		</ion-button>
-	</form>
-	</ion-row>
+
+    <ion-fab slot="fixed" vertical="bottom" horizontal="start">
+		<ion-fab-button size="large" color="primary">
+		  <ion-icon name="add"></ion-icon>
+		</ion-fab-button >
+	</ion-fab>  
+	<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+		<ion-fab-button size="large" color="primary">
+		  <ion-icon class="fab-text-color" name="save" (click)="save()"></ion-icon>
+		</ion-fab-button >
+	</ion-fab>  
+
+	<ion-grid>
+		<ion-row>
+			<form class="formMargin" [formGroup]="settingsForm" (ngSubmit)="save()" >
+				<ion-item-group>
+					<ion-item-divider>
+					  <ion-label>Push Notifications</ion-label>
+					</ion-item-divider>
+				  
+					<ion-item>
+							<ion-label>Notify me when staking rewards become available</ion-label>
+							<ion-toggle color="secondary" formControlName="enablePushIScoreChange"></ion-toggle>
+					</ion-item>
+					<ion-item>
+						<ion-label>Notify me when I receive a deposit</ion-label>
+						<ion-toggle color="secondary" formControlName="enablePushDeposits"></ion-toggle>
+					</ion-item>
+					<ion-item>
+						<ion-label class="formSelect">Notify me if Main P-Rep productivity drops below</ion-label>
+						<ion-select class="formSelect" value="disabled" okText="Okay" cancelText="Dismiss" formControlName="enablePushProductivityDrop">
+							<ion-select-option value="disabled">No Thanks</ion-select-option>
+							<ion-select-option value="98">98 %</ion-select-option>
+							<ion-select-option value="95">95 %</ion-select-option>
+							<ion-select-option value="90">90 %</ion-select-option>
+						</ion-select>
+					</ion-item>
+				  </ion-item-group>
+				  <ion-item-divider>
+					<ion-label>Currency</ion-label>
+				  </ion-item-divider>
+				<ion-item>
+					<ion-label>isplay USD value</ion-label>
+					<ion-toggle color="secondary" formControlName="showUSDValue"></ion-toggle>
+				</ion-item>
+
+			<!--	<ion-item>
+					<ion-label class="formLabel" position="floating">Enter or Scan ICX Public Address</ion-label>
+					<div style="display:flex; width:100%">
+						<ion-input type="text" class="formInput" formControlName="address" placeholder="hx5000000000000000"></ion-input>
+						<ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">
+								<fa-icon class="fa-lg" [icon]="['fas', 'qrcode']" slot="end"></fa-icon>
+						</ion-button>
+					</div>
+				 </ion-item>
+				-->
+
+			</form>
+		</ion-row>
 	</ion-grid>
 </ion-content>
