@@ -1,0 +1,35 @@
+
+.dark-header {
+  --background: #000;
+  color: #fff;
+}
+
+button {
+padding: 0px !important;
+margin: 0px !important;
+}
+
+ion-label {
+  font-size: 12px !important;
+}
+
+.item-inner, .item-native {
+padding: 0px !important;
+width: 100% !important;
+
+}
+
+
+.align-text-middle {
+  display: flex;
+  align-items: center;
+}
+
+.button-row {
+  --background: #1d2025 !important;
+}
+
+
+ion-input {
+  font-size: 12px !important;
+}

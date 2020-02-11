@@ -17,6 +17,7 @@ import { FcmService } from './services/fcm/fcm.service';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { AddTokenModalModule } from './addTokenModal/addTokenModal.module';
+import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
 
 //From google firebase download the web app's config and put it into a new file called
@@ -48,6 +49,7 @@ import { SettingsService } from './services/settings/settings.service';
     IonicModule.forRoot(), 
     AppRoutingModule,
     AddTokenModalModule,
+    AddressModalModule,
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(FirebaseConfig.config),
     AngularFirestoreModule],

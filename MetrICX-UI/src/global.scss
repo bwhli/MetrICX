@@ -92,10 +92,19 @@ ion-col {
   top: 10%;
   position: absolute; 
   width:80%;
-  box-shadow: 2px 2px 2px #545454;
   padding: 10px;
   background: white;
 }
+
+.address-modal-css .modal-wrapper {
+  height: 23%;
+  top: 30%;
+  position: absolute; 
+  width:80%;
+  padding: 5px;
+  background: white;
+}
+
 
 ion-card {
   overflow: hidden;
@@ -145,7 +154,7 @@ ion-grid {
 
 .amount-value {
   background-color: #2e445b !important;
-  --color: #000;
+  --color: #fff;
   font-size: 16px;
 }
 
@@ -172,7 +181,7 @@ ion-item {
   padding:0px !important;
 }
 
-ion-list, ion-item-divider{
+ion-list, ion-item-divider {
   --ion-background-color:#1d2025;
 }
 
