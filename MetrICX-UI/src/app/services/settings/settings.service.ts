@@ -63,12 +63,34 @@ export class SettingsService {
     return this.deviceSettings.addresses_v2.p0;
   }
 
+  public async addAddressAndSave(newAddress: string, nickname: string) : Promise<boolean>{
+      var deviceSettings = await this.get();
+      var nextSlot = await this.getNextSlot();
+      debugger;
+
+      if(nextSlot) {
+        deviceSettings.addresses_v2[nextSlot] = new Address();
+        deviceSettings.addresses_v2[nextSlot].Address = newAddress;
+        deviceSettings.addresses_v2[nextSlot].nickname = nickname;
+        this.save(deviceSettings);
+        return true;
+      }
+
+      return false;
+  }
+
+  public async deleteAddress(key: string) {
+    var deviceSettings = await this.get();
+    delete deviceSettings.addresses_v2[key]; 
+    this.save(deviceSettings);
+  }
+
   public async getNextSlot() : Promise<string> {
     var addressObjects = new Array(this.MaxAddresses);
-    var address = await this.get();
+    var deviceSettings = await this.get();
 
-    Object.keys(address.addresses_v2).forEach(async key =>  { 
-      if(address.addresses_v2[key].Address) {
+    Object.keys(deviceSettings.addresses_v2).forEach(async key =>  { 
+      if(deviceSettings.addresses_v2[key].Address) {
         var keyIndex: number = parseInt(key.charAt(1));
         addressObjects[keyIndex] = key;
       }

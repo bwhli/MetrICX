@@ -1,7 +1,7 @@
  import { Component } from '@angular/core';
 import { ToastController, NavController, IonFabButton, IonToggle, ModalController } from '@ionic/angular';
 
-import { Address } from '../services/settings/settings';
+import { DeviceSettings, MapArray, Address } from '../services/settings/settings';
 
 //not used at the moment but if we want to show the QR Canvas we can use this
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
@@ -21,6 +21,10 @@ export class SettingsPage {
   public enablePushDeposits: boolean = false;
   public enablePushProductivityDrop: boolean = false;
   public showUSDValue: boolean = false;
+  public deviceSettings: DeviceSettings;
+
+  public Address: MapArray<Address>;
+
 
   constructor(
     private toastController: ToastController,
@@ -33,6 +37,10 @@ export class SettingsPage {
 
   async ionViewWillEnter()  {
     var settings = await this.settingsService.get();
+    if (settings.addresses_v2)
+        this.Address = JSON.parse(JSON.stringify(settings.addresses_v2));
+
+    this.deviceSettings = settings;
     this.enablePushIScoreChange = settings.enablePushIScoreChange;
     this.enablePushProductivityDrop = settings.enablePushProductivityDrop;
     this.showUSDValue = settings.showUSDValue;
@@ -43,8 +51,6 @@ export class SettingsPage {
        this.enablePushProductivityDrop = settings.enablePushProductivityDrop;
 
   }
-
-  
 
   // Save to storage and display Toaster when done
   async save() {
@@ -92,8 +98,9 @@ export class SettingsPage {
   }
 
 
-  async removeAddress () {
-
+  async removeAddress (key: string) {
+   this.settingsService.deleteAddress(key);
+   this.ionViewWillEnter();
   }
 
   async openModal() {
@@ -103,11 +110,10 @@ export class SettingsPage {
     });
  
     modal.onDidDismiss().then((dataReturned) => {
-      if (dataReturned !== null) {
         this.ionViewWillEnter();
-      }
     });
  
     return await modal.present();
+
   }
 }

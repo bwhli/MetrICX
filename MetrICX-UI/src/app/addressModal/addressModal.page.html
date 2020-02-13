@@ -21,12 +21,12 @@
  
         <ion-item>
           <ion-label>Wallet Name:</ion-label>
-          <ion-input type="text" placeholder="Wallet1"> </ion-input>
+          <ion-input type="text" placeholder="Wallet1" [(ngModel)]="nickName"> </ion-input>
         </ion-item>
 
         <ion-item>
           <ion-label>Address:</ion-label>
-          <ion-input type="text" placeholder="hx...."></ion-input>
+          <ion-input type="text" placeholder="hx...." [(ngModel)]="address"></ion-input>
           <ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">
               <fa-icon style="color: #1adfcb;" class="fa-lg" [icon]="['fas', 'qrcode']" slot="end"></fa-icon>
           </ion-button>
@@ -46,21 +46,4 @@
 
     </ion-row>
     </ion-grid> 
-
-
-
- <!-- <ion-row>
-    <ion-col>
-
-    </ion-col>
-  </ion-row>
-<ion-row>
-    <ion-col>
-      <ion-button size="small" expand="full" (click)="closeModal()" type="button" class="modalMargin">
-        <ion-icon slot="start" name="close"></ion-icon>
-        Cancel 
-      </ion-button> 
-    </ion-col>
-  </ion-row> -->
-
 </ion-content>
