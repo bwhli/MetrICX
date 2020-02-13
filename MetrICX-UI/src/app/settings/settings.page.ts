@@ -56,8 +56,6 @@ export class SettingsPage {
   async save() {
     var settings = await this.settingsService.get();
 
-    var nextSlot = await this.settingsService.getNextSlot();
-
     //this.settingsService.getActiveAddress().Address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
     settings.enablePushIScoreChange = this.enablePushIScoreChange;
     settings.enablePushDeposits = this.enablePushDeposits;

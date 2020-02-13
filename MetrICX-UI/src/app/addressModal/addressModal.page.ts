@@ -36,9 +36,7 @@ export class AddressModalPage {
   }
 
   async save() {
-
     var result = await this.settingsService.addAddressAndSave(this.address, this.nickName)
-
     try {
       if(!result) {
         const toast = await this.toastController.create({
@@ -55,7 +53,6 @@ export class AddressModalPage {
     }
 
     await this.modalController.dismiss();
- 
   }
 
   

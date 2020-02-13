@@ -66,7 +66,6 @@ export class SettingsService {
   public async addAddressAndSave(newAddress: string, nickname: string) : Promise<boolean>{
       var deviceSettings = await this.get();
       var nextSlot = await this.getNextSlot();
-      debugger;
 
       if(nextSlot) {
         deviceSettings.addresses_v2[nextSlot] = new Address();
