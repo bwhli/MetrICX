@@ -26,7 +26,6 @@ namespace MetrICXServerPush
 
             //ProcessDeviceAddress(device, device.addresses_v2.p0);
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.3");
             ////foreach (var token in device.addresses_v2.p0.tokens)
             ////{
             ////    ProcessDeviceToken(device, token);
