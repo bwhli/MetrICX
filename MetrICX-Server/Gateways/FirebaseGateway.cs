@@ -98,6 +98,7 @@ namespace MetrICXServerPush.Gateways
                 {
                     device = documentSnapshot.ConvertTo<DeviceRegistration>();
                     device.ResetDirty();
+                    device.MigrateData();
                 }
                 catch (Exception ex)
                 {
