@@ -89,7 +89,7 @@ export class SettingsService {
     var deviceSettings = await this.get();
 
     Object.keys(deviceSettings.addresses_v2).forEach(async key =>  { 
-      if(deviceSettings.addresses_v2[key].Address) {
+      if(deviceSettings.addresses_v2[key]) {
         var keyIndex: number = parseInt(key.charAt(1));
         addressObjects[keyIndex] = key;
       }

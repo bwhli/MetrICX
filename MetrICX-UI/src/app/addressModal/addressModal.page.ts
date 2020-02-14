@@ -35,9 +35,8 @@ export class AddressModalPage {
       this.Tokens = new TokenSet();
   }
 
-  async save() {
-    var result = await this.settingsService.addAddressAndSave(this.address, this.nickName)
-    try {
+  async save() {  
+      var result = await this.settingsService.addAddressAndSave(this.address, this.nickName)
       if(!result) {
         const toast = await this.toastController.create({
           message: 'Only a maxixum of 5 address can be stored at once',
@@ -47,15 +46,10 @@ export class AddressModalPage {
         });
       toast.present();
       }
-    }
-    catch {
-      //Do nothing if we could not update firestore, it probably due to token not being available
-    }
-
+ 
     await this.modalController.dismiss();
   }
 
-  
   async scanQR () {
     this.barcodeScanner.scan().then(
       barcodeData => {
