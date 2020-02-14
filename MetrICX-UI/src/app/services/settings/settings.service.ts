@@ -3,6 +3,7 @@ import { DeviceSettings, Address, MapArray } from './settings';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class SettingsService {
@@ -48,10 +49,10 @@ export class SettingsService {
     await this.storage.set('settings', objectData);
     //Save to firestore if possible
     await this.saveToFcm(deviceSettings.token, objectData);  
-  }
+  } 
   
   private async saveToFcm(token: string, objectData: any) {
-    this.afs.collection('devices').doc(token).set(objectData, {merge:true});
+    this.afs.collection(environment.table).doc(token).set(objectData, {merge:true});
   }
 
   public getActiveAddress() : Address {
