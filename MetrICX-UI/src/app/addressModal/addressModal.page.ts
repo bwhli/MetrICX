@@ -21,20 +21,11 @@ export class AddressModalPage {
     private modalController: ModalController,
     private settingsService: SettingsService,
     private barcodeScanner: BarcodeScanner,
-    private sharedService: SharedService,
     private toastController: ToastController   
   ) {
 
   }
  
-  async ionViewWillEnter() {
-    var settings = await this.settingsService.get();
-    if (settings.addresses_v2.p0.Tokens)
-      this.Tokens = JSON.parse(JSON.stringify(settings.addresses_v2.p0.Tokens)); //Clone current Token settings
-    else
-      this.Tokens = new TokenSet();
-  }
-
   async save() {  
       var result = await this.settingsService.addAddressAndSave(this.address, this.nickName)
       if(!result) {
