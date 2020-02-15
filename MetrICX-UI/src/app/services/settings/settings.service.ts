@@ -4,6 +4,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
 import { SharedService } from '../shared/shared.service';
+import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class SettingsService {
@@ -57,7 +58,7 @@ export class SettingsService {
   
     //Save to firestore if possible
     await this.saveToFcm(deviceSettings.token, objectData);  
-  }
+  } 
   
   private async saveToFcm(token: string, objectData: any) {
     try {

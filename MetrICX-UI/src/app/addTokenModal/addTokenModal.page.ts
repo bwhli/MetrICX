@@ -11,7 +11,7 @@ import { TokenSet, Address } from '../services/settings/settings';
 
 export class AddTokenModalPage {
   
-  public Tokens: TokenSet;
+  public Tokens;
    
   constructor(
     private modalController: ModalController,
