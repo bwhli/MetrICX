@@ -25,13 +25,13 @@ export class MapArray<T> {
 
 export class Address {
     Nickname: string;
-    Address: string;
+    address: string;
     Symbol: string;
     Name: string;
-    Tokens: TokenSet;
+    tokens: TokenSet;
     
     constructor() {
-        this.Tokens = new TokenSet();
+        this.tokens = new TokenSet();
     }
 }
 

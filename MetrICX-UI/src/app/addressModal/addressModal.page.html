@@ -26,7 +26,7 @@
 
         <ion-item>
           <ion-label>Address:</ion-label>
-          <ion-input type="text" placeholder="hx...." [(ngModel)]="address"></ion-input>
+          <ion-input pattern="hx[0-9a-h]{39}" type="text" placeholder="hx...." [(ngModel)]="address" max="42"></ion-input>
           <ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">
               <fa-icon style="color: #1adfcb;" class="fa-lg" [icon]="['fas', 'qrcode']" slot="end"></fa-icon>
           </ion-button>

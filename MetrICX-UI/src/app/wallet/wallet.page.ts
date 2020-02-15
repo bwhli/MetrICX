@@ -45,8 +45,8 @@ export class WalletPage {
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
 
-    if (settings && this.settingsService.getActiveAddress().Address) {
-      this.address = this.settingsService.getActiveAddress().Address; 
+    if (settings && this.settingsService.getActiveAddress().address) {
+      this.address = this.settingsService.getActiveAddress().address; 
       if (this.address) {
         this.showUSDValue = settings.showUSDValue;
         this.presentLoading();

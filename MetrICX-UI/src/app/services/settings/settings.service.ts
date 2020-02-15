@@ -3,6 +3,7 @@ import { DeviceSettings, Address, MapArray } from './settings';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
+import { SharedService } from '../shared/shared.service';
 
 @Injectable()
 export class SettingsService {
@@ -12,18 +13,19 @@ export class SettingsService {
 
   constructor(private storage: Storage,
               private afs: AngularFirestore,
-              private fcm: FcmService) { }
+              private fcm: FcmService,
+              private sharedService: SharedService) { }
 
   public async get(): Promise<DeviceSettings> {
     if (!this.deviceSettings) {
       //Load OLD Data Structure from storage
       this.deviceSettings = new DeviceSettings();
-      this.storage.get('address').then(address => this.deviceSettings.addresses_v2.p0.Address = address);
+      this.storage.get('address').then(address => this.deviceSettings.addresses_v2.p0.address = address);
       this.storage.get('enablePushIScoreChange').then(enablePushIScoreChange => this.deviceSettings.enablePushIScoreChange = enablePushIScoreChange);
       this.storage.get('enablePushDeposits').then(enablePushDeposits => this.deviceSettings.enablePushDeposits = enablePushDeposits);
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.deviceSettings.enablePushProductivityDrop = enablePushProductivityDrop);
       this.storage.get('showUSDValue').then(showUSDValue => this.deviceSettings.showUSDValue = showUSDValue);
-      this.storage.get('tokens').then(tokens => this.deviceSettings.addresses_v2.p0.Tokens = tokens);
+      this.storage.get('tokens').then(tokens => this.deviceSettings.addresses_v2.p0.tokens = tokens);
 
 
       //Get new data structure if it exists
@@ -40,14 +42,19 @@ export class SettingsService {
   }
 
   public async save(deviceSettings: DeviceSettings) {
+
     if (!deviceSettings.token) 
       deviceSettings.token = await this.fcm.getToken();
+
+    await this.sharedService.changeData(deviceSettings);
 
     //Converts the class objects into pure java objects  
     let objectData = JSON.parse(JSON.stringify(deviceSettings));
 
     //Save local storage settings
     await this.storage.set('settings', objectData);
+    //emit changes to observable function
+  
     //Save to firestore if possible
     await this.saveToFcm(deviceSettings.token, objectData);  
   }
@@ -69,8 +76,8 @@ export class SettingsService {
 
       if(nextSlot) {
         deviceSettings.addresses_v2[nextSlot] = new Address();
-        deviceSettings.addresses_v2[nextSlot].Address = newAddress;
-        deviceSettings.addresses_v2[nextSlot].nickname = nickname;
+        deviceSettings.addresses_v2[nextSlot].address = newAddress;
+        deviceSettings.addresses_v2[nextSlot].Nickname = nickname;
         this.save(deviceSettings);
         return true;
       }

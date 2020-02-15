@@ -28,18 +28,18 @@ export class TokensPage {
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
  
-    if (settings && settings.addresses_v2.p0.Tokens) {
+    if (settings && settings.addresses_v2.p0.tokens) {
       this.loadTokenBalances(settings.addresses_v2.p0);
     }
   }
 
   async loadTokenBalances(address: Address) {
-    this.Tokens = address.Tokens;
+    this.Tokens = address.tokens;
     if (this.Tokens) {
       Object.keys(this.Tokens).forEach(async key => {
         if(this.Tokens[key].IsSelected) {
           const contractAddress = this.Tokens[key].ContractAddress;
-          this.Tokens[key].Balance = await this.iconContract.getTokenBalance(contractAddress, address.Address); 
+          this.Tokens[key].Balance = await this.iconContract.getTokenBalance(contractAddress, address.address); 
         }
       });
     }

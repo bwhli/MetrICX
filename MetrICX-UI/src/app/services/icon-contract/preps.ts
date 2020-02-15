@@ -11,6 +11,8 @@ export class PrepDetails {
     stake: number;
     status: number;
     totalBlocks: number;
+    details: string;
+    imageUrl: string;
     validatedBlocks: number;
     rank: number;
 }
