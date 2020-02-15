@@ -2,6 +2,10 @@ import { Injectable } from '@angular/core';
 import IconService, { HttpProvider, IconBuilder, IconAmount, IconConverter } from 'icon-sdk-js';
 const { CallBuilder } = IconBuilder;
 import { PReps, PrepDetails, DelegatedPRep, Delegations} from './preps';
+import { HttpService } from '../http-service/http.service';
+import { debug } from 'util';
+import { async } from '@angular/core/testing';
+
 @Injectable({
   providedIn: 'root'
 })
@@ -9,6 +13,9 @@ export class IconContractService {
   private httpProvider = new HttpProvider('https://ctz.solidwallet.io/api/v3');
   private iconService = new IconService(this.httpProvider);
   private rPoint = 0.7;
+  private logoUrl: string = "";
+
+  constructor(private httpService: HttpService) {}
 
   public toBigInt(hexValue): number {
       return IconConverter.toNumber(IconAmount.of(hexValue, IconAmount.Unit.LOOP).convertUnit(IconAmount.Unit.ICX));
@@ -132,6 +139,7 @@ public async getClaimableRewards(address: string) {
       rep.delegated = this.toBigInt(item.delegated);
       rep.grade = this.toInt(item.grade);
       rep.irep = this.toBigInt(item.irep);
+      rep.details = item.details;
       rep.irepUpdateBlockHeight = this.toInt(item.irepUpdateBlockHeight);
       rep.lastGenerateBlockHeight = this.toInt(item.lastGenerateBlockHeight);
       rep.stake = this.toInt(item.stake);
@@ -139,9 +147,10 @@ public async getClaimableRewards(address: string) {
       rep.totalBlocks = this.toInt(item.totalBlocks);
       rep.validatedBlocks = this.toInt(item.validatedBlocks);
       rep.rank = i+1;
+    
       preps.preps.push(rep);
     }
-    
+
     return preps;
   }
 
@@ -191,5 +200,18 @@ public async getClaimableRewards(address: string) {
         // Check the wallet balance
     const bigBalance = await this.iconService.call(call).execute();
     return this.toBigInt(bigBalance);
+  }
+
+
+  //TODO - not a finished product yet (not in use right now)
+  public async GetImageUrl(details: string) {
+     this.httpService.get(details).subscribe((data) => {
+      Object.keys(data["representative"]["logo"]["logo_256"]).forEach((function eachKey(key)
+      { 
+        return (data["representative"]["logo"]["logo_256"]);
+      }));
+    });
+
+        return this.logoUrl;
   }
 }
