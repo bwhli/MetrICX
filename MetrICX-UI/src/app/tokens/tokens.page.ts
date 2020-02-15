@@ -14,7 +14,7 @@ import { DeviceSettings, TokenSet, Address } from '../services/settings/settings
 export class TokensPage {
 
   dataReturned:any[];
-  public Tokens: TokenSet;
+  public Tokens;
  
   constructor(
     private toastController: ToastController,
