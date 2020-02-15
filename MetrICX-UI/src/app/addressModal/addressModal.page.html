@@ -1,0 +1,49 @@
+
+<ion-content class="bg-class" style="z-index: 0;">
+
+  <ion-grid>
+		<ion-row>
+			<ion-item-divider>
+   
+          <ion-grid>
+            <ion-row>
+              <ion-col class="align-text-middle">
+                <ion-label>Add New Address</ion-label>
+              </ion-col>
+              <ion-col class="ion-text-end ion-no-padding ion-no-margin">
+                <ion-button shape="round" fill="clear" size="small" (click)="closeModal()">
+                  <fa-icon class="fa-lg" [icon]="['fas', 'times-circle']" slot="end"></fa-icon>
+                </ion-button>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+      </ion-item-divider>
+ 
+        <ion-item>
+          <ion-label>Wallet Name:</ion-label>
+          <ion-input type="text" placeholder="Wallet1" [(ngModel)]="nickName" max="20"> </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Address:</ion-label>
+          <ion-input pattern="hx[0-9a-h]{39}" type="text" placeholder="hx...." [(ngModel)]="address" max="42"></ion-input>
+          <ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">
+              <fa-icon style="color: #1adfcb;" class="fa-lg" [icon]="['fas', 'qrcode']" slot="end"></fa-icon>
+          </ion-button>
+        </ion-item>
+
+        <ion-item-divider>
+           <ion-grid>
+              <ion-row class="ion-no-padding ion-no-margin">
+                <ion-col class="ion-text-end ion-no-padding ion-no-margin">
+                  <ion-button shape="round" fill="clear" size="small" (click)="save()">
+                    <fa-icon class="fa-lg" [icon]="['fas', 'save']" slot="end"></fa-icon>
+                  </ion-button>
+                </ion-col>
+              </ion-row>
+            </ion-grid>
+       </ion-item-divider>
+
+    </ion-row>
+    </ion-grid> 
+</ion-content>

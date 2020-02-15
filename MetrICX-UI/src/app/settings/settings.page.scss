@@ -1,45 +1,30 @@
 
-.formInput {
-    font-size:14px !important;
-}
-
-.formLabelCheckbox {
-    font-size: 12px !important;
-    color: #000;
-}
-
-.formCheckBox {
-    margin-right: 4px !important;
-}
-
-.formLabel {
- font-size: 16px !important;
- color: #32b8bb;
-}
-
-.formSelect {
-    font-size: 12px !important;
-}
 
 .dark-header {
     --background: #000;
     color: #fff;
   }
 
-.bg-class{
-  --background: #F5F5F5;
-}
-
-.formMargin {
-  margin-right: 4% !important; 
-  margin-left: 4% !important;
-  padding:0px !important;
-  width:100%;
-}
-
 button {
   padding: 0px !important;
-  margin-right: 4% !important; 
-  
+  margin: 0px !important;
 }
+
+ion-label {
+  font-size: 12px !important;
+}
+
+.item-inner, .item-native {
+  padding: 0px !important;
+  width: 100% !important;
+
+}
+
+.align-text-middle {
+  display: flex;
+  align-items: center;
+}
+
+.toast-container{ background:#1d2025; } .toast-md .toast-message{ color: #cf6679; }
+
 

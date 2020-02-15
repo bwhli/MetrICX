@@ -9,24 +9,18 @@
             refreshingText="Refreshing...">
           </ion-refresher-content>
        </ion-refresher>
-
-
+   
     <ion-grid>
       <ion-row>
         <ion-col size="{{rowSize}}">
             <ion-card>
                 <ion-card-title class="card-title-primary">
-                        Available
-                        <span class="tooltip" tooltip="The total amount of liquid ICX held in your wallet at that moment. 
-                                                       This figure does not include currently-staked ICX, as it is not liquid." 
-                                                    placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                                   <ion-icon name="information-circle-outline"></ion-icon> 
-                        </span>
+                   Available
                 </ion-card-title>
                   <ion-card-content class="card-content">
                       <ion-row>
                           <ion-col size="{{colSize}}" text-left>
-                            <ion-icon name="wallet" class="iconSize"></ion-icon>     
+                            <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'wallet']"></fa-icon>
                           </ion-col>
                           <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
                               {{balance | number : '1.2-2'}} <small>ICX</small>
@@ -40,14 +34,11 @@
               <ion-card>
                   <ion-card-title  class="card-title-primary">
                           Unstake Timer
-                          <span class="tooltip" tooltip="If you have unstaked, this box will provide a timer for when your ICX will be available" placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                              <ion-icon name="information-circle-outline"></ion-icon> 
-                          </span>
                   </ion-card-title >
                     <ion-card-content class="card-content">
                         <ion-row>
                             <ion-col size="3" text-left>
-                              <ion-icon name="calendar" class="iconSize"></ion-icon>
+                              <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'calendar-alt']"></fa-icon>
                             </ion-col>
                             <ion-col text-right>
                                 {{unstakePeriod}}
@@ -58,19 +49,15 @@
           </ion-col>
         </ion-row>
         <ion-row>
-            <ion-col>
+            <ion-col size="7">
                 <ion-card>
                     <ion-card-title  class="card-title-primary">
                             Staked
-                            <span class="tooltip" tooltip="The total amount of ICX you've staked with this address" 
-                                placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                                <ion-icon name="information-circle-outline"></ion-icon> 
-                            </span>
                     </ion-card-title >
                       <ion-card-content class="card-content">
                           <ion-row>
-                              <ion-col size="2" text-left>
-                                  <img src="assets/icx_black.png" alt="ICX"/>       
+                              <ion-col size="3" text-left>
+                                <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'lock']"></fa-icon> 
                               </ion-col>
                               <ion-col class="amount-value" text-right>
                                   {{stake | number : '1.2-2'}} <small>ICX</small>
@@ -80,66 +67,134 @@
                       </ion-card-content>
                     </ion-card>
             </ion-col>
+            <ion-col size="5">
+              <ion-card>
+                  <ion-card-title  class="card-title-primary">
+                          Unclaimed   
+                  </ion-card-title>
+                    <ion-card-content class="card-content">
+                        <ion-row>
+                          <ion-col size="3" text-left>
+                            <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'parachute-box']"></fa-icon> 
+                          </ion-col>
+                            <ion-col class="amount-value" text-right>
+                               {{claim | number : '1.2-2'}} <small>ICX</small>
+                                <div class="amount-value-usd" *ngIf="showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
+                            </ion-col>
+                          </ion-row>       
+                    </ion-card-content>
+                  </ion-card>
+            </ion-col>
         </ion-row>
 
         <ion-row>
           <ion-col>
                   <ion-card>
                       <ion-card-title  class="card-title-primary">
-                              Total / (unclaimed)   
-                          <span class="tooltip" tooltip="This figure includes the total amount of ICX you own (both liquid and staked), 
-                                                          as well as the total amount of ICX that is currently unclaimed in the form of your I_Score."                               
-                              placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                              <ion-icon name="information-circle-outline"></ion-icon> 
-                          </span>
+                         Total  
                       </ion-card-title>
                         <ion-card-content class="card-content">
                             <ion-row>
                                 <ion-col size="2" text-left>
-                                    <img src="assets/icx_black.png" alt="ICX"/>       
+                                    <img src="assets/icx_vibrant.png" alt="ICX"/>       
                                 </ion-col>
                                 <ion-col class="amount-value" text-right>
-                                    {{(stake+balance) | number : '1.2-2'}} (+{{claim | number : '1.2-2'}}) <small>ICX</small>
-                                    <div class="amount-value-usd" *ngIf="showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} (+{{claim / USDValue | number : '1.2-2'}})  <small>USD</small></div>
+                                    {{(stake+balance) | number : '1.2-2'}} <small>ICX</small>
+                                    <div class="amount-value-usd" *ngIf="showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} <small>USD</small></div>
                                 </ion-col>
                               </ion-row>       
                         </ion-card-content>
                       </ion-card>
-              </ion-col>
+                </ion-col>
             </ion-row>
             <ion-row>
               <ion-col>
                   <ion-card>
-                      <ion-card-title class="card-title-primary">
-                             Staking reward overview
+                      <ion-card-title class="card-title-inverted">
+                             Compounding reward estimate
                              <span class="tooltip" tooltip="View the projected amount of ICX you'd generate via compound interest at the current reward rate. 
                                                             Currently, this is calculated on a weekly basis, but presented as a monthly figure."                               
                               placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
                               <ion-icon name="information-circle-outline"></ion-icon> 
                           </span> 
                       </ion-card-title>
-                        <ion-card-content class="card-content-chart">
+                        <ion-card-content class="card-content-inverted">
                           <canvas #barCanvas></canvas> 
                         </ion-card-content>
-                        <ion-row class="card-footer">
-                          <ion-col>
-                                <ion-row>
-                                    <ion-col class="ion-text-start"><strong>Monthly: </strong> <br />
-                                      <ion-badge class="badge" color="primary">~{{monthlyICX | number : '1.2-2'}} <small>ICX</small></ion-badge></ion-col>
-                                    <ion-col class="ion-text-end"><strong>Yearly: </strong> <br />
-                                      <ion-badge class="badge" color="primary">~{{yearlyICX  | number : '1.2-2'}} <small>ICX</small> </ion-badge></ion-col>
-                                <hr />
-                                </ion-row>
-                                  <ion-row>
-                                      <ion-col class="ion-text-start"><strong>Unstaking Period:</strong> <br />
-                                        <ion-badge class="badge" color="success">~{{networkUnstakePeriod}}</ion-badge>  </ion-col>
-                                      <ion-col class="ion-text-end"><strong>Reward Rate: </strong> <br />
-                                        <ion-badge class="badge" color="danger">{{rewardRate |  number : '1.2-2'}}% </ion-badge></ion-col>
-                                  </ion-row>
-                            </ion-col>
-                        </ion-row>
                       </ion-card>
               </ion-col>
             </ion-row>
+            <ion-row>
+               <ion-col size="6">
+                <ion-card>
+                  <ion-card-title class="card-title-inverted">
+                    Monthly
+                  </ion-card-title>
+                    <ion-card-content class="rewardInfoInverted ion-text-end">
+                      <ion-row>
+                         <ion-col class="rewardInfoICXInverted ion-text-end">
+                          ~ {{monthlyICX | number : '1.2-2'}} <small>ICX</small>
+                          <div class="amount-value-usd" *ngIf="showUSDValue">{{monthlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                        </ion-col>
+                      </ion-row>       
+                    </ion-card-content>
+                </ion-card>
+               </ion-col>
+               
+               <ion-col size="6">
+                <ion-card>
+                  <ion-card-title class="card-title-inverted">
+                     Yearly
+                  </ion-card-title>
+                  <ion-card-content class="rewardInfoInverted ion-text-end">
+                    <ion-row>
+                      <ion-col class="rewardInfoICXInverted ion-text-end">
+                        ~ {{yearlyICX | number : '1.2-2'}} <small>ICX</small>
+                        <div class="amount-value-usd" *ngIf="showUSDValue">{{yearlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                      </ion-col>
+                    </ion-row>       
+                  </ion-card-content>
+                </ion-card>
+               </ion-col>
+            
+            </ion-row>
+            <ion-row>
+              <ion-col size="6">
+               <ion-card>
+                 <ion-card-title class="card-title-primary">
+                   Reward Rate
+                 </ion-card-title>
+                   <ion-card-content class="rewardInfo ion-text-end">
+                    <ion-row>
+                      <ion-col size="3" class="ion-text-start">
+                        <fa-icon style="padding:2px; color: #1adfcb;"  [icon]="['fas', 'percent']"></fa-icon>     
+                      </ion-col>
+                      <ion-col class="rewardInfo ion-text-end">
+                          {{rewardRate | number : '1.2-2'}}
+                      </ion-col>
+                    </ion-row>  
+                   </ion-card-content>
+               </ion-card>
+              </ion-col>
+              
+              <ion-col size="6">
+               <ion-card>
+                 <ion-card-title class="card-title-primary">
+                  Unstaking period
+                 </ion-card-title>
+                   <ion-card-content class="rewardInfo ion-text-end">
+                    <ion-row>
+                      <ion-col size="3" class="ion-text-start">
+                        <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'calendar-alt']"></fa-icon>     
+                      </ion-col>
+                      <ion-col class="rewardInfo  ion-text-end">
+                          {{networkUnstakePeriod }}
+                      </ion-col>
+                    </ion-row>  
+                   </ion-card-content>
+               </ion-card>
+              </ion-col>
+           </ion-row>
     </ion-grid>
+   
   </ion-content>   

@@ -31,7 +31,7 @@ export class AddTokenModalPage {
   async save() {
     var settings = await this.settingsService.get()
 
-    if (this.settingsService.getActiveAddress().tokens) {
+    if (this.settingsService.getActiveAddress().tokens) { 
       Object.keys(this.Tokens).forEach(key => {
         this.settingsService.getActiveAddress().tokens[key].IsSelected = this.Tokens[key].IsSelected;
       });

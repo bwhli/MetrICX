@@ -1,15 +1,12 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Storage } from '@ionic/storage';
-import { ToastController } from '@ionic/angular';
-import { NavController } from '@ionic/angular';
-import { AngularFirestore } from 'angularfire2/firestore';
-import { FcmService } from '../services/fcm/fcm.service';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner/ngx';
+ import { Component } from '@angular/core';
+import { ToastController, NavController, IonFabButton, IonToggle, ModalController } from '@ionic/angular';
+
+import { DeviceSettings, MapArray, Address } from '../services/settings/settings';
 
 //not used at the moment but if we want to show the QR Canvas we can use this
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { SettingsService } from '../services/settings/settings.service';
+import { AddressModalPage } from '../addressModal/addressModal.page';
 
 @Component({
   selector: 'app-settings',
@@ -17,54 +14,55 @@ import { SettingsService } from '../services/settings/settings.service';
   styleUrls: ['settings.page.scss']
 })
 export class SettingsPage {
-  public settingsForm: FormGroup;
   //this is used for drawing the QR Code
   public elementType: 'url' | 'canvas' | 'img' = 'canvas';
 
+  public enablePushIScoreChange: boolean = false;
+  public enablePushDeposits: boolean = false;
+  public enablePushProductivityDrop: boolean = false;
+  public showUSDValue: boolean = false;
+  public deviceSettings: DeviceSettings;
+
+  public Address: MapArray<Address>;
+
+
   constructor(
-    private formBuilder: FormBuilder,
-    private storage: Storage,
     private toastController: ToastController,
     public navCtrl: NavController,
-
-    private fcm: FcmService,
-    private barcodeScanner: BarcodeScanner,   
+    public modalController: ModalController,
     private settingsService: SettingsService, 
    
     //this will be used if we want to show the QR Code as well
-    private base64ToGallery: Base64ToGallery) {
-    this.settingsForm = formBuilder.group({
-      address: [null],
-      enablePushIScoreChange: [false],
-      enablePushDeposits: [false],
-      enablePushProductivityDrop: ["disabled"],
-      showUSDValue: [false]}
-    );
-  }
+    private base64ToGallery: Base64ToGallery) { }
 
   async ionViewWillEnter()  {
     var settings = await this.settingsService.get();
-    this.settingsForm.patchValue({address: this.settingsService.getActiveAddress().address});
-    this.settingsForm.patchValue({enablePushIScoreChange: settings.enablePushIScoreChange});
-    this.settingsForm.patchValue({enablePushDeposits: settings.enablePushDeposits});
+    if (settings.addresses_v2)
+        this.Address = JSON.parse(JSON.stringify(settings.addresses_v2));
+
+    this.deviceSettings = settings;
+    this.enablePushIScoreChange = settings.enablePushIScoreChange;
+    this.enablePushProductivityDrop = settings.enablePushProductivityDrop;
+    this.showUSDValue = settings.showUSDValue;
+
     if (settings.enablePushProductivityDrop)
-      this.settingsForm.patchValue({enablePushProductivityDrop: settings.enablePushProductivityDrop});
-    this.settingsForm.patchValue({showUSDValue: settings.showUSDValue});
+       this.enablePushProductivityDrop = settings.enablePushProductivityDrop;
+
   }
 
   // Save to storage and display Toaster when done
   async save() {
     var settings = await this.settingsService.get();
-    this.settingsService.getActiveAddress().address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
-    settings.enablePushIScoreChange = this.settingsForm.controls['enablePushIScoreChange'].value;
-    settings.enablePushDeposits = this.settingsForm.controls['enablePushDeposits'].value;
-    settings.enablePushProductivityDrop = this.settingsForm.controls['enablePushProductivityDrop'].value;
-    settings.showUSDValue = this.settingsForm.controls['showUSDValue'].value;
+
+    settings.enablePushIScoreChange = this.enablePushIScoreChange;
+    settings.enablePushDeposits = this.enablePushDeposits;
+    settings.enablePushProductivityDrop = this.enablePushProductivityDrop;
+    settings.showUSDValue = this.showUSDValue;
+
 
     try {
       //Save to local storage
       this.settingsService.save(settings);
-      this.presentToast();
     }
     catch {
       //firebase failed most likely because of permissions issues for push notifications
@@ -94,12 +92,23 @@ export class SettingsPage {
     toast.present();
   }
 
-  async scanQR () {
-    this.barcodeScanner.scan().then(
-      barcodeData => {
-       this.settingsForm.patchValue({address: barcodeData.text});
-      }
-    );
+
+  async removeAddress (key: string) {
+   this.settingsService.deleteAddress(key);
+   this.ionViewWillEnter();
   }
 
+  async openModal() {
+    const modal = await this.modalController.create({
+      component: AddressModalPage,
+      cssClass: 'address-modal-css'
+    });
+ 
+    modal.onDidDismiss().then((dataReturned) => {
+        this.ionViewWillEnter();
+    });
+ 
+    return await modal.present();
+
+  }
 }

@@ -24,9 +24,10 @@ export class MapArray<T> {
 }
 
 export class Address {
+    Nickname: string;
     address: string;
     Symbol: string;
-    name: string;
+    Name: string;
     tokens: TokenSet;
     
     constructor() {

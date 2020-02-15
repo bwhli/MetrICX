@@ -3,16 +3,19 @@ import { DeviceSettings, Address, MapArray } from './settings';
 import { AngularFirestore } from 'angularfire2/firestore';
 import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
+import { SharedService } from '../shared/shared.service';
 import { environment } from 'src/environments/environment';
 
 @Injectable()
 export class SettingsService {
 
   private deviceSettings: DeviceSettings = null;
+  private MaxAddresses: number = 5;
 
   constructor(private storage: Storage,
               private afs: AngularFirestore,
-              private fcm: FcmService) { }
+              private fcm: FcmService,
+              private sharedService: SharedService) { }
 
   public async get(): Promise<DeviceSettings> {
     if (!this.deviceSettings) {
@@ -24,6 +27,7 @@ export class SettingsService {
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.deviceSettings.enablePushProductivityDrop = enablePushProductivityDrop);
       this.storage.get('showUSDValue').then(showUSDValue => this.deviceSettings.showUSDValue = showUSDValue);
       this.storage.get('tokens').then(tokens => this.deviceSettings.addresses_v2.p0.tokens = tokens);
+
 
       //Get new data structure if it exists
       let settings = await this.storage.get('settings')
@@ -39,23 +43,72 @@ export class SettingsService {
   }
 
   public async save(deviceSettings: DeviceSettings) {
+
     if (!deviceSettings.token) 
       deviceSettings.token = await this.fcm.getToken();
+
+    await this.sharedService.changeData(deviceSettings);
 
     //Converts the class objects into pure java objects  
     let objectData = JSON.parse(JSON.stringify(deviceSettings));
 
     //Save local storage settings
     await this.storage.set('settings', objectData);
+    //emit changes to observable function
+  
     //Save to firestore if possible
     await this.saveToFcm(deviceSettings.token, objectData);  
   } 
   
   private async saveToFcm(token: string, objectData: any) {
-    this.afs.collection(environment.table).doc(token).set(objectData, {merge:true});
+    try {
+        this.afs.collection('devices').doc(token).set(objectData, {merge:true});
+    }
+    catch {}
   }
 
   public getActiveAddress() : Address {
     return this.deviceSettings.addresses_v2.p0;
+  }
+
+  public async addAddressAndSave(newAddress: string, nickname: string) : Promise<boolean>{
+      var deviceSettings = await this.get();
+      var nextSlot = await this.getNextSlot();
+
+      if(nextSlot) {
+        deviceSettings.addresses_v2[nextSlot] = new Address();
+        deviceSettings.addresses_v2[nextSlot].address = newAddress;
+        deviceSettings.addresses_v2[nextSlot].Nickname = nickname;
+        this.save(deviceSettings);
+        return true;
+      }
+
+      return false;
+  }
+
+  public async deleteAddress(key: string) {
+    var deviceSettings = await this.get();
+    delete deviceSettings.addresses_v2[key]; 
+    this.save(deviceSettings);
+  }
+
+  public async getNextSlot() : Promise<string> {
+    var addressObjects = new Array(this.MaxAddresses);
+    var deviceSettings = await this.get();
+
+    Object.keys(deviceSettings.addresses_v2).forEach(async key =>  { 
+      if(deviceSettings.addresses_v2[key]) {
+        var keyIndex: number = parseInt(key.charAt(1));
+        addressObjects[keyIndex] = key;
+      }
+    });
+
+    for(var i = 0; i < addressObjects.length; i++) {
+      if(!addressObjects[i])
+      {
+          return 'p'+i;
+      }
+    }
+     return '' //no empty slots available;
   }
 }

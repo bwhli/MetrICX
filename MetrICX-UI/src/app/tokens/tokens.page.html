@@ -1,6 +1,13 @@
 <div class="header"></div>
 
   <ion-content class="bg-class">
+      <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+        <ion-fab-button size="large" color="primary" (click)="openModal()">
+          <ion-icon name="add"></ion-icon>
+        </ion-fab-button >
+      </ion-fab>  
+
+
       <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="50">
           <ion-refresher-content
             pullingIcon="arrow-dropdown"
@@ -12,27 +19,19 @@
 
     <ion-grid>
       <ion-row>
-        <ion-col text-center>
-            <ion-button expand="full" size="small" type="Add" class="width" (click)="openModal()">
-              <fa-icon style="padding-right:5px" [icon]="['fas', 'plus']"></fa-icon>
-               Add Token
-            </ion-button>
-        </ion-col>
-      </ion-row>
-      <ion-row>
         <ion-col>
             <ion-card>
                 <ion-card-title class="card-title-primary">  
                   <ion-row>
-                    <ion-col size="4" text-left>
-                      <fa-icon [icon]="['fas', 'coins']"></fa-icon>
+                    <ion-col size="4" class="ion-text-start">
+                      <fa-icon size="2x" style="color: #1adfcb;" [icon]="['fas', 'coins']"></fa-icon>
                     </ion-col>
-                    <ion-col size="8" text-right>
-                     Balance
+                    <ion-col style="font-size: 16px !important;" size="8" class="ion-text-end">
+                      Balance
                     </ion-col>
                 </ion-row>  
                 </ion-card-title>
-                <ion-card-content class="card-content">
+                <ion-card-content class="card-content" style="padding:0px !important">
                   <ion-row *ngFor="let token of Tokens | keyvalue">
                     <ion-col *ngIf="token.value.IsSelected" size="4" text-left>
                       {{token.value.Token}}
