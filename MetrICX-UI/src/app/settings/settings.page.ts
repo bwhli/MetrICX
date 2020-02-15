@@ -45,8 +45,6 @@ export class SettingsPage {
     this.enablePushProductivityDrop = settings.enablePushProductivityDrop;
     this.showUSDValue = settings.showUSDValue;
 
-   //this.settingsForm.patchValue({address: this.settingsService.getActiveAddress().Address});
-
     if (settings.enablePushProductivityDrop)
        this.enablePushProductivityDrop = settings.enablePushProductivityDrop;
 
@@ -56,7 +54,6 @@ export class SettingsPage {
   async save() {
     var settings = await this.settingsService.get();
 
-    //this.settingsService.getActiveAddress().Address = this.settingsForm.controls['address'].value; //This would need refactoring with new UI
     settings.enablePushIScoreChange = this.enablePushIScoreChange;
     settings.enablePushDeposits = this.enablePushDeposits;
     settings.enablePushProductivityDrop = this.enablePushProductivityDrop;

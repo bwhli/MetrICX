@@ -19,6 +19,8 @@ import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { AddTokenModalModule } from './addTokenModal/addTokenModal.module';
 import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
+import { HttpService } from './services/http-service/http.service';
+import { HttpClientModule } from '@angular/common/http';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -41,6 +43,7 @@ import { SettingsService } from './services/settings/settings.service';
   declarations: [AppComponent],
   entryComponents: [],
   imports: [
+    HttpClientModule,
     TooltipModule,
     BrowserAnimationsModule,
     BrowserModule, 
@@ -62,7 +65,8 @@ import { SettingsService } from './services/settings/settings.service';
     BarcodeScanner,
     Base64ToGallery,
     SettingsService,
-    SharedService
+    SharedService,
+    HttpService
   ],
   bootstrap: [AppComponent]
 })

@@ -10,31 +10,100 @@
         </ion-refresher-content>
      </ion-refresher>
 <ion-grid>
-        <ion-row class="ion-justify-content-start">
-                <ion-col>
-                    <ion-card>
-                        <ion-card-title class="card-title-primary">
-                               Your Staking Distribution
-                               <span class="tooltip" tooltip="Visual representation of your allocated delegation toward P-Rep candidates." 
-                                                    placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                                   <ion-icon name="information-circle-outline"></ion-icon> 
-                                </span>
-                        </ion-card-title>
-                          <ion-card-content class="card-content-chart">
-                            <canvas width="330" height="250" #dnChart></canvas> 
-                          </ion-card-content>
-                        </ion-card>
-                </ion-col>
-              </ion-row>
-              <ion-row class="ion-justify-content-start">
-                  <ion-col>
-                        <ion-card>
+        <ion-row>
+          <ion-col>
+              <ion-card>
+                  <ion-card-title class="card-title-primary">
+                          Your Staking Distribution   
+                  </ion-card-title>
+                    <ion-card-content class="card-content-chart">
+                      <canvas width="330" height="250" #dnChart></canvas> 
+                    </ion-card-content>
+                </ion-card>
+              </ion-col>
+          </ion-row>
+          <ion-row>
+          <ion-item-divider>
+            <ion-label> Governance Overview</ion-label>
+          </ion-item-divider>
+          <ion-col size="6">
+                <ion-card>
+                    <ion-card-title  class="card-title-inverted">
+                        Total Supply  
+                    </ion-card-title>
+                      <ion-card-content class="card-content-inverted">
+                            <ion-row>
+                              <ion-col size="2" class="ion-text-start">
+                                  <img src="assets/icx_vibrant.png" alt="ICX"/>       
+                              </ion-col>
+                               <ion-col class="amount-value-inverted" class="ion-text-end">
+                                  {{totalSupply}} <small>ICX</small>
+                              </ion-col>
+                            </ion-row>       
+                      </ion-card-content>
+                    </ion-card>
+              </ion-col>
+              <ion-col size="6">
+                <ion-card>
+                    <ion-card-title  class="card-title-inverted">
+                        Total ICX Voted
+                    </ion-card-title>
+                      <ion-card-content class="card-content-inverted">
+                          <ion-row>
+                              <ion-col size="2" class="ion-text-start">
+                                <img src="assets/icx_vibrant.png" alt="ICX"/>       
+                            </ion-col>
+                              <ion-col class="amount-value-inverted" class="ion-text-end">
+                                  {{totalICXDelegated}} <small>ICX</small>
+                              </ion-col>
+                            </ion-row>       
+                      </ion-card-content>
+                    </ion-card>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+            <ion-col size="6">
+              <ion-card>
+                  <ion-card-title  class="card-title-inverted">
+                      Network Voted
+                  </ion-card-title>
+                    <ion-card-content class="card-content-inverted">
+                        <ion-row>
+                          <ion-col size="3" class="ion-text-start">
+                            <fa-icon style="padding:2px; color: #1adfcb;"  [icon]="['fas', 'percent']"></fa-icon>     
+                          </ion-col>
+                             <ion-col class="amount-value-inverted" text-right>
+                                {{totalNetworkDelegated}}
+                            </ion-col>
+                          </ion-row>       
+                    </ion-card-content>
+                  </ion-card>
+            </ion-col>
+            <ion-col size="6">
+              <ion-card>
+                  <ion-card-title  class="card-title-inverted">
+                     # Preps
+                  </ion-card-title>
+                    <ion-card-content class="card-content-inverted">
+                        <ion-row>
+                          <ion-col size="3" class="ion-text-start">
+                            <fa-icon style="padding:2px; color: #1adfcb;"  [icon]="['fas', 'users']"></fa-icon>     
+                          </ion-col>
+                             <ion-col class="amount-value-inverted" text-right>
+                                {{totalNumPreps}}
+                            </ion-col>
+                          </ion-row>       
+                    </ion-card-content>
+                  </ion-card>
+            </ion-col>
+          </ion-row>
+          <ion-item-divider>
+            <ion-label>My Voted Preps</ion-label>
+          </ion-item-divider>
+                <!--<ion-card>
                                 <ion-card-title class="card-title-primary">
-                                      Governance Overview
-                                      <span class="tooltip" tooltip="Shows the current P-Rep candidates you have voted on, as well as a general overview of the ICON Network governance status" 
-                                                            placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                                          <ion-icon name="information-circle-outline"></ion-icon> 
-                                      </span>
+                                  
+                                    
                                 </ion-card-title>
                                   <ion-card-content class="card-content-table">
                                         <ngx-datatable class="bootstrap" [headerHeight]="50" [footerHeight]="110" [rows]="rows" [columnMode]="flex">
@@ -95,7 +164,6 @@
                                      
                                     </ion-row>
                                 </ion-card>
-                  </ion-col>
-              </ion-row>    
+                  </ion-col> -->
     </ion-grid> 
 </ion-content>

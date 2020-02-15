@@ -6,6 +6,7 @@ import { IconContractService } from '../services/icon-contract/icon-contract.ser
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 import { PrepTable, PrepPie } from './prep-table';
 import { NavController } from '@ionic/angular';
+import { SettingsService } from '../services/settings/settings.service';
 
 @Component({
   selector: 'app-preps',
@@ -24,23 +25,25 @@ export class PrepsPage  {
   public totalNumPreps: number;
   public totalICXDelegated: string;
   public totalNetworkDelegated: number;
-
   public address: string;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService,
-               public navCtrl: NavController) {}
+               public navCtrl: NavController,
+               private settingsService: SettingsService) {}
 
 
-   ionViewWillEnter() {
-    this.storage.get('address').then(address => {   
-      if (address) {
-        this.loadPageData(address);
+   async ionViewWillEnter() {
+    var settings = await this.settingsService.get();
+    if (settings && this.settingsService.getActiveAddress().Address) {
+      this.address = this.settingsService.getActiveAddress().Address; 
+      if (this.address) {
+        this.loadPageData(this.address);
       }
       else {
         this.navCtrl.navigateForward('/tabs/settings');
       }
-    });
+    };
    }
 
    doRefresh(event) {
@@ -108,6 +111,9 @@ export class PrepsPage  {
   }
 
   async createDnChart(chartData: number[], labelData: string[]) {
+    if(this.dn) {
+      this.dn.destroy();
+    }  
     this.dn = new Chart(this.dnChart.nativeElement, {
       type: 'pie',
       circumference: 2*Math.PI,

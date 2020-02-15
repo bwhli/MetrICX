@@ -6,6 +6,8 @@ import { FormsModule } from '@angular/forms';
 import { PrepsPage } from './preps.page';
 import { NgxDatatableModule} from '@swimlane/ngx-datatable';
 import { TooltipModule } from 'ng2-tooltip-directive';
+import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
+import { fas } from '@fortawesome/free-solid-svg-icons';
 
 @NgModule({
   imports: [
@@ -14,8 +16,13 @@ import { TooltipModule } from 'ng2-tooltip-directive';
     CommonModule,
     FormsModule,
     NgxDatatableModule,
+    FontAwesomeModule,
     RouterModule.forChild([{ path: '', component: PrepsPage }])
   ],
   declarations: [PrepsPage]
 })
-export class PrepsPageModule {}
+export class PrepsPageModule {
+  constructor(library: FaIconLibrary) {
+    library.addIconPacks(fas);
+ }
+}
