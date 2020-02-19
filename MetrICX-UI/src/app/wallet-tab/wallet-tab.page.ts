@@ -28,7 +28,6 @@ export class WalletTabPage {
   ) { }
 
   async ionViewWillEnter() {
-    debugger;
     this.Addresses = (await this.settingsService.get()).addresses_v2;
   }
 
