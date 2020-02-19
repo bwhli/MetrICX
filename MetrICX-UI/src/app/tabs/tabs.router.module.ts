@@ -13,7 +13,7 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../wallet/wallet.module').then(m => m.WalletPageModule)
+              import('../wallet-tab/wallet-tab.module').then(m => m.WalletTabPageModule)
           }
         ]
       },

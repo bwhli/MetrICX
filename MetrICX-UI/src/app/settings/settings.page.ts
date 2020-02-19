@@ -23,7 +23,7 @@ export class SettingsPage {
   public showUSDValue: boolean = false;
   public deviceSettings: DeviceSettings;
 
-  public Address: MapArray<Address>;
+  public Address: any; //MapArray<Address>;
 
 
   constructor(

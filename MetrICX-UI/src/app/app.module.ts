@@ -22,6 +22,8 @@ import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
 import { HTTP } from '@ionic-native/http/ngx';
+// import { WalletPageModule } from '../theme/wallet.module';
+import { WalletTabPageModule } from './wallet-tab/wallet-tab.module';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -39,6 +41,7 @@ import { HTTP } from '@ionic-native/http/ngx';
 //}
 import { FirebaseConfig } from '../../firebase-config';
 import { SettingsService } from './services/settings/settings.service';
+import { SuperTabsModule } from '@ionic-super-tabs/angular';
 
 @NgModule({
   declarations: [AppComponent],
@@ -56,7 +59,11 @@ import { SettingsService } from './services/settings/settings.service';
     AddressModalModule,
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(FirebaseConfig.config),
-    AngularFirestoreModule],  
+    AngularFirestoreModule,
+    SuperTabsModule.forRoot(),
+    //WalletPageModule,
+    WalletTabPageModule
+  ], 
   providers: [
     StatusBar,
     SplashScreen,
