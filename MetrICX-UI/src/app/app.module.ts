@@ -21,7 +21,7 @@ import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
-import { WalletPageModule } from './wallet/wallet.module';
+// import { WalletPageModule } from '../theme/wallet.module';
 import { WalletTabPageModule } from './wallet-tab/wallet-tab.module';
 
 //From google firebase download the web app's config and put it into a new file called
@@ -60,8 +60,9 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
     AngularFireModule.initializeApp(FirebaseConfig.config),
     AngularFirestoreModule,
     SuperTabsModule.forRoot(),
-    WalletPageModule,
-    WalletTabPageModule],
+    //WalletPageModule,
+    WalletTabPageModule
+  ], 
   providers: [
     StatusBar,
     SplashScreen,

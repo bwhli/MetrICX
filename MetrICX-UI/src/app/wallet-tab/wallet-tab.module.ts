@@ -8,7 +8,7 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { SuperTabsModule } from '@ionic-super-tabs/angular';
-import { WalletPageModule } from '../wallet/wallet.module';
+import { WalletPage } from '../wallet/wallet.page';
 
 @NgModule({
   imports: [
@@ -18,10 +18,10 @@ import { WalletPageModule } from '../wallet/wallet.module';
     FormsModule,
     FontAwesomeModule,
     RouterModule.forChild([{ path: '', component: WalletTabPage }]),
-    SuperTabsModule.forRoot(),
-    WalletPageModule
+    SuperTabsModule.forRoot()
   ],
-  declarations: [WalletTabPage]
+    
+    declarations: [WalletTabPage, WalletPage] //<!-- ,  HACK, WalletPage should be in it's own module
 })
 export class WalletTabPageModule {
   constructor(library: FaIconLibrary) {

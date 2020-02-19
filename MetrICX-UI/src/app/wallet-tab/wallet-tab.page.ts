@@ -18,11 +18,10 @@ export class WalletTabPage {
 
   //@ViewChild("barCanvas", {static:false}) barCanvas: ElementRef;
 
-  public Addresses: MapArray<Address>;
+  public Addresses: any //MapArray<Address>;
 
   constructor(
     private toastController: ToastController,
-    //private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
     private settingsService: SettingsService
