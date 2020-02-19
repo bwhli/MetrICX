@@ -1,4 +1,4 @@
-import { Component, ViewChild, ElementRef, OnInit } from '@angular/core';
+import { Component, ViewChild, ElementRef } from '@angular/core';
 import { Storage } from '@ionic/storage';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
@@ -7,6 +7,7 @@ import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon
 import { PrepTable, PrepPie } from './prep-table';
 import { NavController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
+import { HttpService } from '../services/http-service/http.service';
 
 @Component({
   selector: 'app-preps',
@@ -15,8 +16,6 @@ import { SettingsService } from '../services/settings/settings.service';
               '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css']
 })
 export class PrepsPage  {
-
-  @ViewChild('dnChart', {static:false}) dnChart: ElementRef;
   rows: Object;
   dn: Chart;
   public delegatedPrep: DelegatedPRep;
@@ -24,16 +23,27 @@ export class PrepsPage  {
   public totalSupply: string;
   public totalNumPreps: number;
   public totalICXDelegated: string;
+  public totalStaked: number;
   public totalNetworkDelegated: number;
   public address: string;
+  public imageUrl: string;
+  public votedPerc: number;
+  public lastBlockCreatedBy: string;
+  public votedPercentage: number;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService,
                public navCtrl: NavController,
-               private settingsService: SettingsService) {}
+               private settingsService: SettingsService,
+               private httpService: HttpService) {
+               }
 
 
    async ionViewWillEnter() {
+     
+ 
+
+
     var settings = await this.settingsService.get();
     if (settings && this.settingsService.getActiveAddress().address) {
       this.address = this.settingsService.getActiveAddress().address; 
@@ -68,6 +78,7 @@ export class PrepsPage  {
     var delegatedPReps = await this.iconContract.getDelegatedPReps(address);
     var totalSupply = await this.iconContract.getTotalSupply();
     var votedPreps: number = delegatedPReps.delegations.length;
+   
     var prepData = new PrepPie();
     prepData.name = [];
     prepData.value = [];
@@ -82,35 +93,52 @@ export class PrepsPage  {
     
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
   
-    await this.createDnChart(prepData.value, prepData.name);
-    await this.createTableData(delegatedPrepDetail, preps.totalDelegated);
+    //await this.createDnChart(prepData.value, prepData.name);
+    await this.createTableData(delegatedPrepDetail, preps.totalDelegated, prepData.value);
 
     this.totalSupply = Math.round(totalSupply).toLocaleString();
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
     this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
+    this.votedPerc =  preps.totalDelegated / totalSupply * 100;
+    this.totalStaked = preps.totalStake / totalSupply * 100;
+    this.lastBlockCreatedBy = await this.iconContract.getLastBlockCreatedBy();
+
     this.totalNumPreps = preps.preps.length;
    }
 
-  async createTableData(prepDetail: PrepDetails[], totalDelegated: number) {
+  async createTableData(prepDetail: PrepDetails[], totalDelegated: number, votingPerc: number[]) {
      var prepArray: PrepTable[] = [];
+     let totalVoted: number = 0;
+
+     for(var i = 0; i < votingPerc.length; i++) {
+      totalVoted = totalVoted + votingPerc[i];
+     }
 
      for(var i = 0; i < prepDetail.length; i++) {
-      var prepTable = new PrepTable();
-       prepTable.rank = "#"+prepDetail[i].rank;
-       prepTable.name = prepDetail[i].name;
-       var productivityPerc = prepDetail[i].validatedBlocks /  prepDetail[i].totalBlocks * 100;
-       if(!productivityPerc) {
+       var prepTable = new PrepTable();
+       prepTable.votingPerc = prepDetail[i].delegated / totalDelegated * 100;
+
+       let url = await this.httpService.get(prepDetail[i].details);
+
+       prepTable.imageUrl = url;
+
+      prepTable.rank = "#"+prepDetail[i].rank;
+      prepTable.name = prepDetail[i].name;
+      var productivityPerc = prepDetail[i].validatedBlocks /  prepDetail[i].totalBlocks * 100;
+      if(!productivityPerc) {
         productivityPerc = 0;
-       }
-       var votePrec = prepDetail[i].delegated / totalDelegated * 100;
-       prepTable.production = Math.round(productivityPerc * 100)/100 + '%';
-       prepTable.votes = Math.round(votePrec  * 100)/100 + '%' + ' | ' + Math.round(prepDetail[i].delegated).toLocaleString();
+      }
+ 
+       prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
+       prepTable.production = Math.round(productivityPerc * 100)/100;
+       prepTable.width = votingPerc[i] / totalVoted * 100;
        prepArray.push(prepTable);
     }
+
     this.rows = prepArray;
   }
 
-  async createDnChart(chartData: number[], labelData: string[]) {
+ /* async createDnChart(chartData: number[], labelData: string[]) {
     if(this.dn) {
       this.dn.destroy();
     }  
@@ -183,5 +211,5 @@ export class PrepsPage  {
         }
       }
     });
-  }
+  } */
 }

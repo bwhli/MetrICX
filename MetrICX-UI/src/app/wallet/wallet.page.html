@@ -20,7 +20,7 @@
                   <ion-card-content class="card-content">
                       <ion-row>
                           <ion-col size="{{colSize}}" text-left>
-                            <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'wallet']"></fa-icon>
+                            <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'wallet']"></fa-icon>
                           </ion-col>
                           <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
                               {{balance | number : '1.2-2'}} <small>ICX</small>
@@ -38,7 +38,7 @@
                     <ion-card-content class="card-content">
                         <ion-row>
                             <ion-col size="3" text-left>
-                              <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'calendar-alt']"></fa-icon>
+                              <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'calendar-alt']"></fa-icon>
                             </ion-col>
                             <ion-col text-right>
                                 {{unstakePeriod}}
@@ -57,7 +57,7 @@
                       <ion-card-content class="card-content">
                           <ion-row>
                               <ion-col size="3" text-left>
-                                <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'lock']"></fa-icon> 
+                                <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'lock']"></fa-icon> 
                               </ion-col>
                               <ion-col class="amount-value" text-right>
                                   {{stake | number : '1.2-2'}} <small>ICX</small>
@@ -75,9 +75,9 @@
                     <ion-card-content class="card-content">
                         <ion-row>
                           <ion-col size="3" text-left>
-                            <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'parachute-box']"></fa-icon> 
+                            <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'parachute-box']"></fa-icon> 
                           </ion-col>
-                            <ion-col class="amount-value" text-right>
+                            <ion-col class="amount-value ion-text-end">
                                {{claim | number : '1.2-2'}} <small>ICX</small>
                                 <div class="amount-value-usd" *ngIf="showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
                             </ion-col>
@@ -95,7 +95,7 @@
                       </ion-card-title>
                         <ion-card-content class="card-content">
                             <ion-row>
-                                <ion-col size="2" text-left>
+                                <ion-col size="2" class="ion-text-start">
                                     <img src="assets/icx_vibrant.png" alt="ICX"/>       
                                 </ion-col>
                                 <ion-col class="amount-value" text-right>
@@ -112,11 +112,6 @@
                   <ion-card>
                       <ion-card-title class="card-title-inverted">
                              Compounding reward estimate
-                             <span class="tooltip" tooltip="View the projected amount of ICX you'd generate via compound interest at the current reward rate. 
-                                                            Currently, this is calculated on a weekly basis, but presented as a monthly figure."                               
-                              placement="bottom" hide-delay="500" hide-delay-mobile="500"> 
-                              <ion-icon name="information-circle-outline"></ion-icon> 
-                          </span> 
                       </ion-card-title>
                         <ion-card-content class="card-content-inverted">
                           <canvas #barCanvas></canvas> 
@@ -167,7 +162,7 @@
                    <ion-card-content class="rewardInfo ion-text-end">
                     <ion-row>
                       <ion-col size="3" class="ion-text-start">
-                        <fa-icon style="padding:2px; color: #1adfcb;"  [icon]="['fas', 'percent']"></fa-icon>     
+                        <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'percent']"></fa-icon>     
                       </ion-col>
                       <ion-col class="rewardInfo ion-text-end">
                           {{rewardRate | number : '1.2-2'}}
@@ -185,7 +180,7 @@
                    <ion-card-content class="rewardInfo ion-text-end">
                     <ion-row>
                       <ion-col size="3" class="ion-text-start">
-                        <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'calendar-alt']"></fa-icon>     
+                        <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'calendar-alt']"></fa-icon>     
                       </ion-col>
                       <ion-col class="rewardInfo  ion-text-end">
                           {{networkUnstakePeriod }}

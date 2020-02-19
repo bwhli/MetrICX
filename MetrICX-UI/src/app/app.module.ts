@@ -21,6 +21,7 @@ import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http/ngx';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -55,10 +56,11 @@ import { SettingsService } from './services/settings/settings.service';
     AddressModalModule,
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(FirebaseConfig.config),
-    AngularFirestoreModule],
+    AngularFirestoreModule],  
   providers: [
     StatusBar,
     SplashScreen,
+    HTTP,
     Firebase,
     FcmService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

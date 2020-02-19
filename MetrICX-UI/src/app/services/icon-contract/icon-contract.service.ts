@@ -30,6 +30,12 @@ export class IconContractService {
     return this.toBigInt(bigSupply);
   }
 
+  public async getLastBlockCreatedBy() {
+    const response = await this.iconService.getLastBlock().execute();
+    const name = await this.getPRep(response['peerId']);
+    return name['name'];
+  }
+
   public async getBalance(address: string) {
     const bigBalance = await this.iconService.getBalance(address).execute();
     return this.toBigInt(bigBalance);
@@ -200,18 +206,5 @@ public async getClaimableRewards(address: string) {
         // Check the wallet balance
     const bigBalance = await this.iconService.call(call).execute();
     return this.toBigInt(bigBalance);
-  }
-
-
-  //TODO - not a finished product yet (not in use right now)
-  public async GetImageUrl(details: string) {
-     this.httpService.get(details).subscribe((data) => {
-      Object.keys(data["representative"]["logo"]["logo_256"]).forEach((function eachKey(key)
-      { 
-        return (data["representative"]["logo"]["logo_256"]);
-      }));
-    });
-
-        return this.logoUrl;
   }
 }
