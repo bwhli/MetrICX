@@ -37,6 +37,7 @@
 }
 
 
+
 ion-col {
   padding: 4px !important;
 }
@@ -132,7 +133,8 @@ ion-grid {
 
 
 .bg-class {
-  --background: #1d2025 !important; 
+  background-color: #1d2025 !important; 
+  --background: #1d2025;
 }
 
 .card-footer {

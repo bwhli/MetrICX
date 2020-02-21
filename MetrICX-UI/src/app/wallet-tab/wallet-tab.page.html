@@ -1,17 +1,16 @@
-<ion-header class="ion-no-border">
+<ion-header class="ion-no-border dark-header">
   <ion-toolbar>
     <ion-title>Super Tabs</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<super-tabs>
+<super-tabs class="dark-header">
   <super-tabs-toolbar slot="top">
-    <super-tab-button *ngFor="let k of Addresses | keyvalue">
-      <ion-icon name="home"></ion-icon>
-      <ion-label>{{k.value.Nickname ? k.value.Nickname : 'Main'}}</ion-label>    
+    <super-tab-button class="super-tab" *ngFor="let k of Addresses | keyvalue">
+      <ion-label class="super-tab-label">{{k.value.Nickname ? k.value.Nickname : 'Main'}}</ion-label>    
     </super-tab-button>
   </super-tabs-toolbar>
-  <super-tabs-container>
+  <super-tabs-container class="dark-header">
     <super-tab *ngFor="let k of Addresses | keyvalue">
       <ion-content>
         <app-wallet [addresssetting]="k.value"></app-wallet>

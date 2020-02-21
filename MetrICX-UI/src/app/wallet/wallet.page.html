@@ -1,10 +1,8 @@
   <ion-content class="bg-class">
-    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="50">
+    <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="20">
       <ion-refresher-content
         pullingIcon="arrow-dropdown"
-        pullingText="Pull to refresh"
-        refreshingSpinner="circles"
-        refreshingText="Refreshing...">
+        refreshingSpinner="circles">
       </ion-refresher-content>
     </ion-refresher>
 
