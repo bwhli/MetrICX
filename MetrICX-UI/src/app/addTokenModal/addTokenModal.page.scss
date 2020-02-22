@@ -1,39 +1,32 @@
-.bg-class{
-  --background: #F5F5F5 ;
-}
-
-.formCheckbox {
-  font-size: 8px !important;
-  color: #000;
-  width:100%;
-}
-
-.modalMargin {
-  margin-right:4% !important; 
-  margin-left:4% !important;
-  padding:0px !important;
-}
-
-.formLabelCheckbox {
-  font-size: 10px !important;
-  color: #000;
-}
 
 button {
-  margin-left: 4% !important; 
-  margin-right: 4% !important;
+padding: 0px !important;
+margin: 0px !important;
+}
+
+ion-label {
+  font-size: 12px !important;
+}
+
+.item-inner, .item-native {
+padding: 0px !important;
+width: 100% !important;
+
 }
 
 
-.my-custom-modal-css {
-  height: 70%;
-  top: 10%;
-  position: absolute; 
-  width:80%;
-  box-shadow: 2px 2px 2px #545454;
-  padding: 10px;
-  background: white;
+.align-text-middle {
+  display: flex;
+  align-items: center;
+}
+
+.button-row {
+  --background: #1d2025 !important;
 }
 
 
+ion-input {
+  font-size: 12px !important;
+}
 
+.toast-container{ background:#1d2025; } .toast-md .toast-message{ color: #cf6679; }

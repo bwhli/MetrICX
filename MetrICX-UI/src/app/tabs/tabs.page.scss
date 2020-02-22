@@ -1,16 +1,18 @@
 
   .dark-header {
-     --background: #1d2025;
-    color: #fff;
-    padding: 0px !important;
+     --background: #1d2025 !important;
+     background-color: #1d2025 !important;
+    color: #1d2025;
+    padding-top: 10px !important;
   }
+
   .ion-title {
     padding: 0px !important;
   }
 
   .tabs {
     --background: #b9efa4;
-   color: black;
+   color: #1d2025;
  }
 
   .primary {
@@ -19,7 +21,7 @@
   }
 
   .tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
-    color: black;
+    color: #1d2025;
     background-color: #b9efa4;
 }
 
@@ -62,12 +64,4 @@
 .ion-md-fa-calendar::before {
   @extend .fa-icons-general;
   content: "\f073";
-}
-
-.activeWallet {
-  font-size: 12px;
-  display: flex!important;
-  align-content: center!important;
-  align-items: center!important;
-  padding:0px !important;
 }

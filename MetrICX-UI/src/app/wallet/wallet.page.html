@@ -1,11 +1,10 @@
-  <ion-content class="bg-class">
+   <ion-content class="bg-class">
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMax="20">
       <ion-refresher-content
         pullingIcon="arrow-dropdown"
         refreshingSpinner="circles">
       </ion-refresher-content>
     </ion-refresher>
-
     <ion-grid>
       <ion-row>
         <ion-col size="{{rowSize}}">
@@ -92,7 +91,7 @@
                         <ion-card-content class="card-content">
                             <ion-row>
                                 <ion-col size="2" class="ion-text-start">
-                                    <img src="assets/icx_vibrant.png" alt="ICX"/>       
+                                    <img src="assets/icx_vibrant.png" width="50" height="50" alt="ICX"/>       
                                 </ion-col>
                                 <ion-col class="amount-value" text-right>
                                     {{(stake+balance) | number : '1.2-2'}} <small>ICX</small>

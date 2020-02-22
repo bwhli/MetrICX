@@ -16,8 +16,8 @@
     </ion-item-divider>
     <ion-col size="6">
           <ion-card>
-              <ion-card-title  class="card-title-inverted">
-                 Lastest Block By
+              <ion-card-title  class="card-title-inverted ion-text-end">
+                 Latest Block By
               </ion-card-title>
                 <ion-card-content class="card-content-inverted">
                       <ion-row>
@@ -33,7 +33,7 @@
         </ion-col>
         <ion-col size="6">
           <ion-card>
-            <ion-card-title  class="card-title-inverted">
+            <ion-card-title  class="card-title-inverted ion-text-end">
                 # Preps
             </ion-card-title>
               <ion-card-content class="card-content-inverted">
@@ -41,7 +41,7 @@
                     <ion-col size="3" class="ion-text-start">
                       <fa-icon style="padding:2px; color: #1adfcb;" size="2x"  [icon]="['fas', 'users']"></fa-icon>     
                     </ion-col>
-                        <ion-col class="amount-value-inverted" text-right>
+                        <ion-col class="amount-value-inverted ion-text-end" >
                           {{totalNumPreps}}
                       </ion-col>
                     </ion-row>       
@@ -54,10 +54,10 @@
           <ion-card>
                 <ion-card-content class="card-content-inverted">
                     <ion-row>
-                          <ion-col style="margin-left:25px;">
+                        <ion-col class="ion-text-center">
                             <circle-progress
                             [percent]="totalNetworkDelegated" 
-                            [radius]="60"
+                            [radius]="50"
                             [outerStrokeWidth]="3"
                             [showInnerStroke]="true"
                             [innerStrokeColor]="'#C7E596'"
@@ -68,8 +68,8 @@
                             [unitsColor]="'#ffffff'"
                             [titleColor]="'#ffffff'"
                             [subtitle]="'ICX Voted'"
-                            [titleFontSize]="16"
-                            [subtitleFontSize]="14">>
+                            [titleFontSize]="14"
+                            [subtitleFontSize]="12">>
                           </circle-progress>
                         </ion-col>
                       </ion-row>       
@@ -80,10 +80,10 @@
           <ion-card>
               <ion-card-content class="card-content-inverted">
                   <ion-row>
-                    <ion-col style="margin-left:25px;">
+                    <ion-col class="ion-text-center">
                         <circle-progress
                         [percent]="totalStaked" 
-                        [radius]="60"
+                        [radius]="50"
                         [outerStrokeWidth]="3"
                         [showInnerStroke]="true"
                         [innerStrokeColor]="'#C7E596'"
@@ -95,7 +95,7 @@
                         [titleColor]="'#ffffff'"
                         [subtitle]="'ICX Staked'"
                         [titleFontSize]="16"
-                        [subtitleFontSize]="14">>
+                        [subtitleFontSize]="14">
                       </circle-progress>
                       </ion-col>
                     </ion-row>       
@@ -145,7 +145,7 @@
                   <ion-col size="3"  class="votes ion-text-end">
                     <circle-progress
                     [percent]="prep.votingPerc" 
-                    [radius]="35"
+                    [radius]="40"
                     [outerStrokeWidth]="1"
                     [innerStrokeWidth]="1"
                     [innerStrokeColor]="'#1adfcb'"
@@ -158,8 +158,8 @@
                     [titleColor]="'#ffffff'"
                     [subtitleColor]="'#ffffff'"
                     [subtitle]="prep.totalVotes"
-                    [titleFontSize]="12"
-                    [subtitleFontSize]="9">>
+                    [titleFontSize]="16"
+                    [subtitleFontSize]="10">>
                   </circle-progress>
                   </ion-col>                
                   </ion-row>  

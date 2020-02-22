@@ -55,7 +55,7 @@ export class TokensPage {
   async openModal() {
     const modal = await this.modalController.create({
       component: AddTokenModalPage,
-      cssClass: 'my-custom-modal-css'
+      cssClass: 'address-modal-css'
     });
  
     modal.onDidDismiss().then((dataReturned) => {

@@ -1,22 +1,21 @@
 <div class="header"></div>
 
-<ion-content class="bg-class" style="z-index: 0;">
-
+<ion-content class="bg-class">
 	<ion-grid>
 		<ion-row>
 			<ion-item-divider>
 				<ion-label>Push Notifications</ion-label>
 			</ion-item-divider>
 
-			<ion-item>
+			<ion-item mode="ios">
 				<ion-label>Notify me when staking rewards become available</ion-label>
 				<ion-toggle color="secondary" [(ngModel)]="enablePushIScoreChange" slot="end" (ngModelChange)="save()"></ion-toggle>
 			</ion-item>
-			<ion-item>
+			<ion-item mode="ios">
 				<ion-label>Notify me when I receive a deposit</ion-label>
 				<ion-toggle color="secondary" [(ngModel)]="enablePushDeposits" slot="end" (ngModelChange)="save()"></ion-toggle>
 			</ion-item>
-			<ion-item>
+			<ion-item mode="ios">
 				<ion-label>Notify me if Main P-Rep productivity drops below</ion-label>
 				<ion-select class="formSelect" value="disabled" okText="Okay" cancelText="Dismiss" [(ngModel)]="enablePushProductivityDrop" (ngModelChange)="save()">
 					<ion-select-option value="disabled">No </ion-select-option>
@@ -27,15 +26,15 @@
 			</ion-item>
 	
 
-			<ion-item-divider>
+			<ion-item-divider mode="ios">
 				<ion-label>Currency</ion-label>
 			</ion-item-divider>
-			<ion-item>
+			<ion-item mode="ios">
 				<ion-label>Display USD value</ion-label>
 				<ion-toggle color="secondary" [(ngModel)]="showUSDValue" slot="end" (ngModelChange)="save()"></ion-toggle>
 			</ion-item>
 
-			<ion-item-divider>
+			<ion-item-divider mode="ios">
 				<ion-grid>
 					<ion-row>
 						<ion-col class="align-text-middle">
@@ -52,7 +51,7 @@
 	
 			</ion-item-divider>
 
-			<ion-item *ngFor="let k of Address | keyvalue" class="ion-no-padding">
+			<ion-item mode="ios" *ngFor="let k of Address | keyvalue" class="ion-no-padding">
 				<ion-grid>
 					<ion-row>
 						<ion-col class="ion-text-start ion-no-padding ion-no-margin" size="2">
