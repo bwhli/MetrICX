@@ -29,6 +29,7 @@ export class Address {
     Symbol: string;
     Name: string;
     tokens: TokenSet;
+    enablePushDeposits: boolean;
     
     constructor() {
         this.tokens = new TokenSet();

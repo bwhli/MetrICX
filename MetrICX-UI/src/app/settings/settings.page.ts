@@ -98,10 +98,13 @@ export class SettingsPage {
    this.ionViewWillEnter();
   }
 
-  async openModal() {
+  async openModal(key: string) {
     const modal = await this.modalController.create({
       component: AddressModalPage,
-      cssClass: 'address-modal-css'
+      cssClass: 'address-modal-css',
+      componentProps: {
+        key: key
+     }
     });
  
     modal.onDidDismiss().then((dataReturned) => {
