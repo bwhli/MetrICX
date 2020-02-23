@@ -1,8 +1,11 @@
 export class PrepTable {
     rank: string;
     name: string;
-    production: string
-    votes: string
+    production: number;
+    imageUrl: string;
+    votingPerc: number;
+    width: number;
+    totalVotes: string;
 }
 
 export class PrepPie { 

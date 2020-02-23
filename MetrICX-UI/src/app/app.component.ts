@@ -20,8 +20,18 @@ export class AppComponent {
     private fcm: FcmService,
     //private toastr: ToastService,
     public toastController: ToastController
-  ) {
-    this.initializeApp();
+  ) { }
+
+  async ionViewDidEnter() {
+    this.platform.ready().then(() => { 
+      setTimeout(() => { 
+        this.splashScreen.hide();
+        this.statusBar.backgroundColorByName("black");
+        this.statusBar.styleLightContent();
+        this.statusBar.overlaysWebView(false);
+        this.notificationSetup();
+      }, 1000);    
+    });
   }
 
   private async presentToast(message) {
@@ -32,7 +42,7 @@ export class AppComponent {
     toast.present();
   }
 
-  private notificationSetup() {
+  private async notificationSetup() {
     this.fcm.getToken();
     this.fcm.onNotifications().subscribe(
       (msg) => {
@@ -42,17 +52,5 @@ export class AppComponent {
           this.presentToast(msg.body);
         }
       });
-  }
-
-  initializeApp() {
-    this.platform.ready().then(() => {
-      this.splashScreen.show();
-      this.statusBar.backgroundColorByName("black");
-      this.statusBar.styleLightContent();
-      this.statusBar.overlaysWebView(false);
-      //this.statusBar.styleDefault();  
-      this.notificationSetup();
-      this.splashScreen.hide();
-    });
   }
 }

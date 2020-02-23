@@ -1,10 +1,4 @@
 
-
-.dark-header {
-    --background: #000;
-    color: #fff;
-  }
-
 button {
   padding: 0px !important;
   margin: 0px !important;
@@ -26,5 +20,9 @@ ion-label {
 }
 
 .toast-container{ background:#1d2025; } .toast-md .toast-message{ color: #cf6679; }
+
+ion-button  {
+  padding: 0px !important;
+}
 
 

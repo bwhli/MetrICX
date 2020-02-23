@@ -70,8 +70,27 @@ export class SettingsService {
   public getActiveAddress() : Address {
     return this.deviceSettings.addresses_v2.p0;
   }
+public async updateAndSave(key: string, address: string, nickName: string, enablePushDeposits: boolean) : Promise<boolean> {
+   
+  try {
+    var deviceSettings = await this.get();
+    deviceSettings.addresses_v2[key].address = address;
+    deviceSettings.addresses_v2[key].Nickname = nickName;
+    deviceSettings.addresses_v2[key].enablePushDeposits = enablePushDeposits;
+    this.save(deviceSettings);
+    return true;
 
-  public async addAddressAndSave(newAddress: string, nickname: string) : Promise<boolean>{
+  }
+  catch{
+    return false;
+  }
+
+
+} 
+
+
+
+  public async addAddressAndSave(newAddress: string, nickname: string, enablePushDeposits: boolean) : Promise<boolean>{
       var deviceSettings = await this.get();
       var nextSlot = await this.getNextSlot();
 
@@ -79,6 +98,7 @@ export class SettingsService {
         deviceSettings.addresses_v2[nextSlot] = new Address();
         deviceSettings.addresses_v2[nextSlot].address = newAddress;
         deviceSettings.addresses_v2[nextSlot].Nickname = nickname;
+        deviceSettings.addresses_v2[nextSlot].enablePushDeposits = enablePushDeposits;
         this.save(deviceSettings);
         return true;
       }

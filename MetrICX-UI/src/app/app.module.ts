@@ -21,6 +21,7 @@ import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
+import { HTTP } from '@ionic-native/http/ngx';
 // import { WalletPageModule } from '../theme/wallet.module';
 import { WalletTabPageModule } from './wallet-tab/wallet-tab.module';
 
@@ -66,6 +67,7 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
   providers: [
     StatusBar,
     SplashScreen,
+    HTTP,
     Firebase,
     FcmService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
