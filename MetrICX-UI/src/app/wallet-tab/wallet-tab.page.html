@@ -7,7 +7,7 @@
   </super-tabs-toolbar>
   <super-tabs-container class="dark-header">
     <super-tab *ngFor="let k of Addresses | keyvalue">
-        <ion-content class="bg-class">
+        <ion-content no-bounce has-bouncing="false" forceOverscroll="false" class="bg-class">
         <app-wallet [addresssetting]="k.value"></app-wallet>
       </ion-content>
     </super-tab>
