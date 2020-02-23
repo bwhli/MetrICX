@@ -57,8 +57,8 @@ export class AddressModalPage {
       }
     }
     else {
-      var updateAdd = await this.settingsService.addAddressAndSave(this.address, this.nickName, this.enablePushDeposits);
-      if(!updateAdd) {
+      var addResult = await this.settingsService.addAddressAndSave(this.address, this.nickName, this.enablePushDeposits);
+      if(!addResult) {
         const toast = await this.toastController.create({
           message: 'Only a maxixum of 5 address can be stored at once',
           duration: 2000,
