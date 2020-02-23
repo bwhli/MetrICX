@@ -123,6 +123,7 @@ ion-grid {
 .bg-class {
   background-color: #1d2025 !important; 
   --background: #1d2025 !important;
+  -webkit-overflow-scrolling: auto !important;
 }
 
 .card-footer {
