@@ -1,7 +1,7 @@
 <div class="header"></div>
 
 <ion-content class="bg-class">
-      <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab slot="fixed" vertical="bottom" horizontal="center">
         <ion-fab-button size="large" color="primary" (click)="openModal()">
           <ion-icon name="add"></ion-icon>
         </ion-fab-button >
@@ -19,24 +19,28 @@
 
     <ion-grid>
       <ion-row>
-        <ion-col>
-            <ion-card>
-                <ion-card-title class="card-title-primary">  
+        <ion-item-divider>
+          <ion-label style="font-size: 12px !important;">IRC-20 Tokens</ion-label>
+        </ion-item-divider>
+
+        <ion-col size="12" *ngFor="let token of Tokens | keyvalue">
+            <ion-card *ngIf="token.value.IsSelected" class="">
+                <ion-card-title class="card-title-inverted">  
                   <ion-row>
                     <ion-col size="4" class="ion-text-start">
-                      <fa-icon size="2x" style="color: #1adfcb;" [icon]="['fas', 'coins']"></fa-icon>
+                      <ion-badge class="badge" color="secondary"> {{token.value.Token[0]}} </ion-badge> 
                     </ion-col>
-                    <ion-col style="font-size: 16px !important;" size="8" class="ion-text-end">
+                    <ion-col style="font-size: 12px !important;" size="8" class="ion-text-end">
                       Balance
-                    </ion-col>
+                    </ion-col>  
                 </ion-row>  
                 </ion-card-title>
-                <ion-card-content class="card-content" style="padding:0px !important">
-                  <ion-row *ngFor="let token of Tokens | keyvalue">
-                    <ion-col *ngIf="token.value.IsSelected" size="4" text-left>
+                <ion-card-content class="card-content-inverted" style="padding:0px !important">
+                  <ion-row >
+                    <ion-col size="4" class="ion-text-start">
                       {{token.value.Token}}
                     </ion-col>
-                    <ion-col *ngIf="token.value.IsSelected" class="amount-value" text-right>
+                    <ion-col *ngIf="token.value.IsSelected" class="amount-value ion-text-end">
                       {{token.value.Balance | number : '1.2-2'}}
                     </ion-col>
                 </ion-row> 
