@@ -5,7 +5,7 @@ import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 import { PrepTable, PrepPie } from './prep-table';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { HttpService } from '../services/http-service/http.service';
 
@@ -35,20 +35,19 @@ export class PrepsPage  {
                private iconContract: IconContractService,
                public navCtrl: NavController,
                private settingsService: SettingsService,
-               private httpService: HttpService) {
+               private httpService: HttpService,
+               private loadingController: LoadingController) {
                }
 
 
    async ionViewWillEnter() {
-     
- 
-
-
     var settings = await this.settingsService.get();
     if (settings && this.settingsService.getActiveAddress().address) {
       this.address = this.settingsService.getActiveAddress().address; 
       if (this.address) {
-        this.loadPageData(this.address);
+        await this.presentLoading();
+        await this.loadPageData(this.address);
+        await this.loadingController.dismiss();
       }
       else {
         this.navCtrl.navigateForward('/tabs/settings');
@@ -63,6 +62,15 @@ export class PrepsPage  {
     }, 2000);
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      cssClass: 'loading-css',
+      showBackdrop: false
+    });
+    await loading.present();
+}
 
   async filterPrepsList(delegatedPrepList: Delegations[], allPreps: PReps) : Promise<PrepDetails[]> {
     var filteredArrayPreps  = allPreps.preps.filter(function(array_el) {
@@ -128,7 +136,9 @@ export class PrepsPage  {
       if(!productivityPerc) {
         productivityPerc = 0;
       }
- 
+      
+       prepTable.myVotes = votingPerc[i];
+       prepTable.city = prepDetail[i].city;
        prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
        prepTable.production = Math.round(productivityPerc * 100)/100;
        prepTable.width = votingPerc[i] / totalVoted * 100;

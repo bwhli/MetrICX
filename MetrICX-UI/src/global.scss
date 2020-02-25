@@ -49,6 +49,20 @@ ion-col {
     flex: 0 0 40px;
 }
 
+.loading-css {
+  --background: transparent;
+  ion-backdrop {
+		background-color: #1d2025;
+		opacity: .9 !important;
+  }
+  .loading-wrapper {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    min-width: 90px;
+    min-height: 90px;
+  }
+}
+
 .address-modal-css .modal-wrapper {
   height: 100%;
   position: absolute; 

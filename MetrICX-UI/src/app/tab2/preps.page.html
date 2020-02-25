@@ -14,34 +14,34 @@
     <ion-item-divider>
       <ion-label> Governance Overview</ion-label>
     </ion-item-divider>
-    <ion-col size="6">
+    <ion-col size="8">
           <ion-card>
-              <ion-card-title  class="card-title-inverted ion-text-end">
+              <ion-card-title  class="card-title-inverted ion-text-start">
                  Latest Block By
               </ion-card-title>
                 <ion-card-content class="card-content-inverted">
                       <ion-row>
-                        <ion-col size="2" class="ion-text-start">
+                        <ion-col size="3" class="ion-text-start">
                           <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'cubes']"></fa-icon>     
                         </ion-col>
-                          <ion-col class="amount-value-inverted" class="ion-text-end">
+                          <ion-col size="9" class="amount-value-inverted" class="ion-text-end">
                             {{lastBlockCreatedBy}}
                         </ion-col>
                       </ion-row>       
                 </ion-card-content>
               </ion-card>
         </ion-col>
-        <ion-col size="6">
+        <ion-col size="4">
           <ion-card>
-            <ion-card-title  class="card-title-inverted ion-text-end">
+            <ion-card-title  class="card-title-inverted ion-text-start">
                 # Preps
             </ion-card-title>
               <ion-card-content class="card-content-inverted">
                   <ion-row>
-                    <ion-col size="3" class="ion-text-start">
-                      <fa-icon style="padding:2px; color: #1adfcb;" size="2x"  [icon]="['fas', 'users']"></fa-icon>     
+                    <ion-col size="6" class="ion-text-start">
+                      <fa-icon style="padding:1px; color: #1adfcb;" size="2x"  [icon]="['fas', 'users']"></fa-icon>     
                     </ion-col>
-                        <ion-col class="amount-value-inverted ion-text-end" >
+                        <ion-col size="6" class="amount-value-inverted ion-text-end" >
                           {{totalNumPreps}}
                       </ion-col>
                     </ion-row>       
@@ -57,8 +57,9 @@
                         <ion-col class="ion-text-center">
                             <circle-progress
                             [percent]="totalNetworkDelegated" 
-                            [radius]="50"
-                            [outerStrokeWidth]="3"
+                            [radius]="40"
+                            [outerStrokeWidth]="2"
+                            [innerStrokeWidth]="1"
                             [showInnerStroke]="true"
                             [innerStrokeColor]="'#C7E596'"
                             [animation]="true"
@@ -68,8 +69,8 @@
                             [unitsColor]="'#ffffff'"
                             [titleColor]="'#ffffff'"
                             [subtitle]="'ICX Voted'"
-                            [titleFontSize]="14"
-                            [subtitleFontSize]="12">>
+                            [titleFontSize]="12"
+                            [subtitleFontSize]="10">>
                           </circle-progress>
                         </ion-col>
                       </ion-row>       
@@ -81,22 +82,7 @@
               <ion-card-content class="card-content-inverted">
                   <ion-row>
                     <ion-col class="ion-text-center">
-                        <circle-progress
-                        [percent]="totalStaked" 
-                        [radius]="50"
-                        [outerStrokeWidth]="3"
-                        [showInnerStroke]="true"
-                        [innerStrokeColor]="'#C7E596'"
-                        [animation]="true"
-                        [animationDuration]="300"
-                        [showUnits]="true"
-                        [toFixed]="2"
-                        [unitsColor]="'#ffffff'"
-                        [titleColor]="'#ffffff'"
-                        [subtitle]="'ICX Staked'"
-                        [titleFontSize]="16"
-                        [subtitleFontSize]="14">
-                      </circle-progress>
+            
                       </ion-col>
                     </ion-row>       
               </ion-card-content>
@@ -116,7 +102,7 @@
                 Rank {{prep.rank}}
               </ion-col>
               <ion-col size="6" class="myVotes ion-text-end">
-                  <div class="first">Votes:  {{prep.totalVotes}} ({{prep.width | number : '1.2-2' }}%)
+                  <div class="first">Votes:  {{prep.myVotes}} ({{prep.width | number : '1.2-2' }}%)
                     <div [ngStyle]="{'width.%': prep.width }" class="second"> </div>
                   </div>
               </ion-col>
@@ -136,7 +122,7 @@
                   </ion-col>
                   <ion-col size="3" class="location align-text-middle">
                     Location <br/>
-                    Japan
+                   {{prep.city}}
                  </ion-col>
                   <ion-col size="3" class="production align-text-middle">
                      Productivity <br/>

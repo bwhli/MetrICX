@@ -7,16 +7,15 @@
         <ion-button shape="round" fill="clear" size="small" (click)="closeModal()">
           <fa-icon class="fa-lg" [icon]="['fas', 'arrow-left']" slot="start"></fa-icon>
         </ion-button>
-        <small>Back</small>
+        <small>Add Tokens</small>
       </ion-col>
     </ion-row>
+    
     <ion-row>
-      <ion-col>
             <ion-item *ngFor="let token of Tokens | keyvalue" style="font-size:small !important;">
               <ion-label>  {{token.value.Token}}</ion-label>
               <ion-toggle color="secondary" [(ngModel)]="token.value.IsSelected" (ngModelChange)="save()" slot="end"></ion-toggle>
             </ion-item>
-      </ion-col>
   </ion-row>
   </ion-grid>
 </ion-content>
