@@ -12,7 +12,7 @@ namespace MetrICXServerPush.Gateways
 {
     public static class FirebaseGateway
     {
-        static FirestoreDb db = null;
+        public static FirestoreDb db = null;
         private static Dictionary<string, string> FirebaseConfig = new Dictionary<string, string>();
 
         static FirebaseGateway()
@@ -126,7 +126,6 @@ namespace MetrICXServerPush.Gateways
         {
             if (device.Dirty)
             {
-                
                 Console.WriteLine($"[FB] Updating Document data for {device.token}");
                 db.Collection("devices").Document(device.token).SetAsync(device, SetOptions.MergeAll).Wait();
                 device.ResetDirty();

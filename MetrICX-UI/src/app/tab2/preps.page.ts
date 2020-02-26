@@ -84,6 +84,7 @@ export class PrepsPage  {
     prepData.value = [];
     
     for(var i = 0; i < votedPreps; i++) {
+
       prepData.value[i] = delegatedPReps.delegations[i].value;
       var prep = await this.iconContract.getPRep(delegatedPReps.delegations[i].address);
       var prepName = prep['name'];
@@ -107,32 +108,31 @@ export class PrepsPage  {
    }
 
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number, votingPerc: number[]) {
-     var prepArray: PrepTable[] = [];
-     let totalVoted: number = 0;
+    var prepArray: PrepTable[] = [];
+    let totalVoted: number = 0;
 
-     for(var i = 0; i < votingPerc.length; i++) {
+    for(var i = 0; i < votingPerc.length; i++) {
       totalVoted = totalVoted + votingPerc[i];
-     }
+    }
 
-     for(var i = 0; i < prepDetail.length; i++) {
-       var prepTable = new PrepTable();
-       prepTable.votingPerc = prepDetail[i].delegated / totalDelegated * 100;
+    for(var i = 0; i < prepDetail.length; i++) {
+      var prepTable = new PrepTable();
+      prepTable.votingPerc = prepDetail[i].delegated / totalDelegated * 100;
 
-       let url = await this.httpService.get(prepDetail[i].details);
-
-       prepTable.imageUrl = url;
+      let prepDetails = await this.settingsService.getPrepDetails(prepDetail[i].address);
+      prepTable.imageUrl = prepDetails.representative.logo.logo_256
 
       prepTable.rank = "#"+prepDetail[i].rank;
       prepTable.name = prepDetail[i].name;
       var productivityPerc = prepDetail[i].validatedBlocks /  prepDetail[i].totalBlocks * 100;
       if(!productivityPerc) {
-        productivityPerc = 0;
+        productivityPerc = 0; 
       }
  
-       prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
-       prepTable.production = Math.round(productivityPerc * 100)/100;
-       prepTable.width = votingPerc[i] / totalVoted * 100;
-       prepArray.push(prepTable);
+      prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
+      prepTable.production = Math.round(productivityPerc * 100)/100;
+      prepTable.width = votingPerc[i] / totalVoted * 100;
+      prepArray.push(prepTable);
     }
 
     this.rows = prepArray;
