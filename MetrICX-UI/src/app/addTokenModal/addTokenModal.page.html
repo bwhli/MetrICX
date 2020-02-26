@@ -3,37 +3,19 @@
 <ion-content class="bg-class">
   <ion-grid>
     <ion-row>
-      <ion-col>
-         <div class="modalMargin">Select token/s</div>
+      <ion-col class="ion-text-start ion-no-padding ion-no-margin align-text-middle-top">
+        <ion-button shape="round" fill="clear" size="small" (click)="closeModal()">
+          <fa-icon class="fa-lg" [icon]="['fas', 'arrow-left']" slot="start"></fa-icon>
+        </ion-button>
+        <small>Add Tokens</small>
       </ion-col>
     </ion-row>
+    
     <ion-row>
-      <ion-col>
-        <form style="width: 100%;">
-          <ion-list lines="full" class="modalMargin">  
             <ion-item *ngFor="let token of Tokens | keyvalue" style="font-size:small !important;">
-              <ion-checkbox  class="formCheckBox" color="secondary" [(ngModel)]="token.value.IsSelected" [ngModelOptions]="{standalone: true}"></ion-checkbox>
-              <ion-label class="formLabelCheckbox">  {{token.value.Token}}</ion-label>
+              <ion-label>  {{token.value.Token}}</ion-label>
+              <ion-toggle color="secondary" [(ngModel)]="token.value.IsSelected" (ngModelChange)="save()" slot="end"></ion-toggle>
             </ion-item>
-          </ion-list>
-        </form>
-      </ion-col>
-  </ion-row>
-  <ion-row>
-    <ion-col>
-      <ion-button size="small" expand="full" (click)="save()" type="button" class="modalMargin">
-        <ion-icon slot="start" name="save"></ion-icon>
-        Save 
-      </ion-button>
-    </ion-col>
-  </ion-row>
-<ion-row>
-    <ion-col>
-      <ion-button size="small" expand="full" (click)="closeModal()" type="button" class="modalMargin">
-        <ion-icon slot="start" name="close"></ion-icon>
-        Cancel 
-      </ion-button> 
-    </ion-col>
   </ion-row>
   </ion-grid>
 </ion-content>

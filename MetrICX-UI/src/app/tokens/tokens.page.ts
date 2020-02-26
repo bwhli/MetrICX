@@ -15,7 +15,8 @@ export class TokensPage {
 
   dataReturned:any[];
   public Tokens;
- 
+  public tokenCount: number = 0;
+
   constructor(
     private toastController: ToastController,
     private iconContract: IconContractService,
@@ -23,13 +24,17 @@ export class TokensPage {
     public navCtrl: NavController,
     public modalController: ModalController,  
     private settingsService: SettingsService
+
   ) { }
 
   async ionViewWillEnter() {
     var settings = await this.settingsService.get();
  
     if (settings && settings.addresses_v2.p0.tokens) {
-      this.loadTokenBalances(settings.addresses_v2.p0);
+       this.loadTokenBalances(settings.addresses_v2.p0);
+    }
+    else {
+      this.tokenCount = 0;
     }
   }
 
@@ -40,6 +45,7 @@ export class TokensPage {
         if(this.Tokens[key].IsSelected) {
           const contractAddress = this.Tokens[key].ContractAddress;
           this.Tokens[key].Balance = await this.iconContract.getTokenBalance(contractAddress, address.address); 
+          this.tokenCount++;
         }
       });
     }

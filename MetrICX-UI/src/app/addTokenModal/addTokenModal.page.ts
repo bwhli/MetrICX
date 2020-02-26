@@ -39,8 +39,6 @@ export class AddTokenModalPage {
       this.settingsService.getActiveAddress().tokens = this.Tokens;
     }
 
-    await this.modalController.dismiss();
-
     try {
       this.settingsService.save(settings);
     }

@@ -5,7 +5,7 @@ import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 import { PrepTable, PrepPie } from './prep-table';
-import { NavController } from '@ionic/angular';
+import { NavController, LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { HttpService } from '../services/http-service/http.service';
 
@@ -23,32 +23,35 @@ export class PrepsPage  {
   public totalSupply: string;
   public totalNumPreps: number;
   public totalICXDelegated: string;
-  public totalStaked: number;
+  public totalStakedPerc: number;
+  public totalStaked: string;
   public totalNetworkDelegated: number;
   public address: string;
   public imageUrl: string;
   public votedPerc: number;
   public lastBlockCreatedBy: string;
   public votedPercentage: number;
+  public isLoaded: boolean = false;
+  public numberOfVotedReps: number = 0;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService,
                public navCtrl: NavController,
                private settingsService: SettingsService,
-               private httpService: HttpService) {
+               private httpService: HttpService,
+               private loadingController: LoadingController) {
                }
 
 
    async ionViewWillEnter() {
-     
- 
-
-
     var settings = await this.settingsService.get();
     if (settings && this.settingsService.getActiveAddress().address) {
       this.address = this.settingsService.getActiveAddress().address; 
       if (this.address) {
-        this.loadPageData(this.address);
+        await this.presentLoading();
+        await this.loadPageData(this.address);
+        await this.loadingController.dismiss();
+        this.isLoaded = true;
       }
       else {
         this.navCtrl.navigateForward('/tabs/settings');
@@ -63,6 +66,15 @@ export class PrepsPage  {
     }, 2000);
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      cssClass: 'loading-css',
+      showBackdrop: false
+    });
+    await loading.present();
+  }
 
   async filterPrepsList(delegatedPrepList: Delegations[], allPreps: PReps) : Promise<PrepDetails[]> {
     var filteredArrayPreps  = allPreps.preps.filter(function(array_el) {
@@ -82,25 +94,26 @@ export class PrepsPage  {
     var prepData = new PrepPie();
     prepData.name = [];
     prepData.value = [];
-    
+    let numPreps = 0;
     for(var i = 0; i < votedPreps; i++) {
+      numPreps++;
       prepData.value[i] = delegatedPReps.delegations[i].value;
       var prep = await this.iconContract.getPRep(delegatedPReps.delegations[i].address);
       var prepName = prep['name'];
       prepData.name[i] = prepName;
     }
-    var labels: string[] = [];
-    
+
+    this.numberOfVotedReps = numPreps;
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
-  
-    //await this.createDnChart(prepData.value, prepData.name);
+
     await this.createTableData(delegatedPrepDetail, preps.totalDelegated, prepData.value);
 
     this.totalSupply = Math.round(totalSupply).toLocaleString();
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
     this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
     this.votedPerc =  preps.totalDelegated / totalSupply * 100;
-    this.totalStaked = preps.totalStake / totalSupply * 100;
+    this.totalStakedPerc = preps.totalStake / totalSupply * 100;
+    this.totalStaked = Math.round(preps.totalStake).toLocaleString();
     this.lastBlockCreatedBy = await this.iconContract.getLastBlockCreatedBy();
 
     this.totalNumPreps = preps.preps.length;
@@ -128,7 +141,9 @@ export class PrepsPage  {
       if(!productivityPerc) {
         productivityPerc = 0;
       }
- 
+      
+       prepTable.myVotes = votingPerc[i];
+       prepTable.city = prepDetail[i].city;
        prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
        prepTable.production = Math.round(productivityPerc * 100)/100;
        prepTable.width = votingPerc[i] / totalVoted * 100;
