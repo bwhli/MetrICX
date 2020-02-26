@@ -32,6 +32,7 @@ export class PrepsPage  {
   public lastBlockCreatedBy: string;
   public votedPercentage: number;
   public isLoaded: boolean = false;
+  public numberOfVotedReps: number = 0;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService,
@@ -93,18 +94,18 @@ export class PrepsPage  {
     var prepData = new PrepPie();
     prepData.name = [];
     prepData.value = [];
-    
+    let numPreps = 0;
     for(var i = 0; i < votedPreps; i++) {
+      numPreps++;
       prepData.value[i] = delegatedPReps.delegations[i].value;
       var prep = await this.iconContract.getPRep(delegatedPReps.delegations[i].address);
       var prepName = prep['name'];
       prepData.name[i] = prepName;
     }
-    var labels: string[] = [];
-    
+
+    this.numberOfVotedReps = numPreps;
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
-  
-    //await this.createDnChart(prepData.value, prepData.name);
+
     await this.createTableData(delegatedPrepDetail, preps.totalDelegated, prepData.value);
 
     this.totalSupply = Math.round(totalSupply).toLocaleString();
