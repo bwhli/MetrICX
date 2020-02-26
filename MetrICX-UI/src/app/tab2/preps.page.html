@@ -57,34 +57,66 @@
                         <ion-col class="ion-text-center">
                             <circle-progress
                             [percent]="totalNetworkDelegated" 
-                            [radius]="40"
+                            [radius]="30"
                             [outerStrokeWidth]="2"
                             [innerStrokeWidth]="1"
                             [showInnerStroke]="true"
-                            [innerStrokeColor]="'#C7E596'"
+                            [innerStrokeColor]="'#1d2025'"
+                            [outerStrokeColor]="'#1d2025'"
                             [animation]="true"
                             [animationDuration]="300"
+                            [showBackground] = "true"
                             [showUnits]="true"
+                            [backgroundColor]="'#1adfcb'"
                             [toFixed]="2"
-                            [unitsColor]="'#ffffff'"
-                            [titleColor]="'#ffffff'"
+                            [unitsColor]="'#1d2025'"
+                            [titleColor]="'#1d2025'"
+                            [subtitleColor]="'#1d2025'"
                             [subtitle]="'ICX Voted'"
-                            [titleFontSize]="12"
-                            [subtitleFontSize]="10">>
+                            [titleFontSize]="10"
+                            [subtitleFontSize]="8">>
                           </circle-progress>
                         </ion-col>
-                      </ion-row>       
+                      </ion-row>    
+                      <ion-row *ngIf="isLoaded" >
+                        <ion-col size="12" class="ion-text-center"> <small>{{totalICXDelegated}} ICX </small></ion-col>
+                      </ion-row>   
                 </ion-card-content>
               </ion-card>
         </ion-col>
         <ion-col size="6">
           <ion-card>
+            <ion-card-title>
+              </ion-card-title>
               <ion-card-content class="card-content-inverted">
                   <ion-row>
                     <ion-col class="ion-text-center">
-            
+                      <circle-progress
+                      [percent]="totalStakedPerc" 
+                      [radius]="30"
+                      [outerStrokeWidth]="2"
+                      [innerStrokeWidth]="1"
+                      [showInnerStroke]="true"
+                      [innerStrokeColor]="'#1d2025'"
+                      [outerStrokeColor]="'#1d2025'"
+                      [animation]="true"
+                      [animationDuration]="300"
+                      [showBackground] = "true"
+                      [showUnits]="true"
+                      [backgroundColor]="'#1adfcb'"
+                      [toFixed]="2"
+                      [unitsColor]="'#1d2025'"
+                      [titleColor]="'#1d2025'"
+                      [subtitleColor]="'#1d2025'"
+                      [subtitle]="'ICX Staked'"
+                      [titleFontSize]="10"
+                      [subtitleFontSize]="8">>
+                    </circle-progress>
                       </ion-col>
-                    </ion-row>       
+                    </ion-row>    
+                    <ion-row *ngIf="isLoaded" >
+                      <ion-col class="ion-text-center"> <small>{{totalStaked}} ICX </small></ion-col>
+                    </ion-row>      
               </ion-card-content>
             </ion-card> 
         </ion-col>
@@ -99,15 +131,15 @@
            <!--<ion-grid> --> 
             <ion-row>
               <ion-col size="3" class="rank ion-text-start">
-                Rank {{prep.rank}}
+                {{prep.name}}          
               </ion-col>
               <ion-col size="6" class="myVotes ion-text-end">
-                  <div class="first">Votes:  {{prep.myVotes}} ({{prep.width | number : '1.2-2' }}%)
+                  <div class="first">My Votes:  {{prep.myVotes}} ({{prep.width | number : '1.2-2' }}%)
                     <div [ngStyle]="{'width.%': prep.width }" class="second"> </div>
                   </div>
               </ion-col>
               <ion-col size="3" class="name ion-text-end">
-               {{prep.name}}
+               Rank {{prep.rank}}
               </ion-col>
             </ion-row>
            <!-- </ion-grid> -->
@@ -121,7 +153,6 @@
                     </div>
                   </ion-col>
                   <ion-col size="3" class="location align-text-middle">
-                    Location <br/>
                    {{prep.city}}
                  </ion-col>
                   <ion-col size="3" class="production align-text-middle">
@@ -144,7 +175,7 @@
                     [titleColor]="'#ffffff'"
                     [subtitleColor]="'#ffffff'"
                     [subtitle]="prep.totalVotes"
-                    [titleFontSize]="16"
+                    [titleFontSize]="14"
                     [subtitleFontSize]="10">>
                   </circle-progress>
                   </ion-col>                

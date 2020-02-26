@@ -23,13 +23,15 @@ export class PrepsPage  {
   public totalSupply: string;
   public totalNumPreps: number;
   public totalICXDelegated: string;
-  public totalStaked: number;
+  public totalStakedPerc: number;
+  public totalStaked: string;
   public totalNetworkDelegated: number;
   public address: string;
   public imageUrl: string;
   public votedPerc: number;
   public lastBlockCreatedBy: string;
   public votedPercentage: number;
+  public isLoaded: boolean = false;
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService,
@@ -48,6 +50,7 @@ export class PrepsPage  {
         await this.presentLoading();
         await this.loadPageData(this.address);
         await this.loadingController.dismiss();
+        this.isLoaded = true;
       }
       else {
         this.navCtrl.navigateForward('/tabs/settings');
@@ -70,7 +73,7 @@ export class PrepsPage  {
       showBackdrop: false
     });
     await loading.present();
-}
+  }
 
   async filterPrepsList(delegatedPrepList: Delegations[], allPreps: PReps) : Promise<PrepDetails[]> {
     var filteredArrayPreps  = allPreps.preps.filter(function(array_el) {
@@ -108,7 +111,8 @@ export class PrepsPage  {
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
     this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
     this.votedPerc =  preps.totalDelegated / totalSupply * 100;
-    this.totalStaked = preps.totalStake / totalSupply * 100;
+    this.totalStakedPerc = preps.totalStake / totalSupply * 100;
+    this.totalStaked = Math.round(preps.totalStake).toLocaleString();
     this.lastBlockCreatedBy = await this.iconContract.getLastBlockCreatedBy();
 
     this.totalNumPreps = preps.preps.length;
