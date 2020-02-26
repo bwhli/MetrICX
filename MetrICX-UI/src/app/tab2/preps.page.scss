@@ -5,11 +5,7 @@
     border: solid 1px #1d2025;
   }
   
-  .rank {
-    color: #fff;
-    font-size: 12px;
-     padding-right: 5px !important;
-  }
+ 
   
   ion-refresher-content {
     background-color: #1d2025;
@@ -43,6 +39,14 @@
   color: #fff;
   font-size: 10px;
   padding-right: 5px;
+  font-weight: bold;
+}
+
+.rank {
+  color: #fff;
+  font-size: 10px;
+  padding-right: 5px !important;
+  font-weight: bold;
 }
 
 .myVotes {
@@ -52,28 +56,27 @@
 
 .votes {
   color: #fff;
-  font-size: 12px;
+  font-size: 10px;
 }
 
 .production {
-  color: #1d2025;
-  font-size: 12px;
+  color: #fff;
+  font-size: 10px;
   vertical-align: middle;
   padding-left: 15px !important;
-  font-weight: bold;
 }
 
 .location {
-  color: #1d2025;
-  font-size: 12px;
+  color: #fff;
+  font-size: 10px;
   vertical-align: middle;
-  font-weight: bold;
 }
 
 .align-text-middle {
   display: flex;
   align-items: center;
 }
+
 
 .first {
   padding: 1px;
