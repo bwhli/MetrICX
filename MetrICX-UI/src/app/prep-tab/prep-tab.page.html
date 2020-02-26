@@ -1,0 +1,15 @@
+<ion-header class="ion-no-border header"></ion-header>
+<super-tabs>
+  <super-tabs-toolbar slot="top">
+    <super-tab-button class="super-tab-button" *ngFor="let k of Addresses | keyvalue">
+      <ion-label class="super-tab-label">{{k.value.Nickname ? k.value.Nickname : 'Main'}}</ion-label>    
+    </super-tab-button>
+  </super-tabs-toolbar>
+  <super-tabs-container class="dark-header">
+    <super-tab *ngFor="let k of Addresses | keyvalue">
+        <ion-content no-bounce has-bouncing="false" forceOverscroll="false" class="bg-class">
+        <app-preps [addresssetting]="k.value"></app-preps>
+      </ion-content>
+    </super-tab>
+  </super-tabs-container>
+</super-tabs>

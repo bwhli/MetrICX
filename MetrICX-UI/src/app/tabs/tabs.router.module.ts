@@ -23,7 +23,7 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../tab2/preps.module').then(m => m.PrepsPageModule)
+              import('../prep-tab/prep-tab.module').then(m => m.PrepTabModule)
           }
         ]
       },
