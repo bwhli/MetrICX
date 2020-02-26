@@ -58,12 +58,14 @@ export class WalletPage {
   public showUSDValue: boolean = true;
 
 
+
   constructor(
     private toastController: ToastController,
     private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+
   ) { }
 
   async ionViewWillEnter() {
@@ -89,14 +91,14 @@ export class WalletPage {
   }
 
   async presentLoading() {
-      if(!this.loaded) {
-      const loading = await this.loadingController.create({
-        message: 'Loading',
-        duration: 1000
-      });
-      await loading.present();
-      const { role, data } = await loading.onDidDismiss();
-    }
+    const loading = await this.loadingController.create({
+      spinner: null,
+      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      cssClass: 'loading-css',
+      showBackdrop: false,
+      duration: 1000
+    });
+    await loading.present();
   }
 
   async loadWallet() {

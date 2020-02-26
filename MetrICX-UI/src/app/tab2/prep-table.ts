@@ -6,6 +6,8 @@ export class PrepTable {
     votingPerc: number;
     width: number;
     totalVotes: string;
+    city: string;
+    myVotes: number; 
 }
 
 export class PrepPie { 

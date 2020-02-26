@@ -1,8 +1,8 @@
 <div class="header"></div>
 
 <ion-content class="bg-class">
-  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-    <ion-fab-button size="large" color="primary" (click)="save()">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="center">
+    <ion-fab-button size="large" class="fab" color="primary" (click)="save()">
       <ion-icon name="save"></ion-icon>
     </ion-fab-button >
   </ion-fab>  
@@ -14,7 +14,7 @@
         <ion-button shape="round" fill="clear" size="small" (click)="closeModal()">
           <fa-icon class="fa-lg" [icon]="['fas', 'arrow-left']" slot="start"></fa-icon>
         </ion-button>
-        <small>Dismiss</small>
+        <small>Address Settings</small>
       </ion-col>
     
     <ion-item-divider>
