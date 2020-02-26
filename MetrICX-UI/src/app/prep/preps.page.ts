@@ -1,23 +1,23 @@
-import { Component, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { Chart } from 'chart.js';
-import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 import { PrepTable, PrepPie } from './prep-table';
 import { NavController, LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { HttpService } from '../services/http-service/http.service';
+import { Address } from '../services/settings/settings';
 
 @Component({
   selector: 'app-preps',
   templateUrl: 'preps.page.html',
-  styleUrls: ['preps.page.scss',
-              '../../../node_modules/@swimlane/ngx-datatable/assets/icons.css']
+  styleUrls: ['preps.page.scss']
 })
+
+
 export class PrepsPage  {
+  
   rows: Object;
-  dn: Chart;
   public delegatedPrep: DelegatedPRep;
   public preps: PReps;
   public totalSupply: string;
@@ -33,6 +33,23 @@ export class PrepsPage  {
   public votedPercentage: number;
   public isLoaded: boolean = false;
   public numberOfVotedReps: number = 0;
+  private _addressSetting: Address;
+
+  @Input("addresssetting")
+  set addresssetting(value: Address) {
+      this._addressSetting = value;
+      this.address = this._addressSetting.address; 
+      if (this.address) {
+        this.presentLoading();
+        this.loadPageData(this.address);
+        this.isLoaded = true;
+      } else {
+        this.navCtrl.navigateForward('/tabs/settings');
+      }
+  }
+  get addresssetting(): Address {
+      return this._addressSetting;
+  }
 
   constructor( private storage: Storage, 
                private iconContract: IconContractService,
@@ -45,7 +62,7 @@ export class PrepsPage  {
 
    async ionViewWillEnter() {
     var settings = await this.settingsService.get();
-    if (settings && this.settingsService.getActiveAddress().address) {
+   /* if (settings && this.settingsService.getActiveAddress().address) {
       this.address = this.settingsService.getActiveAddress().address; 
       if (this.address) {
         await this.presentLoading();
@@ -56,7 +73,7 @@ export class PrepsPage  {
       else {
         this.navCtrl.navigateForward('/tabs/settings');
       }
-    };
+    }; */
    }
 
    doRefresh(event) {
@@ -117,6 +134,7 @@ export class PrepsPage  {
     this.lastBlockCreatedBy = await this.iconContract.getLastBlockCreatedBy();
 
     this.totalNumPreps = preps.preps.length;
+    this.loadingController.dismiss();
    }
 
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number, votingPerc: number[]) {
@@ -152,79 +170,4 @@ export class PrepsPage  {
 
     this.rows = prepArray;
   }
-
- /* async createDnChart(chartData: number[], labelData: string[]) {
-    if(this.dn) {
-      this.dn.destroy();
-    }  
-    this.dn = new Chart(this.dnChart.nativeElement, {
-      type: 'pie',
-      circumference: 2*Math.PI,
-      data: {
-        labels: labelData,
-        datasets: [{
-          label: '',
-          data: chartData,
-          backgroundColor: [
-            '#545454',
-            '#00A6CC',
-            '#32b8bb',
-            '#7273BF',
-            '#995298',
-            '#A53361',
-            '#BB8732',
-            '#32BB8C',
-            '#3245BB',
-            '#A60711'
-          ],
-          borderColor: [
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9',
-            '#e9e9e9'
-          ],
-          borderWidth: 1
-        }]
-      }, 
-      
-      options: {
-        legend: {
-          display: true,
-          position: 'bottom',
-          fullWidth: true,
-          labels: {
-            fontSize: 10,
-            boxWidth: 5,
-            fontFamily: '"Open Sans",  sans-serif',
-          }
-        },
-      layout: {
-        padding: {  
-            left: 0,
-            right: 0,
-            top: 0,
-            bottom: 0
-        }
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-          labels: [
-            {
-              render: 'percentage',
-              fontColor: '#fff',
-              fontSize: 10,
-              fontFamily: '"Open Sans",  sans-serif',
-            }
-          ]
-        }
-      }
-    });
-  } */
 }

@@ -2,13 +2,12 @@ import { IonicModule } from '@ionic/angular';
 import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { PrepsPage } from './preps.page';
-import { NgxDatatableModule} from '@swimlane/ngx-datatable';
-import { TooltipModule } from 'ng2-tooltip-directive';
+import { PrepTabPage } from './prep-tab.page';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgCircleProgressModule } from 'ng-circle-progress';
+import { SuperTabsModule } from '@ionic-super-tabs/angular';
+import { PrepsPage } from '../prep/preps.page';
 
 @NgModule({
   imports: [
@@ -21,17 +20,15 @@ import { NgCircleProgressModule } from 'ng-circle-progress';
       innerStrokeColor: "#C7E596",
       animationDuration: 300
     }),
-    TooltipModule,
     IonicModule,
     CommonModule,
-    FormsModule,
-    NgxDatatableModule,
     FontAwesomeModule,
-    RouterModule.forChild([{ path: '', component: PrepsPage }])
+    RouterModule.forChild([{ path: '', component: PrepTabPage }]),
+    SuperTabsModule.forRoot()
   ],
-  declarations: [PrepsPage]
+  declarations: [PrepTabPage, PrepsPage]
 })
-export class PrepsPageModule {
+export class PrepTabModule {
   constructor(library: FaIconLibrary) {
     library.addIconPacks(fas);
  }
