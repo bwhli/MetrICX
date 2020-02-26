@@ -44,6 +44,9 @@ namespace MetrICXServerPush.Entities
         [JsonProperty("name")]
         public string Name { get; set; }
 
+        [JsonProperty("details")]
+        public string Details { get; set; }
+
         [JsonProperty("country")]
         public string Country { get; set; }
 
