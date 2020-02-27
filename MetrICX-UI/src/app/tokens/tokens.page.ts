@@ -1,10 +1,9 @@
-import { Component  } from '@angular/core';
-import { ToastController, NavController, ModalController  } from '@ionic/angular';
+import { Component, Input  } from '@angular/core';
+import { NavController, ModalController  } from '@ionic/angular';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { AddTokenModalPage } from '../addTokenModal/addTokenModal.page';
-import { SettingsService } from '../services/settings/settings.service';
-import { DeviceSettings, TokenSet, Address } from '../services/settings/settings';
+import { TokenSet, Address } from '../services/settings/settings';
 
 @Component({
   selector: 'app-tokens',
@@ -13,47 +12,51 @@ import { DeviceSettings, TokenSet, Address } from '../services/settings/settings
 })
 export class TokensPage {
 
+  private _addressSetting: Address;
+  public address: string;
+  public _tokens: TokenSet;
+
+  @Input("addresssetting")
+  set addresssetting(value: Address) {
+      this._addressSetting = value;
+      this.address = this._addressSetting.address;
+      this._tokens = this._addressSetting.tokens; 
+      this.loadTokenBalances();    
+  }
+
+  get addresssetting(): Address {
+      return this._addressSetting;
+  }
+
   dataReturned:any[];
   public Tokens;
   public tokenCount: number = 0;
 
   constructor(
-    private toastController: ToastController,
     private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    public modalController: ModalController,  
-    private settingsService: SettingsService
+    public modalController: ModalController) { }
 
-  ) { }
 
-  async ionViewWillEnter() {
-    var settings = await this.settingsService.get();
- 
-    if (settings && settings.addresses_v2.p0.tokens) {
-       this.loadTokenBalances(settings.addresses_v2.p0);
-    }
-    else {
-      this.tokenCount = 0;
-    }
-  }
-
-  async loadTokenBalances(address: Address) {
-    this.Tokens = address.tokens;
-    if (this.Tokens) {
-      Object.keys(this.Tokens).forEach(async key => {
-        if(this.Tokens[key].IsSelected) {
-          const contractAddress = this.Tokens[key].ContractAddress;
-          this.Tokens[key].Balance = await this.iconContract.getTokenBalance(contractAddress, address.address); 
+  async loadTokenBalances() {
+    if (this._tokens) {
+      Object.keys(this._tokens).forEach(async key => {
+        if(this._tokens[key].IsSelected) {
+          const contractAddress = this._tokens[key].ContractAddress;
+          this._tokens[key].Balance = await this.iconContract.getTokenBalance(contractAddress, this.address); 
           this.tokenCount++;
+        }
+        else{
+          this.tokenCount = 0;
         }
       });
     }
   }
 
-  doRefresh(event) {
+  async doRefresh(event) {
     setTimeout(() => {
-      this.ionViewWillEnter();
+      this.loadTokenBalances();
       event.target.complete();
     }, 2000);
   }
@@ -61,15 +64,17 @@ export class TokensPage {
   async openModal() {
     const modal = await this.modalController.create({
       component: AddTokenModalPage,
-      cssClass: 'address-modal-css'
+      cssClass: 'address-modal-css',
+      componentProps: {
+        key: this._addressSetting
+     }
     });
  
     modal.onDidDismiss().then((dataReturned) => {
       if (dataReturned !== null) {
-        this.ionViewWillEnter();
+        this.loadTokenBalances();
       }
     });
- 
     return await modal.present();
   }
 }

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, NavParams, AlertController } from '@ionic/angular';
+import { ModalController, NavParams } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { TokenSet, Address } from '../services/settings/settings';
 
@@ -12,32 +12,35 @@ import { TokenSet, Address } from '../services/settings/settings';
 export class AddTokenModalPage {
   
   public Tokens;
+  private _addressSetting: Address;
    
   constructor(
     private modalController: ModalController,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private navParams: NavParams
   ) {
 
   }
  
   async ionViewWillEnter() {
-    var settings = await this.settingsService.get();
-    if (settings.addresses_v2.p0.tokens)
-      this.Tokens = JSON.parse(JSON.stringify(settings.addresses_v2.p0.tokens)); //Clone current Token settings
-    else
-      this.Tokens = new TokenSet();
-  }
+    if(this.navParams.get('key')) {
+      this._addressSetting = this.navParams.get('key');
+    if (this._addressSetting.tokens) {
+        this.Tokens = JSON.parse(JSON.stringify(this._addressSetting.tokens)); //Clone current Token settings
+    }
+    else {
+      this._addressSetting.tokens = new TokenSet();
+    }
+   }
+ }
 
   async save() {
+    debugger;
     var settings = await this.settingsService.get()
 
-    if (this.settingsService.getActiveAddress().tokens) { 
-      Object.keys(this.Tokens).forEach(key => {
-        this.settingsService.getActiveAddress().tokens[key].IsSelected = this.Tokens[key].IsSelected;
-      });
-    } else {
-      this.settingsService.getActiveAddress().tokens = this.Tokens;
-    }
+    Object.keys(this._addressSetting.tokens).forEach(key => {
+          this._addressSetting.tokens[key].IsSelected = this.Tokens[key].IsSelected;
+    });
 
     try {
       this.settingsService.save(settings);

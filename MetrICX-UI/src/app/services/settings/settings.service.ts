@@ -128,6 +128,10 @@ export class SettingsService {
      return '' //no empty slots available;
   }
 
+  public async getAddressKeyByAddress(address: string){
+    
+  }
+
   public async getPrepDetails(prepAddress: string) : Promise<any> {
     var prep = await this.afs.collection('preps').doc(prepAddress).get().toPromise();
     if (prep.exists) {
