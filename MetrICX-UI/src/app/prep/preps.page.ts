@@ -121,22 +121,22 @@ export class PrepsPage  {
     var totalSupply = await this.iconContract.getTotalSupply();
     var votedPreps: number = delegatedPReps.delegations.length;
    
-    var prepData = new PrepPie();
-    prepData.name = [];
-    prepData.value = [];
+    var prepData: PrepPie[] = [];
     let numPreps = 0;
     for(var i = 0; i < votedPreps; i++) {
+      var pData = new PrepPie();
       numPreps++;
-      prepData.value[i] = delegatedPReps.delegations[i].value;
+      pData.value = delegatedPReps.delegations[i].value;
       var prep = await this.iconContract.getPRep(delegatedPReps.delegations[i].address);
       var prepName = prep['name'];
-      prepData.name[i] = prepName;
+      pData.name = prepName;
+      prepData.push(pData);
     }
 
     this.numberOfVotedReps = numPreps;
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
 
-    await this.createTableData(delegatedPrepDetail, preps.totalDelegated, prepData.value);
+    await this.createTableData(delegatedPrepDetail, preps.totalDelegated, prepData);
 
     this.totalSupply = Math.round(totalSupply).toLocaleString();
     this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
@@ -151,13 +151,11 @@ export class PrepsPage  {
 
    }
 
-  async createTableData(prepDetail: PrepDetails[], totalDelegated: number, votingPerc: number[]) {
+  async createTableData(prepDetail: PrepDetails[], totalDelegated: number, prepDataVoted: PrepPie[]) {
     var prepArray: PrepTable[] = [];
     let totalVoted: number = 0;
 
-    for(var i = 0; i < votingPerc.length; i++) {
-      totalVoted = totalVoted + votingPerc[i];
-    }
+   
 
     for(var i = 0; i < prepDetail.length; i++) {
       var prepTable = new PrepTable();
@@ -172,12 +170,19 @@ export class PrepsPage  {
       if(!productivityPerc) {
         productivityPerc = 0; 
       }
+
+      for(var j = 0; j < prepDataVoted.length; j++) {
+        totalVoted = totalVoted + prepDataVoted[i].value;
+        if(prepDetail[i].name == prepDataVoted[j].name) {
+          prepTable.myVotes = prepDataVoted[j].value;
+          prepTable.width = prepDataVoted[j].value / totalVoted * 100;
+        }
+      }
       
-       prepTable.myVotes = votingPerc[i];
+   
        prepTable.city = prepDetail[i].city;
        prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
        prepTable.production = Math.round(productivityPerc * 100)/100;
-       prepTable.width = votingPerc[i] / totalVoted * 100;
        prepArray.push(prepTable);
     }
 
