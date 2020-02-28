@@ -84,13 +84,26 @@ export class PrepsPage  {
   }
 
   async presentLoading() {
-    const loading = await this.loadingController.create({
+    this.isLoaded = true;
+    await this.loadingController.create({
       spinner: null,
       message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
       cssClass: 'loading-css',
-      showBackdrop: false
+      showBackdrop: false,
+      duration: 5000
+    }).then(a => {
+      a.present().then(() => {
+        console.log('presented');
+        if (!this.isLoaded) {
+          a.dismiss().then(() => console.log('abort presenting'));
+        }
+      });
     });
-    await loading.present();
+  }
+
+  async dismiss() {
+    this.isLoaded = false;
+    return await this.loadingController.dismiss().then(() => console.log('dismissed'));
   }
 
   async filterPrepsList(delegatedPrepList: Delegations[], allPreps: PReps) : Promise<PrepDetails[]> {
@@ -134,7 +147,8 @@ export class PrepsPage  {
     this.lastBlockCreatedBy = await this.iconContract.getLastBlockCreatedBy();
 
     this.totalNumPreps = preps.preps.length;
-    this.loadingController.dismiss();
+    await this.dismiss();
+
    }
 
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number, votingPerc: number[]) {
