@@ -138,7 +138,7 @@ namespace MetrICXServerPush
                 }
             }
 
-            if (device.enablePushDeposits == true)
+            if (address.enablePushDeposits == true)
             {
                 try
                 {
