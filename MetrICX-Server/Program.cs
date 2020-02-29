@@ -89,7 +89,7 @@ namespace MetrICXServerPush
                                 foreach (var token in address.tokens.AsEnumerator())
                                 {
                                     Console.WriteLine($"[MAIN] Processing Token {token.token} {token.contractAddress}");
-                                    ProcessDeviceToken(device, token);
+                                    ProcessDeviceToken(device, address, token);
                                 }
                             }
                         }
@@ -212,15 +212,15 @@ namespace MetrICXServerPush
             }
         }
 
-        public static void ProcessDeviceToken(DeviceRegistration device, Token token)
+        public static void ProcessDeviceToken(DeviceRegistration device, Address address, Token token)
         {
             SendResponse sendResponse = null;
             
-            if (device.enablePushDeposits == true && token.isSelected == true)
+            if (address.enablePushDeposits == true && token.isSelected == true)
             {
                 try
                 {
-                    var balance = IconGateway.GetBalance(device.addresses_v2.p0, token);
+                    var balance = IconGateway.GetBalance(address, token);
                     if (string.IsNullOrEmpty(token.lastBalance))
                     {
                         //Store current balance without sending a notification
