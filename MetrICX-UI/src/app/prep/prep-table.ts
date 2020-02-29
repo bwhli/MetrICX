@@ -11,6 +11,6 @@ export class PrepTable {
 }
 
 export class PrepPie { 
-    value: number[];
-    name: string[];
+    value: number;
+    name: string;
 }

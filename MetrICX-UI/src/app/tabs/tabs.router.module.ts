@@ -33,7 +33,7 @@ const routes: Routes = [
           {
             path: '',
             loadChildren: () =>
-              import('../tokens/tokens.module').then(m => m.TokensPageModule)
+              import('../tokens-tab/tokens-tab.module').then(m => m.TokensTabModule)
           }
         ]
       },

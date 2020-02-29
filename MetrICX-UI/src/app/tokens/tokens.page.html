@@ -32,7 +32,7 @@
             </ion-grid>
         </ion-item-divider>
 
-        <ion-col size="12" *ngFor="let token of Tokens | keyvalue">
+        <ion-col size="12" *ngFor="let token of _tokens | keyvalue">
             <ion-card *ngIf="token.value.IsSelected">
                 <ion-card-title class="card-title-inverted">  
                   <ion-row>
