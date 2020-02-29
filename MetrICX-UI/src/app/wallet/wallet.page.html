@@ -14,12 +14,12 @@
                 </ion-card-title>
                   <ion-card-content class="card-content">
                       <ion-row>
-                          <ion-col size="{{colSize}}" text-left>
+                          <ion-col size="{{colSize}}" class="ion-text-start">
                             <fa-icon style="padding:1px; color: #1adfcb;" size="2x" [icon]="['fas', 'wallet']"></fa-icon>
                           </ion-col>
                           <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
                               {{balance | number : '1.2-2'}} <small>ICX</small>
-                              <div class="amount-value-usd" *ngIf="showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                              <div class="amount-value-usd" *ngIf="showUSDValue"> {{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
                           </ion-col>
                       </ion-row>
                   </ion-card-content> 
@@ -51,7 +51,7 @@
                     </ion-card-title >
                       <ion-card-content class="card-content">
                           <ion-row>
-                              <ion-col size="3" text-left>
+                              <ion-col size="3" class="ion-text-start">
                                 <fa-icon style="padding:1px; color: #1adfcb;" size="2x" [icon]="['fas', 'lock']"></fa-icon> 
                               </ion-col>
                               <ion-col class="amount-value" text-right>
@@ -69,10 +69,10 @@
                   </ion-card-title>
                     <ion-card-content class="card-content">
                         <ion-row>
-                          <ion-col size="3" text-left>
-                            <fa-icon style="padding:1px; color: #1adfcb;"  [icon]="['fas', 'parachute-box']"></fa-icon> 
+                          <ion-col size="4" text-left>
+                            <fa-icon style="padding:1px; color: #1adfcb;"  size="2x" [icon]="['fas', 'parachute-box']"></fa-icon> 
                           </ion-col>
-                            <ion-col size="9" class="amount-value ion-text-end">
+                            <ion-col size="8" class="amount-value ion-text-end">
                                {{claim | number : '1.2-2'}} <small>ICX</small>
                                 <div class="amount-value-usd" *ngIf="showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
                             </ion-col>

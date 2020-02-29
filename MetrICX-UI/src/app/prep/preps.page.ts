@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { Storage } from '@ionic/storage';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { DelegatedPRep, PReps, Delegations, PrepDetails } from '../services/icon-contract/preps';
 import { PrepTable, PrepPie } from './prep-table';
@@ -40,19 +39,14 @@ export class PrepsPage  {
       this._addressSetting = value;
       this.address = this._addressSetting.address; 
       if (this.address) {
-        this.presentLoading();
-        this.loadPageData(this.address);
-        this.isLoaded = true;
-      } else {
-        this.navCtrl.navigateForward('/tabs/settings');
+        this.ionViewWillEnter();
       }
   }
   get addresssetting(): Address {
       return this._addressSetting;
   }
 
-  constructor( private storage: Storage, 
-               private iconContract: IconContractService,
+  constructor( private iconContract: IconContractService,
                public navCtrl: NavController,
                private settingsService: SettingsService,
                private httpService: HttpService,
@@ -61,19 +55,11 @@ export class PrepsPage  {
 
 
    async ionViewWillEnter() {
-    var settings = await this.settingsService.get();
-   /* if (settings && this.settingsService.getActiveAddress().address) {
-      this.address = this.settingsService.getActiveAddress().address; 
       if (this.address) {
         await this.presentLoading();
         await this.loadPageData(this.address);
-        await this.loadingController.dismiss();
         this.isLoaded = true;
       }
-      else {
-        this.navCtrl.navigateForward('/tabs/settings');
-      }
-    }; */
    }
 
    doRefresh(event) {
@@ -154,8 +140,6 @@ export class PrepsPage  {
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number, prepDataVoted: PrepPie[]) {
     var prepArray: PrepTable[] = [];
     let totalVoted: number = 0;
-
-   
 
     for(var i = 0; i < prepDetail.length; i++) {
       var prepTable = new PrepTable();
