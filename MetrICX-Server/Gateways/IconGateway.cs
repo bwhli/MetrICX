@@ -18,28 +18,35 @@ namespace MetrICXServerPush.Gateways
 
         public static Decimal GetAvailableRewards(Address address)
         {
-            Console.WriteLine($"[ICON] Getting available Rewards for address {address}");
+            Console.WriteLine($"[ICON] Getting available Rewards for address '{address.address}'");
             var call = new Call<IDictionary<string, BigInteger>>(Consts.ApiUrl.MainNet);
 
             if (address.Symbol == "ICX" || string.IsNullOrEmpty(address.Symbol))
             {
-                try
+                if (!string.IsNullOrEmpty(address.address) && address.address.StartsWith("hx"))
                 {
-                    var result = call.Invoke(
-                        address.address,
-                        "cx0000000000000000000000000000000000000000",
-                        "queryIScore",
-                        ("address", address.address)
-                    ).Result;
+                    try
+                    {
+                        var result = call.Invoke(
+                            address.address,
+                            "cx0000000000000000000000000000000000000000",
+                            "queryIScore",
+                            ("address", address.address)
+                        ).Result;
 
-                    var icx = IntToDecimal(result["estimatedICX"]);
-                    Console.WriteLine($"[ICON] ICX for address {address.address} is {icx}");
-                    return icx;
-                }
-                catch (Exception ex)
+                        var icx = IntToDecimal(result["estimatedICX"]);
+                        Console.WriteLine($"[ICON] ICX for address {address.address} is {icx}");
+                        return icx;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[ICON] EXCEPTION GetAvailableRewards for address {address.address} : {ex.Message}");
+                        throw;
+                    }
+                } else
                 {
-                    Console.WriteLine($"[ICON] EXCEPTION GetAvailableRewards for address {address} : {ex.Message}");
-                    throw;
+                    Console.WriteLine($"[ICON] WARNING, invalid address {address.address}");
+                    return 0;
                 }
             }
             else
@@ -66,26 +73,30 @@ namespace MetrICXServerPush.Gateways
 
         public static Decimal GetBalance(Address address)
         {
-            Console.WriteLine($"[ICON] Getting balance for {address.Symbol} address {address.address}");
+            Console.WriteLine($"[ICON] Getting balance for {address.Symbol} address '{address.address}'");
             if (address.Symbol == "ICX" || string.IsNullOrEmpty(address.Symbol))
             {
-                var getBalance = IconSDK.RPCs.GetBalance.Create(Consts.ApiUrl.MainNet);
+                if (!string.IsNullOrEmpty(address.address) && address.address.StartsWith("hx"))
+                {
+                    var getBalance = IconSDK.RPCs.GetBalance.Create(Consts.ApiUrl.MainNet);
 
-                try
-                {
-                    var balance = IntToDecimal(getBalance(address.address).Result);
-                    Console.WriteLine($"[ICON] ICX Balance for address {address} for {balance}");
-                    return balance;
+                    try
+                    {
+                        var balance = IntToDecimal(getBalance(address.address).Result);
+                        Console.WriteLine($"[ICON] ICX Balance for address {address} for {balance}");
+                        return balance;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[ICON] EXCEPTION GetICXBalance for address {address.address} : {ex.Message}");
+                        throw;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"[ICON] EXCEPTION GetICXBalance for address {address} : {ex.Message}");
-                    throw;
+                    Console.WriteLine($"[ICON] WARNING, invalid address {address.address}");
+                    return 0;
                 }
-            }
-            else
-            {
-                //Need to load balance of different tokens
             }
 
             return 0;
@@ -93,7 +104,7 @@ namespace MetrICXServerPush.Gateways
 
         public static Decimal GetBalance(Address address, Token token)
         {
-            Console.WriteLine($"[ICON] Getting token balance for {token.token} address {token.contractAddress}");
+            Console.WriteLine($"[ICON] Getting token balance for '{token.token}' address '{token.contractAddress}'");
 
             try
             {
@@ -121,26 +132,34 @@ namespace MetrICXServerPush.Gateways
 
         public static PRepDelegations GetDelegatedPReps(Address address)
         {
-            Console.WriteLine($"[ICON] Getting Delegated PReps {address}");
+            Console.WriteLine($"[ICON] Getting Delegated PReps '{address.address}'");
             if (address.Symbol == "ICX" || string.IsNullOrEmpty(address.Symbol))
             {
-                var call = new Call<PRepDelegations>(Consts.ApiUrl.MainNet);
-
-                try
+                if (!string.IsNullOrEmpty(address.address) && address.address.StartsWith("hx"))
                 {
-                    var result = call.Invoke(
-                        address.address,
-                        "cx0000000000000000000000000000000000000000",
-                        "getDelegation",
-                        ("address", address.address)
-                    ).Result;
 
-                    return result;
+                    var call = new Call<PRepDelegations>(Consts.ApiUrl.MainNet);
+
+                    try
+                    {
+                        var result = call.Invoke(
+                            address.address,
+                            "cx0000000000000000000000000000000000000000",
+                            "getDelegation",
+                            ("address", address.address)
+                        ).Result;
+
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine($"[ICON] EXCEPTION GetDelegatedPReps for address {address.address} : {ex.Message}");
+                        throw;
+                    }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"[ICON] EXCEPTION GetDelegatedPReps for address {address.address} : {ex.Message}");
-                    throw;
+                    Console.WriteLine($"[ICON] WARNING, invalid address {address.address}");
                 }
             }
 
