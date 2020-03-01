@@ -19,6 +19,7 @@ namespace MetrICXServerPush.Entities
         private string _balance;
         private string _symbol;
         private TokenSet _tokens;
+        private bool? _enablePushDeposits;
 
         [FirestoreProperty]
         public string address
@@ -96,6 +97,17 @@ namespace MetrICXServerPush.Entities
             {
                 _dirty = _dirty || _balance != value;
                 _balance = value;
+            }
+        }
+
+        [FirestoreProperty]
+        public bool? enablePushDeposits
+        {
+            get => _enablePushDeposits;
+            set
+            {
+                _dirty = _dirty || _enablePushDeposits != value;
+                _enablePushDeposits = value;
             }
         }
 

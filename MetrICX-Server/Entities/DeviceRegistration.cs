@@ -219,14 +219,6 @@ namespace MetrICXServerPush.Entities
             }
         }
 
-        //private void CreateDefaultAddress()
-        //{
-        //    //Some fields will auto-map to the first address in the list, so create that item
-        //    if (addresses_v2 == null) addresses_v2 = new MapArray<Address>();
-        //    //if (addresses == null) addresses = new List<Address>();
-        //    //addresses_v2.p0 = new Address() { Symbol = "ICX" };
-        //}
-
         public void MigrateData()
         {
             //This is only for really old data structure to hopefully resolve into newer structures
@@ -240,6 +232,18 @@ namespace MetrICXServerPush.Entities
                 addresses_v2.p0.lastDepositPushSentDate = _legacylastDepositPushSentDate;
                 addresses_v2.p0.availableRewards = _legacyavailableRewards;
                 _dirty = true;
+            }
+
+            foreach (var address in addresses_v2.AsEnumerator())
+            {
+                if (address != null && address.enablePushDeposits == null)
+                {
+                    //If push deposits at address level is null, then inherit the core value
+                    address.enablePushDeposits = enablePushDeposits;
+                }
+
+                if (address.address != null)
+                    address.address = address.address.Trim();
             }
         }
     }
