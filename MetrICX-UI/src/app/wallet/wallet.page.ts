@@ -1,6 +1,5 @@
-import { Component, ViewChild, ElementRef, OnInit, Input } from '@angular/core';
-import { Storage } from '@ionic/storage';
-import { ToastController, NavController } from '@ionic/angular';
+import { Component, ViewChild, ElementRef, Input } from '@angular/core';
+import {  NavController,  } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
@@ -21,24 +20,19 @@ export class WalletPage {
       this._addressSetting = value;
       this.address = this._addressSetting.address; 
       if (this.address) {
-        this.presentLoading();
-        this.loadWallet();
-        this.loadStake();
-        this.loadUnstake();
-        this.loadClaim();
-        this.loadChart();
-        this.loadUSDValue();
+        this.ionViewWillEnter();
         this.loaded = true;  
       } else {
         this.navCtrl.navigateForward('/tabs/settings');
       }
   }
-  get addresssetting(): Address {
+  get asyncaddresssetting(): Address {
       return this._addressSetting;
   }
 
   @ViewChild("barCanvas", {static:false}) barCanvas: ElementRef;
 
+  private barChart: Chart;
   public address: string;
   public balance: number = 0;
   public stake = 0;
@@ -46,7 +40,6 @@ export class WalletPage {
   public networkedStaked = 0;
   public unstakePeriod: string;
   public networkUnstakePeriod = '';
-  private barChart: Chart;
   public loaded: boolean = false;
   public rewardRate = 0;
   public monthlyICX = 0;
@@ -55,39 +48,27 @@ export class WalletPage {
   public rowSize: number = 12;
   public colSize: number = 2;
   public USDValue: number = 0;
-  public showUSDValue: boolean = true;
-
-
-
+  public showUSDValue: boolean = false;
+ 
   constructor(
-    private toastController: ToastController,
     private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    private settingsService: SettingsService,
+    private settingsService: SettingsService
 
   ) { }
 
   async ionViewWillEnter() {
-    var settings = await this.settingsService.get();
-    if (settings) this.showUSDValue = settings.showUSDValue;
-
-    // if (settings && this.settingsService.getActiveAddress().address) {
-    //   this.address = this.settingsService.getActiveAddress().address; 
-    //   if (this.address) {
-    //     this.showUSDValue = settings.showUSDValue;
-    //     this.presentLoading();
-    //     this.loadWallet();
-    //     this.loadStake();
-    //     this.loadUnstake();
-    //     this.loadClaim();
-    //     this.loadChart();
-    //     this.loadUSDValue();
-    //     this.loaded = true;  
-    //   } else {
-    //     this.navCtrl.navigateForward('/tabs/settings');
-    //   }
-    // }
+    if (this.address) {
+        this.presentLoading();
+        this.loadWallet();
+        this.loadStake();
+        this.loadUnstake();
+        this.loadClaim();
+        this.loadChart();
+        this.loadUSDValue();
+        this.loaded = true;  
+     } 
   }
 
   async presentLoading() {
@@ -106,6 +87,8 @@ export class WalletPage {
   }
 
   async loadUSDValue() {
+    var showUSDvalue = (await this.settingsService.get()).showUSDValue;
+    this.showUSDValue = showUSDvalue;
     this.USDValue = await this.iconContract.getUSDValue();
   }
 

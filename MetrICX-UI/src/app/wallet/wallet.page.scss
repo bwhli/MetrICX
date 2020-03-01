@@ -24,7 +24,7 @@ canvas {
 }
 
 .tooltip {
-  font-size: 16px;
+  font-size: 14px;
 }
 
 .amount-value-usd {
@@ -46,27 +46,27 @@ canvas {
 }
 
 .rewardInfoICX {
-  font-size: 16px !important;
+  font-size: 14px !important;
   color: #fff;
   vertical-align: middle;
 } 
 
 .rewardInfo{
-  font-size: 16px !important;
+  font-size: 14px !important;
   color: #fff;
 } 
 
 .rewardInfoICXInverted {
   background-color: #1d2025 !important;
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   height: 100%;
 } 
 
 .rewardInfoInverted { 
   background-color: #1d2025 !important;
   color: #fff;
-  font-size: 16px;
+  font-size: 14px;
   height: 100%;
 } 
 
@@ -78,3 +78,4 @@ ion-refresher-content {
   --color: #fff;
 }
 
+::-webkit-scrollbar { display:none; }
