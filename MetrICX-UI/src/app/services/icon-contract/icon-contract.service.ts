@@ -207,4 +207,44 @@ public async getClaimableRewards(address: string) {
     const bigBalance = await this.iconService.call(call).execute();
     return this.toBigInt(bigBalance);
   }
+
+  public async GetTapDividends() {
+    const call = new CallBuilder()
+    .to('cx1b97c1abfd001d5cd0b5a3f93f22cccfea77e34e')
+    .method('get_excess')
+    .params()
+    .build();
+
+      // Check the wallet balance
+   const result = await this.iconService.call(call).execute();
+   return this.toBigInt(result);
+  }
+
+  public async GetTotalTapMinted() {
+    const call = new CallBuilder()
+    .to('cx1b97c1abfd001d5cd0b5a3f93f22cccfea77e34e')
+    .method('get_total_distributed')
+    .params()
+    .build();
+
+      // Check the wallet balance
+   const result = await this.iconService.call(call).execute();
+   return this.toBigInt(result);
+  }
+
+  public async GetBalanceTap() {
+    const params = {
+      _owner: 'cx3b9955d507ace8ac27080ed64948e89783a62ab1'
+    };
+    
+    const call = new CallBuilder()
+      .to('cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782')
+      .method('balanceOf')
+      .params(params)
+      .build();
+
+        // Check the wallet balance
+    const bigBalance = await this.iconService.call(call).execute();
+    return this.toBigInt(bigBalance);
+  }  
 }
