@@ -241,6 +241,9 @@ namespace MetrICXServerPush.Entities
                     //If push deposits at address level is null, then inherit the core value
                     address.enablePushDeposits = enablePushDeposits;
                 }
+
+                if (address.address != null)
+                    address.address = address.address.Trim();
             }
         }
     }

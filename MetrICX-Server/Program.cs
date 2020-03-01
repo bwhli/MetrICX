@@ -19,19 +19,19 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("fn8-z0vOzbM:APA91bESwaeBs9T2xeIOYrXTxzhFNMuanqNZSXS9x84O9bzohWou7vQoeew2vyeglwH_UC36X7rMHjWFsHEyI5esC3NtLthZzx8WDh3lENlU0Al5DOBL5l_5AuUtuzqNWLq-CIY9voP2");
+            //var device = FirebaseGateway.GetDevice("fgkmYbpdPuA:APA91bF4y4jONOoo4seW1BO5XMTPQTUmvT9kzk9rOcEf8KxOfjCx_phid0XfpV-kMSeeXeOH-6Kui-kswt0dA19K5QcCxHUDbyBMBDdFweAtIqsLUiShpMxkSmWoSPRhI-UEJUUienuo");
             //FirebaseGateway.UpdateDevice(device);
 
             ////device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
 
             //ProcessDeviceAddress(device, device.addresses_v2.p0);
 
-            ////foreach (var token in device.addresses_v2.p0.tokens)
-            ////{
-            ////    ProcessDeviceToken(device, token);
-            ////}
+            //foreach (var token in device.addresses_v2.p0.tokens.AsEnumerator())
+            //{
+            //    ProcessDeviceToken(device, device.addresses_v2.p0, token);
+            //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.5");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.6");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -93,6 +93,7 @@ namespace MetrICXServerPush
                                 }
                             }
                         }
+
                     }
                     
                     FirebaseGateway.UpdateDevice(device);
