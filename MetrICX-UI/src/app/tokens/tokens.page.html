@@ -34,11 +34,12 @@
 
         <ion-col size="12" *ngFor="let token of _tokens | keyvalue">
             <ion-card *ngIf="token.value.IsSelected">
-                <ion-card-title class="card-title-inverted">  
+                <ion-card-title class="card-title-primary">  
                   <ion-row>
                     <ion-col size="4" class="ion-text-start">
-                      <ion-badge class="badge" color="secondary"> {{token.value.Token[0]}} </ion-badge> 
+                      {{token.value.Token}}
                     </ion-col>
+                
                     <ion-col style="font-size: 12px !important;" size="8" class="ion-text-end">
                       Balance
                     </ion-col>  
@@ -46,12 +47,12 @@
                 </ion-card-title>
                 <ion-card-content class="card-content-inverted" style="padding:0px !important"> 
                   <ion-row >
-                    <ion-col size="4" class="ion-text-start">
-                      {{token.value.Token}}
+                    <ion-col size="2" class="ion-text-center align-text-middle">
+                      <ion-badge class="badge" color="secondary"> {{token.value.Token[0]}} </ion-badge> 
                     </ion-col>
                     <ion-col *ngIf="token.value.IsSelected" class="amount-value ion-text-end">
                       {{token.value.Balance | number : '1.2-2'}}
-                      <div *ngIf="token.value.Token == 'TAP'"class="divs">Expected Divs: {{icxDivs | number : '1.2-2'}}<small>ICX (+WW)</small></div>
+                      <div *ngIf="token.value.Token == 'TAP'" class="divs">Todays expected divs: <span style="color: #1adfcb; font-weight: bold">{{icxDivs | number : '1.2-2'}} <small>ICX (+WW)</small> </span> </div>
                     </ion-col>
                 </ion-row> 
               </ion-card-content> 
