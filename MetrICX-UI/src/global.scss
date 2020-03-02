@@ -176,4 +176,8 @@ ion-toast.error-message {
   font-size: 14px;
 }
 
+.refresher-ios .refresher-pulling-icon, .refresher-ios .refresher-pulling-text, .refresher-ios .refresher-refreshing-icon, .refresher-ios .refresher-refreshing-text {
+  color: var(--ion-text-color,#FFF);
+}
+
 
