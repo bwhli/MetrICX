@@ -43,12 +43,12 @@
           </ion-grid>
       </ion-item-divider>
  
-        <ion-item>
+        <ion-item class="item-highlight">
           <ion-label>Wallet Name:</ion-label>
           <ion-input type="text" placeholder="Wallet1" [(ngModel)]="nickName" max="20"> </ion-input>
         </ion-item>
 
-        <ion-item>
+        <ion-item class="item-highlight">
           <ion-label>Address:</ion-label>
           <ion-input pattern="hx[0-9a-h]{39}" type="text" placeholder="hx...." [(ngModel)]="address" max="42"></ion-input>
           <ion-button  (click)="scanQR()" class="ion-no-margin ion-no-padding" fill="clear" size="small">

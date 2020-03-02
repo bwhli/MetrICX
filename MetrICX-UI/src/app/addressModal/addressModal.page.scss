@@ -1,4 +1,7 @@
-
+.item-highlight {
+  --background-focused: #2e445b !important;
+  --color-focused: #fff !important;
+}
 
 button {
 padding: 0px !important;
@@ -48,9 +51,6 @@ ion-input {
 
 .toast-container{ background:#1d2025; } .toast-md .toast-message{ color: #cf6679; }
 
-.input-wrapper {
-
-  width: 100% !important;
-
-
+  .input-wrapper {
+width: 100% !important;
 }
