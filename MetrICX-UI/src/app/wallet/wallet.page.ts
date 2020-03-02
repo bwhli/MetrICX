@@ -5,7 +5,7 @@ import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
-import { Address } from '../services/settings/settings';
+import { Address, DeviceSettings } from '../services/settings/settings';
 
 @Component({
   selector: 'app-wallet',
@@ -48,7 +48,7 @@ export class WalletPage {
   public rowSize: number = 12;
   public colSize: number = 2;
   public USDValue: number = 0;
-  public showUSDValue: boolean = false;
+  public deviceSettings: DeviceSettings;
  
   constructor(
     private iconContract: IconContractService,
@@ -60,14 +60,16 @@ export class WalletPage {
 
   async ionViewWillEnter() {
     if (this.address) {
-        this.presentLoading();
-        this.loadWallet();
-        this.loadStake();
-        this.loadUnstake();
-        this.loadClaim();
-        this.loadChart();
-        this.loadUSDValue();
-        this.loaded = true;  
+      this.presentLoading();
+
+      this.deviceSettings = await this.settingsService.get()
+      this.loadWallet();
+      this.loadStake();
+      this.loadUnstake();
+      this.loadClaim();
+      this.loadChart();
+      this.loadUSDValue();
+      this.loaded = true;  
      } 
   }
 
@@ -86,9 +88,7 @@ export class WalletPage {
     this.balance = await this.iconContract.getBalance(this.address);
   }
 
-  async loadUSDValue() {
-    var showUSDvalue = (await this.settingsService.get()).showUSDValue;
-    this.showUSDValue = showUSDvalue;
+  async loadUSDValue() { 
     this.USDValue = await this.iconContract.getUSDValue();
   }
 

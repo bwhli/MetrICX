@@ -24,6 +24,7 @@
                   </ion-col>
                        <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
                         {{balance | number : '1.2-2'}} <small>ICX</small>
+                        <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
               </ion-row> 
             </ion-card-content> 
@@ -69,7 +70,7 @@
                       </ion-col>
                       <ion-col class="amount-value ion-text-end">
                           {{stake | number : '1.2-2'}} <small>ICX</small>
-                          <div class="amount-value-usd" *ngIf="showUSDValue">{{stake / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                          <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{stake / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
                     </ion-row>       
               </ion-card-content>
@@ -91,7 +92,7 @@
                       </ion-col>
                         <ion-col size="8" class="amount-value ion-text-end">
                             {{claim | number : '1.2-2'}} <small>ICX</small>
-                            <div class="amount-value-usd" *ngIf="showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
+                            <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
                         </ion-col>
                       </ion-row>       
                 </ion-card-content>
@@ -116,7 +117,7 @@
                       </ion-col>
                       <ion-col size="10" class="amount-value ion-text-end">
                           {{(stake+balance) | number : '1.2-2'}} <small>ICX</small>
-                          <div class="amount-value-usd" *ngIf="showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                          <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
                     </ion-row>       
               </ion-card-content>
@@ -153,7 +154,7 @@
                     </ion-col>
                       <ion-col class="amount-value ion-text-end">
                         ~ {{monthlyICX | number : '1.2-2'}} <small>ICX</small>
-                        <div class="amount-value-usd" *ngIf="showUSDValue">{{monthlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                        <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{monthlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
                     </ion-row>       
                   </ion-card-content>
@@ -177,12 +178,12 @@
                     </ion-col>
                       <ion-col class="amount-value ion-text-end">
                         ~ {{yearlyICX | number : '1.2-2'}} <small>ICX</small>
-                        <div class="amount-value-usd" *ngIf="showUSDValue">{{yearlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                        <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{yearlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
                     </ion-row>       
                   </ion-card-content>
                 </ion-card>
-               </ion-col>
+               </ion-col> 
             
             </ion-row>
             <ion-row>
