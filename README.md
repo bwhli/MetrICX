@@ -4,7 +4,6 @@
     width="200px"
     alt="Rhizome logo">
 </p>
->
 
 # MetrICX - ICON within the palm of your hand 
 MetrICX, developed by RHIZOME, puts the ICON blockchain ecosystem into the palm of your hands. MetrICX allows ICONists to track and view personal staking data, vote allocation, current i_Score, projected returns, and other information all from a mobile phone.
