@@ -140,6 +140,10 @@ export class PrepsPage  {
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number, prepDataVoted: PrepPie[]) {
     var prepArray: PrepTable[] = [];
     let totalVoted: number = 0;
+    
+    for(var j=0;j<prepDataVoted.length;j++) {
+      totalVoted = totalVoted + prepDataVoted[j].value;
+    }
 
     for(var i = 0; i < prepDetail.length; i++) {
       var prepTable = new PrepTable();
@@ -155,21 +159,18 @@ export class PrepsPage  {
         productivityPerc = 0; 
       }
 
-      for(var j = 0; j < prepDataVoted.length; j++) {
-        totalVoted = totalVoted + prepDataVoted[i].value;
-        if(prepDetail[i].name == prepDataVoted[j].name) {
-          prepTable.myVotes = prepDataVoted[j].value;
-          prepTable.width = prepDataVoted[j].value / totalVoted * 100;
+      for(var k = 0; k < prepDataVoted.length; k++) {
+        if(prepDetail[i].name == prepDataVoted[k].name) {
+          prepTable.myVotes = prepDataVoted[k].value;
+          prepTable.width = prepDataVoted[k].value / totalVoted * 100;
         }
       }
-      
-   
+
        prepTable.city = prepDetail[i].city;
        prepTable.totalVotes = (Math.round(prepDetail[i].delegated *100)/100).toLocaleString();
        prepTable.production = Math.round(productivityPerc * 100)/100;
        prepArray.push(prepTable);
     }
-
     this.rows = prepArray;
   }
 }
