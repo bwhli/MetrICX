@@ -9,99 +9,120 @@
       <ion-row>
         <ion-col size="{{rowSize}}">
             <ion-card>
-                <ion-card-title class="card-title-inverted">
-                   Available
-                </ion-card-title>
-                  <ion-card-content class="card-content">
-                      <ion-row>
-                          <ion-col size="{{colSize}}" class="ion-text-start">
-                            <fa-icon style="padding:1px; color: #1adfcb;" size="2x" [icon]="['fas', 'wallet']"></fa-icon>
-                          </ion-col>
-                          <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
-                              {{balance | number : '1.2-2'}} <small>ICX</small>
-                              <div class="amount-value-usd" *ngIf="showUSDValue"> {{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
-                          </ion-col>
-                      </ion-row>
-                  </ion-card-content> 
-                </ion-card>
-        </ion-col>
-          <ion-col [hidden]="hideUnstakeTimer" size="6">
+              <ion-card-title class="card-title-inverted">  
+                <ion-row>
+                  <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                    Available
+                  </ion-col>  
+              </ion-row>  
+              </ion-card-title>
+
+              <ion-card-content class="card-content-inverted" style="padding:0px !important"> 
+                <ion-row>
+                  <ion-col size="{{colSize}}" class="ion-text-center">
+                      <fa-icon style="color: #1adfcb;"size="2x" [icon]="['fas', 'wallet']"></fa-icon>
+                  </ion-col>
+                       <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
+                        {{balance | number : '1.2-2'}} <small>ICX</small>
+                      </ion-col>
+              </ion-row> 
+            </ion-card-content> 
+            </ion-card>
+         </ion-col>
+    
+         <ion-col [hidden]="hideUnstakeTimer" size="6">
               <ion-card>
-                  <ion-card-title  class="card-title-inverted">
-                          Unstake Timer
-                  </ion-card-title >
-                    <ion-card-content class="card-content">
-                        <ion-row>
-                            <ion-col size="3" text-left>
-                              <fa-icon style="padding:1px; color: #1adfcb;" size="2x" [icon]="['fas', 'calendar-alt']"></fa-icon>
-                            </ion-col>
-                            <ion-col text-right>
-                                {{unstakePeriod}}
-                            </ion-col>
-                          </ion-row>       
-                    </ion-card-content>
-                  </ion-card>
-          </ion-col>
+                <ion-card-title class="card-title-inverted">  
+                  <ion-row>
+                    <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                      Unstake Timer
+                    </ion-col>  
+                </ion-row>  
+                </ion-card-title>
+                <ion-card-content class="card-content-inverted" style="padding:0px !important">  
+                    <ion-row>
+                        <ion-col size="3" class="ion-text-center">
+                           <fa-icon style="color: #1adfcb;" size="2x" [icon]="['fas', 'calendar-alt']"></fa-icon>
+                        </ion-col>
+                        <ion-col class="amount-value ion-text-end">
+                            {{unstakePeriod}}
+                        </ion-col>
+                      </ion-row>       
+                </ion-card-content>
+              </ion-card>
+          </ion-col>  
         </ion-row>
         <ion-row>
             <ion-col size="7">
                 <ion-card>
-                    <ion-card-title  class="card-title-inverted">
-                            Staked
-                    </ion-card-title >
-                      <ion-card-content class="card-content">
-                          <ion-row>
-                              <ion-col size="3" class="ion-text-start">
-                                <fa-icon style="padding:1px; color: #1adfcb;" size="2x" [icon]="['fas', 'lock']"></fa-icon> 
-                              </ion-col>
-                              <ion-col class="amount-value" text-right>
-                                  {{stake | number : '1.2-2'}} <small>ICX</small>
-                                  <div class="amount-value-usd" *ngIf="showUSDValue">{{stake / USDValue | number : '1.2-2'}} <small>USD</small></div>
-                              </ion-col>
-                            </ion-row>       
-                      </ion-card-content>
-                    </ion-card>
+                  <ion-card-title class="card-title-inverted">  
+                    <ion-row>
+                      <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                        Staked
+                      </ion-col>  
+                  </ion-row>  
+                  </ion-card-title>
+                  <ion-card-content class="card-content-inverted" style="padding:0px !important">  
+                  <ion-row>
+                      <ion-col size="3" style="margin-left: 5px !important; margin-right: 6px !important;" class="ion-text-center">
+                        <fa-icon style="color: #1adfcb;" size="2x" [icon]="['fas', 'lock']"></fa-icon> 
+                      </ion-col>
+                      <ion-col class="amount-value ion-text-end">
+                          {{stake | number : '1.2-2'}} <small>ICX</small>
+                          <div class="amount-value-usd" *ngIf="showUSDValue">{{stake / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                      </ion-col>
+                    </ion-row>       
+              </ion-card-content>
+            </ion-card>
             </ion-col>
             <ion-col size="5">
               <ion-card>
-                  <ion-card-title  class="card-title-inverted">
-                          Unclaimed   
-                  </ion-card-title>
-                    <ion-card-content class="card-content">
-                        <ion-row>
-                          <ion-col size="4" text-left>
-                            <fa-icon style="padding:1px; color: #1adfcb;"  size="2x" [icon]="['fas', 'parachute-box']"></fa-icon> 
-                          </ion-col>
-                            <ion-col size="8" class="amount-value ion-text-end">
-                               {{claim | number : '1.2-2'}} <small>ICX</small>
-                                <div class="amount-value-usd" *ngIf="showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
-                            </ion-col>
-                          </ion-row>       
-                    </ion-card-content>
+                <ion-card-title class="card-title-inverted">  
+                  <ion-row>
+                    <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                      Unclaimed
+                    </ion-col>  
+                </ion-row>  
+                </ion-card-title>
+                <ion-card-content class="card-content-inverted" style="padding:0px !important">  
+                    <ion-row>
+                      <ion-col size="4" class="ion-text-center">
+                        <fa-icon style="color: #1adfcb;" size="2x"  [icon]="['fas', 'parachute-box']"></fa-icon> 
+                      </ion-col>
+                        <ion-col size="8" class="amount-value ion-text-end">
+                            {{claim | number : '1.2-2'}} <small>ICX</small>
+                            <div class="amount-value-usd" *ngIf="showUSDValue">{{claim / USDValue | number : '1.2-2'}}  <small>USD</small></div>
+                        </ion-col>
+                      </ion-row>       
+                </ion-card-content>
                   </ion-card>
             </ion-col>
         </ion-row>
 
         <ion-row>
           <ion-col>
-                  <ion-card>
-                      <ion-card-title  class="card-title-inverted">
-                         Total  
-                      </ion-card-title>
-                        <ion-card-content class="card-content">
-                            <ion-row>
-                                <ion-col size="2" class="ion-text-start">
-                                    <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
-                                </ion-col>
-                                <ion-col class="amount-value" text-right>
-                                    {{(stake+balance) | number : '1.2-2'}} <small>ICX</small>
-                                    <div class="amount-value-usd" *ngIf="showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} <small>USD</small></div>
-                                </ion-col>
-                              </ion-row>       
-                        </ion-card-content>
-                      </ion-card>
-                </ion-col>
-            </ion-row>
+              <ion-card>
+                <ion-card-title class="card-title-inverted">  
+                  <ion-row>
+                    <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                      Total
+                    </ion-col>  
+                </ion-row>  
+                </ion-card-title>
+                <ion-card-content class="card-content-inverted" style="padding:0px !important">  
+                  <ion-row>
+                      <ion-col style="padding-left:12px !important; padding-right:5px !important"size="2" class="align-text-middle ion-text-center">
+                          <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
+                      </ion-col>
+                      <ion-col size="10" class="amount-value ion-text-end">
+                          {{(stake+balance) | number : '1.2-2'}} <small>ICX</small>
+                          <div class="amount-value-usd" *ngIf="showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                      </ion-col>
+                    </ion-row>       
+              </ion-card-content>
+            </ion-card>
+            </ion-col>
+        </ion-row>
             <ion-row>
               <ion-col>
                   <ion-card>
@@ -117,28 +138,44 @@
             <ion-row>
                <ion-col size="6">
                 <ion-card>
-                  <ion-card-title class="card-title-inverted">
-                    Monthly
+                  <ion-card-title class="card-title-inverted">  
+                    <ion-row>
+                      <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                        Monthly
+                      </ion-col>  
+                  </ion-row>  
                   </ion-card-title>
-                    <ion-card-content class="rewardInfoInverted ion-text-end">
-                      <ion-row>
-                         <ion-col class="rewardInfoICXInverted ion-text-end">
-                          ~ {{monthlyICX | number : '1.2-2'}} <small>ICX</small>
-                          <div class="amount-value-usd" *ngIf="showUSDValue">{{monthlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
-                        </ion-col>
-                      </ion-row>       
-                    </ion-card-content>
+    
+                  <ion-card-content class="card-content-inverted" style="padding:0px !important">  
+                    <ion-row>
+                      <ion-col style="padding-left:10px !important;" size="3" class="align-text-middle ion-text-center">
+                        <img src="assets/icx_vibrant.png" alt="ICX" style="width:25px;height:25px;"/>       
+                    </ion-col>
+                      <ion-col class="amount-value ion-text-end">
+                        ~ {{monthlyICX | number : '1.2-2'}} <small>ICX</small>
+                        <div class="amount-value-usd" *ngIf="showUSDValue">{{monthlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                      </ion-col>
+                    </ion-row>       
+                  </ion-card-content>
                 </ion-card>
                </ion-col>
                
                <ion-col size="6">
                 <ion-card>
-                  <ion-card-title class="card-title-inverted">
-                     Yearly
-                  </ion-card-title>
-                  <ion-card-content class="rewardInfoInverted ion-text-end">
+                  <ion-card-title class="card-title-inverted">  
                     <ion-row>
-                      <ion-col class="rewardInfoICXInverted ion-text-end">
+                      <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                        Yearly
+                      </ion-col>  
+                  </ion-row>  
+                  </ion-card-title>
+    
+                  <ion-card-content class="card-content-inverted" style="padding:0px !important">  
+                    <ion-row>
+                      <ion-col style="padding-left:10px !important;" size="3" class="align-text-middle ion-text-center">
+                        <img src="assets/icx_vibrant.png" alt="ICX" style="width:25px;height:25px;"/>       
+                    </ion-col>
+                      <ion-col class="amount-value ion-text-end">
                         ~ {{yearlyICX | number : '1.2-2'}} <small>ICX</small>
                         <div class="amount-value-usd" *ngIf="showUSDValue">{{yearlyICX / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
@@ -151,15 +188,20 @@
             <ion-row>
               <ion-col size="6">
                <ion-card>
-                 <ion-card-title class="card-title-primary">
-                   Reward Rate
-                 </ion-card-title>
-                   <ion-card-content class="rewardInfo ion-text-end">
+                <ion-card-title class="card-title-inverted">  
+                  <ion-row>
+                    <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                      Reward Rate
+                    </ion-col>  
+                </ion-row>  
+                </ion-card-title>
+
+                <ion-card-content class="card-content-inverted" style="padding:0px !important">  
                     <ion-row>
-                      <ion-col size="3" class="ion-text-start">
-                        <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'percent']"></fa-icon>     
+                      <ion-col size="3" class="ion-text-center">
+                        <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'percent']"></fa-icon>     
                       </ion-col>
-                      <ion-col class="rewardInfo ion-text-end">
+                      <ion-col class="amount-value ion-text-end">
                           {{rewardRate | number : '1.2-2'}}
                       </ion-col>
                     </ion-row>  
@@ -169,15 +211,19 @@
               
               <ion-col size="6">
                <ion-card>
-                 <ion-card-title class="card-title-primary">
-                  Unstaking period
-                 </ion-card-title>
-                   <ion-card-content class="rewardInfo ion-text-end">
+                <ion-card-title class="card-title-inverted">  
+                  <ion-row>
+                    <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
+                      Unstaking period
+                    </ion-col>  
+                </ion-row>  
+                </ion-card-title>
+                <ion-card-content class="card-content-inverted" style="padding:0px !important">  
                     <ion-row>
-                      <ion-col size="3" class="ion-text-start">
-                        <fa-icon style="padding:2px; color: #1adfcb;" size="2x" [icon]="['fas', 'calendar-alt']"></fa-icon>     
+                      <ion-col size="3" class="ion-text-center">
+                        <fa-icon style="padding:2px; color: #1adfcb;" [icon]="['fas', 'calendar-alt']"></fa-icon>     
                       </ion-col>
-                      <ion-col class="rewardInfo  ion-text-end">
+                      <ion-col class="amount-value ion-text-end">
                           {{networkUnstakePeriod }}
                       </ion-col>
                     </ion-row>  

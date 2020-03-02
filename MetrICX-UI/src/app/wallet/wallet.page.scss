@@ -23,12 +23,9 @@ canvas {
   color: #fff;
 }
 
-.tooltip {
-  font-size: 14px;
-}
 
 .amount-value-usd {
-  font-size: 14px;
+  font-size: 12px;
 }
 
 .card-image {
@@ -78,4 +75,8 @@ ion-refresher-content {
   --color: #fff;
 }
 
-::-webkit-scrollbar { display:none; }
+.align-text-middle {
+  display: flex;
+  align-items: center;
+}
+
