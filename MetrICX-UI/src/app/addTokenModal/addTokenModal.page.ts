@@ -35,7 +35,6 @@ export class AddTokenModalPage {
  }
 
   async save() {
-    debugger;
     var settings = await this.settingsService.get()
 
     Object.keys(this._addressSetting.tokens).forEach(key => {
