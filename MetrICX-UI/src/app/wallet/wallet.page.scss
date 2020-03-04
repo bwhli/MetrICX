@@ -4,16 +4,6 @@ canvas {
   height: 100% !important;
 }
 
-
-.primary {
-  background-color: #32b8bb !important;
-  color: #fff;
-  font-size: 12px;
-  height: 80px;
-  width: 80px;
-  box-shadow: 1px 1px 1px 1px #1f2120;
-}
-
 .toolbar-title {
   text-align: center;  // now center the title
 }
@@ -78,5 +68,6 @@ ion-refresher-content {
 .align-text-middle {
   display: flex;
   align-items: center;
+
 }
 
