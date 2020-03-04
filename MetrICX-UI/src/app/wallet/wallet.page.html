@@ -118,8 +118,8 @@
                           <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
                       </ion-col>
                       <ion-col size="10" class="amount-value ion-text-end">
-                          {{(stake+balance) | number : '1.2-2'}} <small>ICX</small>
-                          <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{(stake+balance) / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                          {{(stake+balance+claim) | number : '1.2-2'}} <small>ICX</small>
+                          <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{(stake+balance+claim) / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
                     </ion-row>       
               </ion-card-content>
