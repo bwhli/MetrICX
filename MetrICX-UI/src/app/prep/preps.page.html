@@ -50,6 +50,9 @@
       <ion-row>
         <ion-col size="6">
           <ion-card>
+            <ion-card-title  class="card-title-primary ion-text-end">
+              Total Supply
+          </ion-card-title>
                 <ion-card-content class="card-content-inverted">
                     <ion-row>
                         <ion-col class="ion-text-center">
@@ -70,27 +73,28 @@
                             [unitsColor]="'#1d2025'"
                             [titleColor]="'#1d2025'"
                             [subtitleColor]="'#1d2025'"
-                            [subtitle]="'ICX Voted'"
+                            [subtitle]="'T/ Supply'"
                             [titleFontSize]="14"
                             [subtitleFontSize]="10">>
                           </circle-progress>
                         </ion-col>
                       </ion-row>    
                       <ion-row *ngIf="isLoaded" >
-                        <ion-col size="12" class="ion-text-center"> <small>{{totalICXDelegated}} ICX </small></ion-col>
-                      </ion-row>   
+                        <ion-col class="ion-text-center"> <small>Total Votes : {{totalICXDelegated}}</small> </ion-col>
+                      </ion-row>     
                 </ion-card-content>
               </ion-card>
         </ion-col>
         <ion-col size="6">
           <ion-card>
-            <ion-card-title>
-              </ion-card-title>
+            <ion-card-title  class="card-title-primary ion-text-end">
+           Circulating
+          </ion-card-title>
               <ion-card-content class="card-content-inverted">
                   <ion-row>
                     <ion-col class="ion-text-center">
                       <circle-progress
-                      [percent]="totalStakedPerc" 
+                      [percent]="circPercentage" 
                       [radius]="35"
                       [outerStrokeWidth]="2"
                       [innerStrokeWidth]="1"
@@ -106,14 +110,14 @@
                       [unitsColor]="'#1d2025'"
                       [titleColor]="'#1d2025'"
                       [subtitleColor]="'#1d2025'"
-                      [subtitle]="'ICX Staked'"
+                      [subtitle]="'Circulating'"
                       [titleFontSize]="14"
                       [subtitleFontSize]="10">>
                     </circle-progress>
                       </ion-col>
                     </ion-row>    
                     <ion-row *ngIf="isLoaded" >
-                      <ion-col class="ion-text-center"> <small>{{totalStaked}} ICX </small></ion-col>
+                      <ion-col class="ion-text-center"> <small>{{circulatingSupply}} ICX </small></ion-col>
                     </ion-row>      
               </ion-card-content>
             </ion-card> 
