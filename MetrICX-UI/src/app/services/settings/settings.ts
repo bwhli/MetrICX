@@ -27,7 +27,6 @@ export class Address {
     Nickname: string;
     address: string;
     Symbol: string;
-    Name: string;
     tokens: TokenSet;
     enablePushDeposits: boolean;
     

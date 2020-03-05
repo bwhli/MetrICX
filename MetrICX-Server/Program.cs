@@ -19,7 +19,7 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("fgkmYbpdPuA:APA91bF4y4jONOoo4seW1BO5XMTPQTUmvT9kzk9rOcEf8KxOfjCx_phid0XfpV-kMSeeXeOH-6Kui-kswt0dA19K5QcCxHUDbyBMBDdFweAtIqsLUiShpMxkSmWoSPRhI-UEJUUienuo");
+            //var device = FirebaseGateway.GetDevice("fI3IX8oKzEw:APA91bFVRqIT5pNVL89edl5RMSBEuSfgQNXC1cSev4SDksI8lmDj1SMSBQjyASv4Sw52eAUbAoMuorHo2Fb_7S1zWdnWun9ydE6Ny9L2ZJZ3vldMbpdRt4atkC9-CHyxYsCnBk0A9lMv");
             //FirebaseGateway.UpdateDevice(device);
 
             ////device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
@@ -31,7 +31,7 @@ namespace MetrICXServerPush
             //    ProcessDeviceToken(device, device.addresses_v2.p0, token);
             //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.6");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.8");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
@@ -123,7 +123,11 @@ namespace MetrICXServerPush
                     if (address.availableRewardsAsDecimal < totalRewards)
                     {
                         decimal awardedICX = totalRewards - address.availableRewardsAsDecimal;
-                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
+                        if (string.IsNullOrEmpty(address.Name))
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
+                        else
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available to {address.Name.ToUpper()} Wallet", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
+
                         //Now update firestore so we dont send the user duplicate messages
                         address.availableRewards = totalRewards.ToString();
                         address.lastIScorePushSentDate = DateTime.UtcNow;
@@ -152,7 +156,11 @@ namespace MetrICXServerPush
                     else if (address.balanceAsDecimal < balance && balance - address.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
                     {
                         decimal depositReceived = balance - address.balanceAsDecimal;
-                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                        if (string.IsNullOrEmpty(address.Name))
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                        else
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received to {address.Name.ToUpper()} Wallet", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+
                         //Now update firestore so we dont send the user duplicate messages
                         address.balance = balance.ToString();
                         address.lastDepositPushSentDate = DateTime.UtcNow;
@@ -230,7 +238,10 @@ namespace MetrICXServerPush
                     else if (token.balanceAsDecimal < balance && balance - token.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
                     {
                         decimal depositReceived = balance - token.balanceAsDecimal;
-                        sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
+                        if (string.IsNullOrEmpty(address.Name))
+                            sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
+                        else
+                            sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received to {address.Name.ToUpper()} Wallet", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
                         //Now update firestore so we dont send the user duplicate messages
                         token.lastBalance = balance.ToString();
                         token.lastDepositPushSentDate = DateTime.UtcNow;

@@ -32,8 +32,8 @@ namespace MetrICXServerPush.Entities
             }
         }
 
-        [FirestoreProperty]
-        public string name
+        [FirestoreProperty("Nickname")]
+        public string Name
         {
             get => _name;
             set
