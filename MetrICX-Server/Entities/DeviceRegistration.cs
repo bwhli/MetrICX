@@ -242,8 +242,11 @@ namespace MetrICXServerPush.Entities
                     address.enablePushDeposits = enablePushDeposits;
                 }
 
-                if (address.address != null)
+                if (!string.IsNullOrEmpty(address.address))
                     address.address = address.address.Trim();
+
+                if (string.IsNullOrEmpty(address.Symbol))
+                    address.Symbol = "ICX";
             }
         }
     }
