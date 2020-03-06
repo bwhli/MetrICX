@@ -1,40 +1,7 @@
-
-  .dark-header {
-     --background: #1d2025 !important;
-     background-color: #1d2025 !important;
-    color: #1d2025;
+.tab-bar{
+    --background: #1d2025 !important;
+    background-color: #1d2025 !important;
+    color: #fff;
     padding-top: 5px !important;
     box-shadow: 0 -2px 10px rgba(0, 0, 0, 1) !important;
   }
-
-  .ion-title {
-    padding: 0px !important;
-  }
-
-  .tabs {
-    --background: #1d2025;
-   color: #1d2025;
- }
-
-  .primary {
-    background-color: #1d2025 !important;
-    color: #fff;
-  }
-
-  .tab-item.tab-item-active, .tab-item.active, .tab-item.activated {
-    color: #1d2025;
-    background-color: #1d2025;
-}
-
-// Hacks for font awesome icons in tabbar
-// see https://forum.ionicframework.com/t/anyway-to-custom-the-tabbars-icon-with-my-own-svg-file/46131/2
-// the content code of each fa-icon can be found here: 'node_modules/font-awesome/css/font-awesome.css'
-.fa-icons-general {
-  display: inline-block;
-  font: normal normal normal 14px/1 FontAwesome;
-  font-size: inherit;
-  text-rendering: auto;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  transform: translate(0, 0);
-}

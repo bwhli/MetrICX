@@ -6,7 +6,7 @@
         refreshingSpinner="circles">
       </ion-refresher-content>
     </ion-refresher>
-  </p>
+    </p>
     <ion-grid>
       <ion-row>
         <ion-col size="{{rowSize}}">
@@ -24,9 +24,9 @@
                   <ion-col size="{{colSize}}" class="ion-text-center">
                       <fa-icon style="color: #1adfcb;"size="2x" [icon]="['fas', 'wallet']"></fa-icon>
                   </ion-col>
-                       <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
-                        {{balance | number : '1.2-2'}} <small>ICX</small>
-                        <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
+                       <ion-col [ngClass]="{'amount-value-usd': hideUnstakeTimer}" text-right>
+                          {{balance | number : '1.2-2'}} <small>ICX</small>
+                          <div class="amount-value-usd" *ngIf="deviceSettings.showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
               </ion-row> 
             </ion-card-content> 
