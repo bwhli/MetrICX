@@ -1,13 +1,12 @@
-<ion-header class="ion-no-border header"></ion-header>
-<super-tabs [config]="{dragThreshold: 100, allowElementScroll: true}">
-  <super-tabs-toolbar slot="top">
+<super-tabs [config]="{dragThreshold: 200}">
+  <super-tabs-toolbar slot="top" class="bg-class">
     <super-tab-button class="super-tab-button" *ngFor="let k of Addresses | keyvalue">
       <ion-label class="super-tab-label">{{k.value.Nickname ? k.value.Nickname : 'Main'}}</ion-label>    
     </super-tab-button>
   </super-tabs-toolbar>
   <super-tabs-container>
     <super-tab *ngFor="let k of Addresses | keyvalue">
-        <ion-content no-bounce has-bouncing="false" forceOverscroll="false" class="bg-class">
+        <ion-content class="bg-class">
         <app-tokens [addresssetting]="k.value"></app-tokens>
       </ion-content>
     </super-tab>

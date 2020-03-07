@@ -1,8 +1,6 @@
 import { Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { HTTP } from '@ionic-native/http/ngx';
 
 @Injectable()
 export class HttpService  {

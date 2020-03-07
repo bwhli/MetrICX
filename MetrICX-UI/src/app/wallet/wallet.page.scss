@@ -24,6 +24,15 @@ canvas {
   background-color:  #32b8bb;
 }
 
+.primary {
+  background-color: #32b8bb !important;
+  color: #fff;
+  font-size: 12px;
+  height: 80px;
+  width: 80px;
+  box-shadow: 1px 1px 1px 1px #1f2120;
+}
+
 .dark {
   background-color: #1f2120;
   color: #fff;
