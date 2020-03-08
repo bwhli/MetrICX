@@ -33,6 +33,8 @@ export class PrepsPage  {
   public isLoaded: boolean = false;
   public numberOfVotedReps: number = 0;
   private _addressSetting: Address;
+  public circulatingSupply: string;
+  public circPercentage: number;
 
   @Input("addresssetting")
   set addresssetting(value: Address) {
@@ -118,6 +120,14 @@ export class PrepsPage  {
       pData.name = prepName;
       prepData.push(pData);
     }
+
+
+    await this.httpService.get().then((data) => {
+      var cS: number = data['tmainInfo']['icxCirculationy']; 
+      this.circPercentage = preps.totalDelegated / cS * 100;
+      this.circulatingSupply = Math.round(cS).toLocaleString();
+    });
+  
 
     this.numberOfVotedReps = numPreps;
     var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   

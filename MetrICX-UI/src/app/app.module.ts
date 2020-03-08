@@ -7,7 +7,6 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { IonicStorageModule } from '@ionic/storage';
-import { TooltipModule } from 'ng2-tooltip-directive';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AngularFireModule } from 'angularfire2';
@@ -21,9 +20,9 @@ import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
-import { HTTP } from '@ionic-native/http/ngx';
-// import { WalletPageModule } from '../theme/wallet.module';
 import { WalletTabPageModule } from './wallet-tab/wallet-tab.module';
+import { PrepTabModule } from './prep-tab/prep-tab.module';
+import { TokensTabModule } from './tokens-tab/tokens-tab.module';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -48,7 +47,6 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
   entryComponents: [],
   imports: [
     HttpClientModule,
-    TooltipModule,
     BrowserAnimationsModule,
     BrowserModule, 
     FormsModule,
@@ -62,12 +60,14 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
     AngularFirestoreModule,
     SuperTabsModule.forRoot(),
     //WalletPageModule,
-    WalletTabPageModule
+    WalletTabPageModule,
+    PrepTabModule,
+    TokensTabModule
+    
   ], 
   providers: [
     StatusBar,
     SplashScreen,
-    HTTP,
     Firebase,
     FcmService,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

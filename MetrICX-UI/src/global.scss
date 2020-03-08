@@ -41,14 +41,6 @@ ion-col {
   padding: 4px !important;
 }
 
-.flex {
-    -webkit-box-flex: 0 0 40px;
-    -moz-box-flex: 0 0 40px;
-    -ms-box-flex: 0 0 40px;
-    -o-box-flex: 0 0 40px;
-    flex: 0 0 40px;
-}
-
 .loading-css {
   --background: transparent;
   ion-backdrop {
@@ -137,7 +129,6 @@ ion-grid {
 .bg-class {
   background-color: #1d2025 !important; 
   --background: #1d2025 !important;
-  -webkit-overflow-scrolling: auto !important;
 }
 
 .card-footer {
@@ -155,16 +146,11 @@ ion-item {
 ion-list, ion-item-divider {
   background-color:#1d2025;
   --background: #1d2025;
-  --color: #fff;
+ // --color: #fff;
 }
 
  ion-icon {
   color: #1d2025 !important;
-}
-
-ion-app {
-  background-color:#1d2025 !important;
-  --background: #1d2025 !important;
 }
 
 ion-toast.error-message {
@@ -175,9 +161,3 @@ ion-toast.error-message {
   color: #1d2025 !important;
   font-size: 14px;
 }
-
-.refresher-ios .refresher-pulling-icon, .refresher-ios .refresher-pulling-text, .refresher-ios .refresher-refreshing-icon, .refresher-ios .refresher-refreshing-text {
-  color: var(--ion-text-color,#FFF);
-}
-
-

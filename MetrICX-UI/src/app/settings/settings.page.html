@@ -14,11 +14,11 @@
 			
 			<ion-item>
 				<ion-label>Notify me if Main P-Rep productivity drops below</ion-label>
-				<ion-select class="formSelect" value="disabled" okText="Okay" cancelText="Dismiss" [(ngModel)]="enablePushProductivityDrop" (ngModelChange)="save()">
-					<ion-select-option value="disabled">No </ion-select-option>
-					<ion-select-option value="98">98 % </ion-select-option>
-					<ion-select-option value="95">95 % </ion-select-option>
-					<ion-select-option value="90">90 % </ion-select-option>
+				<ion-select interface="popover" class="selector" value="disabled" okText="Okay" cancelText="Dismiss" [(ngModel)]="enablePushProductivityDrop" (ngModelChange)="save()">
+					<ion-select-option class="option" value="disabled">No </ion-select-option>
+					<ion-select-option class="option" value="98">98 % </ion-select-option>
+					<ion-select-option class="option" value="95">95 % </ion-select-option>
+					<ion-select-option class="option" value="90">90 % </ion-select-option>
 				</ion-select>
 			</ion-item>
 	

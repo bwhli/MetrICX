@@ -4,7 +4,6 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from './services/fcm/fcm.service';
-//import { ToastService } from './shared/service/toast.service';
 import { ToastController } from '@ionic/angular';
 
 @Component({
@@ -24,13 +23,13 @@ export class AppComponent {
 
   async ionViewDidEnter() {
     this.platform.ready().then(() => { 
-      setTimeout(() => { 
+      setTimeout(() => {
         this.splashScreen.hide();
         this.statusBar.backgroundColorByName("black");
         this.statusBar.styleLightContent();
         this.statusBar.overlaysWebView(false);
         this.notificationSetup();
-      }, 1000);    
+      }, 3000);
     });
   }
 
