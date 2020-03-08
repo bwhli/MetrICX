@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border header"></ion-header>
 <super-tabs id="wallet-tab">
-  <super-tabs-toolbar slot="top">
+  <super-tabs-toolbar slot="top" class="bg-class">
     <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p0">
       <ion-label class="super-tab-label">{{Addresses.p0.Nickname ? Addresses.p0.Nickname : 'Main'}}</ion-label>    
     </super-tab-button>
