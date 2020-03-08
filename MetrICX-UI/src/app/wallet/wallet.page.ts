@@ -14,6 +14,7 @@ import { Address, DeviceSettings } from '../services/settings/settings';
 })
 export class WalletPage {
   private _addressSetting: Address;
+  private _tabIndex: number;
 
   @Input("addresssetting")
   set addresssetting(value: Address) {
@@ -24,8 +25,19 @@ export class WalletPage {
         this.loaded = true;  
       }
   }
-  get asyncaddresssetting(): Address {
+  get addresssetting(): Address {
       return this._addressSetting;
+  }
+
+  @Input("tabIndex")
+  set tabIndex(value: number) {
+    //check if next number is ok
+    this._tabIndex = value;
+    console.log(this._tabIndex);
+  }
+
+  get tabIndex(): number {
+    return this._tabIndex;
   }
 
   @ViewChild("barCanvas", {static:false}) barCanvas: ElementRef;
@@ -59,7 +71,6 @@ export class WalletPage {
   async ionViewWillEnter() {
     if (this.address) {
       this.presentLoading();
-
       this.deviceSettings = await this.settingsService.get()
       this.loadWallet();
       this.loadStake();

@@ -1,6 +1,6 @@
 <ion-header class="ion-no-border header"></ion-header>
-<super-tabs id="wallet-tab">
-  <super-tabs-toolbar slot="top" class="bg-class">
+<super-tabs id="wallet-tab" activeTabIndex="1" #superTabs (tabChange)="onTabChange($event)">
+  <super-tabs-toolbar slot="top" class="bg-class" >
     <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p0">
       <ion-label class="super-tab-label">{{Addresses.p0.Nickname ? Addresses.p0.Nickname : 'Main'}}</ion-label>    
     </super-tab-button>
@@ -21,27 +21,27 @@
   <super-tabs-container class="dark-header">
     <super-tab>
       <ion-content *ngIf="Addresses && Addresses.p0" class="bg-class">
-        <app-wallet [addresssetting]="Addresses.p0"></app-wallet>
+        <app-wallet [tabIndex]="activeTabIndex" [addresssetting]="Addresses.p0"></app-wallet>
       </ion-content>
     </super-tab>    
     <super-tab>
       <ion-content *ngIf="Addresses && Addresses.p1" class="bg-class">
-        <app-wallet [addresssetting]="Addresses.p1"></app-wallet>
+        <app-wallet [tabIndex]="activeTabIndex" [addresssetting]="Addresses.p1"></app-wallet>
       </ion-content>
     </super-tab>
     <super-tab>
       <ion-content *ngIf="Addresses && Addresses.p2" class="bg-class">
-        <app-wallet [addresssetting]="Addresses.p2"></app-wallet>
+        <app-wallet [tabIndex]="activeTabIndex" [addresssetting]="Addresses.p2"></app-wallet>
       </ion-content>
     </super-tab>    
     <super-tab>
       <ion-content *ngIf="Addresses && Addresses.p3" class="bg-class">
-        <app-wallet [addresssetting]="Addresses.p3"></app-wallet>
+        <app-wallet [tabIndex]="activeTabIndex" [addresssetting]="Addresses.p3"></app-wallet>
       </ion-content>
     </super-tab>    
     <super-tab>
       <ion-content *ngIf="Addresses && Addresses.p4" class="bg-class">
-        <app-wallet [addresssetting]="Addresses.p4"></app-wallet>
+        <app-wallet [tabIndex]="activeTabIndex" [addresssetting]="Addresses.p4"></app-wallet>
       </ion-content>
     </super-tab>
   </super-tabs-container>
