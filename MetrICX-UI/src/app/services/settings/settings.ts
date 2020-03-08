@@ -11,7 +11,7 @@ export class DeviceSettings {
         
     constructor() {
         this.addresses_v2 = new MapArray<Address>();
-        this.addresses_v2.p0 = new Address();
+        //this.addresses_v2.p0 = new Address();
     }
 }
 
@@ -21,6 +21,16 @@ export class MapArray<T> {
     p2: T;
     p3: T;
     p4: T;
+
+    getLength(): number {
+        var length = 0;
+        Object.keys(this).forEach(async key =>  { 
+            if(this[key]) {
+                length++;
+            }
+        });
+        return length;
+    }
 }
 
 export class Address {

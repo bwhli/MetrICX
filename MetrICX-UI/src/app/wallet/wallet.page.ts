@@ -22,8 +22,6 @@ export class WalletPage {
       if (this.address) {
         this.ionViewWillEnter();
         this.loaded = true;  
-      } else {
-        this.navCtrl.navigateForward('/tabs/settings');
       }
   }
   get asyncaddresssetting(): Address {
