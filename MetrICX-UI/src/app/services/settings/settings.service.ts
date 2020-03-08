@@ -93,7 +93,7 @@ export class SettingsService {
 
   public async addAddressAndSave(newAddress: string, nickname: string, enablePushDeposits: boolean) : Promise<boolean>{
       var deviceSettings = await this.get();
-      var nextSlot = await this.getNextSlot(true);
+      var nextSlot = await this.getNextSlot();
 
       if(nextSlot) {
         deviceSettings.addresses_v2[nextSlot] = new Address();
@@ -113,7 +113,7 @@ export class SettingsService {
     this.save(deviceSettings);
   }
 
-  public async getNextSlot(returnP: boolean) : Promise<string> {
+  public async getNextSlot() : Promise<string> {
     var addressObjects = new Array(this.MaxAddresses);
     var deviceSettings = await this.get();
 

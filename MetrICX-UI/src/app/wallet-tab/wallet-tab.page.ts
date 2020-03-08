@@ -31,14 +31,14 @@ export class WalletTabPage {
       this.navCtrl.navigateForward('/tabs/settings')
     }
 
-    var nextSlot = await this.settingsService.getNextSlot(false);
+   /* var nextSlot = await this.settingsService.getNextSlot();
     //if the nextSlot available is 0 it means the first address has been removed
     //so we need to set the first tab to 1;
     if (Number(nextSlot) == 0) {
       console.log("here");
       this.st.activeTabIndex = 0;
       this.st.selectTab(1, false);
-    }
+    } */
   }
 
   async onTabChange(ev: CustomEvent<SuperTabChangeEventDetail>) {
