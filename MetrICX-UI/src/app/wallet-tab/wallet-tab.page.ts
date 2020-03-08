@@ -15,6 +15,8 @@ export class WalletTabPage {
   @ViewChild('superTabs', { static: false, read: SuperTabs }) st: SuperTabs;
 
   public activeTabIndex: number;
+  private lastPosition: number = 0;
+
 
 
   constructor(
@@ -40,17 +42,20 @@ export class WalletTabPage {
   }
 
   async onTabChange(ev: CustomEvent<SuperTabChangeEventDetail>) {
-    try {
+    this.lastPosition = this.activeTabIndex; 
     this.activeTabIndex = ev.detail.index;
-    var nextSlot = await this.settingsService.getNextSlot(false);
-    if(this.activeTabIndex == Number(nextSlot)) {
-        this.st.selectTab(this.activeTabIndex-1, true);
+
+    var nextSlot = await this.settingsService.getNextSwipeIndex(this.lastPosition, this.activeTabIndex);
+
+  //  var nextSlot = await this.settingsService.getNextSlot(false);
+   // if(this.activeTabIndex == Number(nextSlot)) {
+    //    this.st.selectTab(this.activeTabIndex-1, true);
         //tab doesnt exist
-      }
-    }
-    catch {
+     // }
+   // }
+    //catch {
       
-    }
+   // }
   }
 
   selectTab(index: number) {

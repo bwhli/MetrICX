@@ -138,6 +138,37 @@ export class SettingsService {
      return '' //no empty slots available;
   }
 
+  public async getNextSwipeIndex(prevPosition: number, nextPosition: number ) : Promise<number> {
+    var addressObjects = new Array(this.MaxAddresses);
+    var deviceSettings = await this.get();
+
+    if(prevPosition >  nextPosition) {
+      console.log("We are going left");
+      //we are swipping left
+    } 
+    else {
+      console.log("We are going right");
+      //we are swipping right
+    }
+
+
+    Object.keys(deviceSettings.addresses_v2).forEach(async key =>  { 
+      if(deviceSettings.addresses_v2[key]) {
+        var keyIndex: number = parseInt(key.charAt(1));
+        addressObjects[keyIndex] = key;
+      }
+    });
+
+    for(var i = 0; i < addressObjects.length; i++) {
+      if(addressObjects[i])
+      {
+    
+          return i
+      }
+    }
+     return -1 
+  }
+  
   public async getPrepDetails(prepAddress: string) : Promise<any> {
     var prep = await this.afs.collection('preps').doc(prepAddress).get().toPromise();
     if (prep.exists) {
