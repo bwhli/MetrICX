@@ -29,6 +29,8 @@ export class WalletTabPage {
 
   async ionViewWillEnter() {
     this.Addresses = (await this.settingsService.get()).addresses_v2;
+    if (this.Addresses.getLength() == 0)
+      this.navCtrl.navigateForward('/tabs/settings')
   }
 
 }
