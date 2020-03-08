@@ -127,12 +127,7 @@ export class SettingsService {
     for(var i = 0; i < addressObjects.length; i++) {
       if(!addressObjects[i])
       {
-        if(returnP) {
-          return 'p'+i;
-        }
-        else {
-          return i.toString();
-        }
+        return 'p'+i;
       }
     }
      return '' //no empty slots available;
