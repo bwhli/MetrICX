@@ -1,13 +1,46 @@
-<super-tabs [config]="{dragThreshold: 200}">
-  <super-tabs-toolbar slot="top" class="bg-class">
-    <super-tab-button class="super-tab-button" *ngFor="let k of Addresses | keyvalue">
-      <ion-label class="super-tab-label">{{k.value.Nickname ? k.value.Nickname : 'Main'}}</ion-label>    
+<ion-header class="ion-no-border header"></ion-header>
+<super-tabs id="prep-tab">
+  <super-tabs-toolbar slot="top">
+    <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p0">
+      <ion-label class="super-tab-label">{{Addresses.p0.Nickname ? Addresses.p0.Nickname : 'Main'}}</ion-label>    
+    </super-tab-button>
+    <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p1">
+      <ion-label class="super-tab-label">{{Addresses.p1.Nickname ? Addresses.p1.Nickname : 'Main'}}</ion-label>    
+    </super-tab-button>
+    <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p2">
+      <ion-label class="super-tab-label">{{Addresses.p2.Nickname ? Addresses.p2.Nickname : 'Main'}}</ion-label>    
+    </super-tab-button>    
+    <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p3">
+      <ion-label class="super-tab-label">{{Addresses.p3.Nickname ? Addresses.p3.Nickname : 'Main'}}</ion-label>    
+    </super-tab-button>
+    <super-tab-button class="super-tab-button" *ngIf="Addresses && Addresses.p4">
+      <ion-label class="super-tab-label">{{Addresses.p4.Nickname ? Addresses.p4.Nickname : 'Main'}}</ion-label>    
     </super-tab-button>
   </super-tabs-toolbar>
-  <super-tabs-container>
-    <super-tab *ngFor="let k of Addresses | keyvalue">
-        <ion-content class="bg-class">
-        <app-preps [addresssetting]="k.value"></app-preps>
+  <super-tabs-container class="dark-header">
+    <super-tab>
+      <ion-content *ngIf="Addresses && Addresses.p0" class="bg-class">
+        <app-preps [addresssetting]="Addresses.p0"></app-preps>
+      </ion-content>
+    </super-tab>    
+    <super-tab>
+      <ion-content *ngIf="Addresses && Addresses.p1" class="bg-class">
+        <app-preps [addresssetting]="Addresses.p1"></app-preps>
+      </ion-content>
+    </super-tab>
+    <super-tab>
+      <ion-content *ngIf="Addresses && Addresses.p2" class="bg-class">
+        <app-preps [addresssetting]="Addresses.p2"></app-preps>
+      </ion-content>
+    </super-tab>    
+    <super-tab>
+      <ion-content *ngIf="Addresses && Addresses.p3" class="bg-class">
+        <app-preps [addresssetting]="Addresses.p3"></app-preps>
+      </ion-content>
+    </super-tab>    
+    <super-tab>
+      <ion-content *ngIf="Addresses && Addresses.p4" class="bg-class">
+        <app-preps [addresssetting]="Addresses.p4"></app-preps>
       </ion-content>
     </super-tab>
   </super-tabs-container>

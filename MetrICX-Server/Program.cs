@@ -126,7 +126,7 @@ namespace MetrICXServerPush
                         if (string.IsNullOrEmpty(address.Name))
                             sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
                         else
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available to {address.Name.ToUpper()} Wallet", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed from {address.Name.ToUpper()}");
 
                         //Now update firestore so we dont send the user duplicate messages
                         address.availableRewards = totalRewards.ToString();
@@ -159,7 +159,7 @@ namespace MetrICXServerPush
                         if (string.IsNullOrEmpty(address.Name))
                             sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
                         else
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received to {address.Name.ToUpper()} Wallet", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
 
                         //Now update firestore so we dont send the user duplicate messages
                         address.balance = balance.ToString();
@@ -241,7 +241,7 @@ namespace MetrICXServerPush
                         if (string.IsNullOrEmpty(address.Name))
                             sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
                         else
-                            sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received to {address.Name.ToUpper()} Wallet", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
+                            sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {token.token}");
                         //Now update firestore so we dont send the user duplicate messages
                         token.lastBalance = balance.ToString();
                         token.lastDepositPushSentDate = DateTime.UtcNow;

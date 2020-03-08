@@ -4,9 +4,7 @@ import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from './services/fcm/fcm.service';
-//import { ToastService } from './shared/service/toast.service';
 import { ToastController } from '@ionic/angular';
-import { ScreenOrientation } from  '@ionic-native/screen-orientation/ngx'
 
 @Component({
   selector: 'app-root',
@@ -20,14 +18,12 @@ export class AppComponent {
     private statusBar: StatusBar,
     private fcm: FcmService,
     //private toastr: ToastService,
-    public toastController: ToastController,
-    private screenOrientation: ScreenOrientation
+    public toastController: ToastController
   ) { }
 
   async ionViewDidEnter() {
     this.platform.ready().then(() => { 
       setTimeout(() => {
-        this.screenOrientation.lock(this.screenOrientation.ORIENTATIONS.PORTRAIT);
         this.splashScreen.hide();
         this.statusBar.backgroundColorByName("black");
         this.statusBar.styleLightContent();
