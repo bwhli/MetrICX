@@ -52,6 +52,9 @@ export class TokensPage {
              const getTotalTap = await this.iconContract.getTokenBalance('cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782','cx3b9955d507ace8ac27080ed64948e89783a62ab1')
              const balanceTap = (500000000) - getTotalTap;
              this.icxDivs = (0.8) * excess * (this._tokens[key].Balance / balanceTap);
+             if( this.icxDivs < 0) {
+               this.icxDivs = 0;
+             }
           }
         }
         else{
