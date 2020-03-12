@@ -8,6 +8,9 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgCircleProgressModule } from 'ng-circle-progress';
 import { SuperTabsModule } from '@ionic-super-tabs/angular';
 import { PrepsPage } from '../prep/preps.page';
+import { TranslateLoader,TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { createTranslateLoader } from '../wallet-tab/wallet-tab.module'
 
 @NgModule({
   imports: [
@@ -24,7 +27,14 @@ import { PrepsPage } from '../prep/preps.page';
     CommonModule,
     FontAwesomeModule,
     RouterModule.forChild([{ path: '', component: PrepTabPage }]),
-    SuperTabsModule.forRoot()
+    SuperTabsModule.forRoot(),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [PrepTabPage, PrepsPage]
 })

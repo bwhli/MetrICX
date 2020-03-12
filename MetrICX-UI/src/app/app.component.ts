@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-
 import { Platform } from '@ionic/angular';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
 import { FcmService } from './services/fcm/fcm.service';
 import { ToastController } from '@ionic/angular';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-root',
@@ -18,12 +18,15 @@ export class AppComponent {
     private statusBar: StatusBar,
     private fcm: FcmService,
     //private toastr: ToastService,
-    public toastController: ToastController
+    public toastController: ToastController,
+    private translate: TranslateService
   ) { }
 
   async ionViewDidEnter() {
     this.platform.ready().then(() => { 
       setTimeout(() => {
+        this.translate.setDefaultLang('en');
+        // the lang to use, if the lang isn't available, it will use the current loader to get them
         this.splashScreen.hide();
         this.statusBar.backgroundColorByName("black");
         this.statusBar.styleLightContent();

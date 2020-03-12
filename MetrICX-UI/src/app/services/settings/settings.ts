@@ -1,5 +1,3 @@
-
-
 export class DeviceSettings {
     token: string;
     enablePushIScoreChange: boolean;

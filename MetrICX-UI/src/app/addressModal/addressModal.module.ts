@@ -8,6 +8,9 @@ import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { NgxQRCodeModule } from 'ngx-qrcode2';
+import { TranslateLoader,TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { createTranslateLoader } from '../wallet-tab/wallet-tab.module'
 
 @NgModule({
   imports: [
@@ -18,7 +21,14 @@ import { NgxQRCodeModule } from 'ngx-qrcode2';
     FontAwesomeModule,
     NgxQRCodeModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: AddressModalPage }])
+    RouterModule.forChild([{ path: '', component: AddressModalPage }]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [AddressModalPage]
 })

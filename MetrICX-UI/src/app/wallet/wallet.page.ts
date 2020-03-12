@@ -6,6 +6,7 @@ import { IconContractService } from '../services/icon-contract/icon-contract.ser
 import { LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { Address, DeviceSettings } from '../services/settings/settings';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-wallet',
@@ -47,19 +48,17 @@ export class WalletPage {
   public colSize: number = 2;
   public USDValue: number = 0;
   public deviceSettings: DeviceSettings;
- 
+  public graphHeader: string;
   constructor(
     private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    private settingsService: SettingsService
-
-  ) { }
+    private settingsService: SettingsService,
+    private translateService: TranslateService ) { }
 
   async ionViewWillEnter() {
     if (this.address) {
       this.presentLoading();
-
       this.deviceSettings = await this.settingsService.get()
       this.loadWallet();
       this.loadStake();
@@ -158,6 +157,14 @@ export class WalletPage {
   }
 
   async loadChart() { 
+
+    this.translateService.get('wallet.graphHeader').subscribe(
+      value => {
+        // value is our translated string
+        this.graphHeader = value;
+      }
+    )
+
     this.generateLineData().then(data => {
       this.yearlyICX = data[11] - this.stake; //array starts at 0 (value after 12 months)
       this.monthlyICX = this.yearlyICX/12;
@@ -178,7 +185,7 @@ export class WalletPage {
           },
           title: {
             display: true,
-            text: 'Monthly reward estimation (i-score claimed weekly)',
+            text: this.graphHeader,
             fontColor: '#fff'
           },
           layout: {

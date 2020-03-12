@@ -7,6 +7,9 @@ import { AddTokenModalPage } from './addTokenModal.page';
 import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { TranslateLoader,TranslateModule } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { createTranslateLoader } from '../wallet-tab/wallet-tab.module'
 
 @NgModule({
   imports: [
@@ -16,7 +19,14 @@ import { fas } from '@fortawesome/free-solid-svg-icons';
     ReactiveFormsModule,
     FontAwesomeModule,
     FormsModule,
-    RouterModule.forChild([{ path: '', component: AddTokenModalPage }])
+    RouterModule.forChild([{ path: '', component: AddTokenModalPage }]),
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: (createTranslateLoader),
+        deps: [HttpClient]
+      }
+    })
   ],
   declarations: [AddTokenModalPage]
 })

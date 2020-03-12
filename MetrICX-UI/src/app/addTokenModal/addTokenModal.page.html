@@ -7,9 +7,9 @@
         <ion-button shape="round" fill="clear" size="small" (click)="closeModal()">
           <fa-icon class="fa-lg" [icon]="['fas', 'arrow-left']" slot="start"></fa-icon>
         </ion-button>
-        <small>Add Tokens</small>
+        <small>Add Tokens    {{'wallet.unstake' | translate}}</small>
       </ion-col>
-    </ion-row>
+    </ion-row> 
     
     <ion-row>
             <ion-item *ngFor="let token of Tokens | keyvalue" style="font-size:small !important;">

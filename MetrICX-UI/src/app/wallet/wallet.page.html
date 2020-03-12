@@ -14,7 +14,7 @@
               <ion-card-title class="card-title-primary">  
                 <ion-row>
                   <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                    Available
+                    {{'wallet.available' | translate}}
                   </ion-col>  
               </ion-row>  
               </ion-card-title>
@@ -24,7 +24,7 @@
                   <ion-col size="{{colSize}}" class="ion-text-center">
                       <fa-icon style="color: #1adfcb;"size="2x" [icon]="['fas', 'wallet']"></fa-icon>
                   </ion-col>
-                       <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
+                       <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" class="ion-text-end">
                         {{balance | number : '1.2-2'}} <small>ICX</small>
                         <div class="amount-value-usd" *ngIf="deviceSettings && deviceSettings.showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
@@ -61,7 +61,7 @@
                   <ion-card-title class="card-title-primary">  
                     <ion-row>
                       <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                        Staked
+                        {{'wallet.staked' | translate}}
                       </ion-col>  
                   </ion-row>  
                   </ion-card-title>
@@ -83,7 +83,7 @@
                 <ion-card-title class="card-title-primary">  
                   <ion-row>
                     <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                      Unclaimed
+                      {{'wallet.unclaimed' | translate}}
                     </ion-col>  
                 </ion-row>  
                 </ion-card-title>
@@ -108,7 +108,7 @@
                 <ion-card-title class="card-title-primary">  
                   <ion-row>
                     <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                      Total
+                      {{'wallet.total' | translate}}
                     </ion-col>  
                 </ion-row>  
                 </ion-card-title>
@@ -141,7 +141,7 @@
                   <ion-card-title class="card-title-primary">  
                     <ion-row>
                       <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                        Monthly
+                        {{'wallet.monthly' | translate}}
                       </ion-col>  
                   </ion-row>  
                   </ion-card-title>
@@ -165,7 +165,7 @@
                   <ion-card-title class="card-title-primary">  
                     <ion-row>
                       <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                        Yearly
+                        {{'wallet.yearly' | translate}}
                       </ion-col>  
                   </ion-row>  
                   </ion-card-title>
@@ -191,7 +191,7 @@
                 <ion-card-title class="card-title-primary">  
                   <ion-row>
                     <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                      Reward Rate
+                      {{'wallet.reward' | translate}}
                     </ion-col>  
                 </ion-row>  
                 </ion-card-title>
@@ -214,7 +214,7 @@
                 <ion-card-title class="card-title-primary">  
                   <ion-row>
                     <ion-col style="font-size: 12px !important;" size="12" class="ion-text-end">
-                      Unstaking period
+                      {{'wallet.unstake' | translate}}
                     </ion-col>  
                 </ion-row>  
                 </ion-card-title>

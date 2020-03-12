@@ -20,9 +20,8 @@ import { AddressModalModule } from  './addressModal/addressModal.module';
 import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
-import { WalletTabPageModule } from './wallet-tab/wallet-tab.module';
-import { PrepTabModule } from './prep-tab/prep-tab.module';
-import { TokensTabModule } from './tokens-tab/tokens-tab.module';
+import { TranslateModule } from '@ngx-translate/core';
+
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -59,11 +58,7 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
     AngularFireModule.initializeApp(FirebaseConfig.config),
     AngularFirestoreModule,
     SuperTabsModule.forRoot(),
-    //WalletPageModule,
-    WalletTabPageModule,
-    PrepTabModule,
-    TokensTabModule
-    
+    TranslateModule.forRoot(),
   ], 
   providers: [
     StatusBar,
@@ -80,3 +75,5 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
   bootstrap: [AppComponent]
 })
 export class AppModule {}
+
+
