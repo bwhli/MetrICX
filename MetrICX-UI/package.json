@@ -64,7 +64,6 @@
     "firebase": "^7.10.0",
     "icon-sdk-js": "0.0.18",
     "ng-circle-progress": "^1.5.1",
-    "ng2-tooltip-directive": "^2.8.17",
     "ngx-qrcode2": "0.0.9",
     "phonegap-plugin-barcodescanner": "^8.1.0",
     "rxjs": "^6.5.3",

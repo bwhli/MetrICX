@@ -14,7 +14,7 @@ export class TokensPage {
 
   private _addressSetting: Address;
   public address: string;
-  public _tokens: TokenSet;
+  public _tokens: any;
   public icxDivs: number;
 
   @Input("addresssetting")

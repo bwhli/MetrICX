@@ -21,16 +21,6 @@ export class MapArray<T> {
     p2: T;
     p3: T;
     p4: T;
-
-    getLength(): number {
-        var length = 0;
-        Object.keys(this).forEach(async key =>  { 
-            if(this[key]) {
-                length++;
-            }
-        });
-        return length;
-    }
 }
 
 export class Address {
