@@ -36,11 +36,20 @@ export class TokensTabPage {
       this.navCtrl.navigateForward('/tabs/settings');
       return;
     }
+    
+    this.address_0 = null;
+    this.address_1 = null;
+    this.address_2 = null;
+    this.address_3 = null;
+    this.address_4 = null;
+
     this.address_0 = await this.settingsService.getByIndex(0);
     if (length > 1) this.address_1 = await this.settingsService.getByIndex(1);
     if (length > 2) this.address_2 = await this.settingsService.getByIndex(2);
     if (length > 3) this.address_3 = await this.settingsService.getByIndex(3);
     if (length > 4) this.address_4 = await this.settingsService.getByIndex(4);
+    
+    this.st.selectTab(0, true)
   }
 
   async onTabChange(newTabIndexEvent: CustomEvent<number>) {
