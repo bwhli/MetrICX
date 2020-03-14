@@ -31,7 +31,12 @@ export class SettingsService {
       this.storage.get('enablePushDeposits').then(enablePushDeposits => this.deviceSettings.enablePushDeposits = enablePushDeposits);
       this.storage.get('enablePushProductivityDrop').then(enablePushProductivityDrop => this.deviceSettings.enablePushProductivityDrop = enablePushProductivityDrop);
       this.storage.get('showUSDValue').then(showUSDValue => this.deviceSettings.showUSDValue = showUSDValue);
-      this.storage.get('tokens').then(tokens => this.deviceSettings.addresses_v2.p0.tokens = tokens);
+      this.storage.get('tokens').then(tokens => {
+        if (tokens) {
+          this.deviceSettings.addresses_v2.p0 = new Address();
+          this.deviceSettings.addresses_v2.p0.tokens = tokens;
+        }
+      });
 
       //Get new data structure if it exists
       let settings = await this.storage.get('settings')
@@ -142,5 +147,36 @@ export class SettingsService {
         // doc.data() will be undefined in this case
         console.log("No such document!");
     }
+  }
+  
+  async getLength(): Promise<number> {
+    var deviceSettings = await this.get();
+    var length = 0;
+
+    Object.keys(deviceSettings.addresses_v2).forEach(async key =>  { 
+        if(deviceSettings.addresses_v2[key].address) {
+            length++;
+        }
+    });
+    return length;
+  }
+
+  async getByIndex(index: number): Promise<Address> {
+    var deviceSettings = await this.get();
+    var currentIndex = -1;
+    var address = null;
+
+    Object.keys(deviceSettings.addresses_v2).forEach(key =>  { 
+        if(deviceSettings.addresses_v2[key].address) {
+            currentIndex++;
+            if (currentIndex == index) {
+              address = deviceSettings.addresses_v2[key];
+            }
+        }
+    });
+
+    console.log(address);
+
+    return address;
   }
 }
