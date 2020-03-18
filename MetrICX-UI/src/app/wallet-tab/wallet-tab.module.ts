@@ -4,7 +4,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { WalletTabPage } from './wallet-tab.page';
-import { TooltipModule } from 'ng2-tooltip-directive';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
 import { faWallet, faCalendarAlt, faSteak, faGift, faChartPieAlt }  from '@fortawesome/pro-solid-svg-icons';
 import { WalletPage } from '../wallet/wallet.page';
@@ -14,7 +13,6 @@ import { HttpClient } from '@angular/common/http';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 @NgModule({
   imports: [
-    TooltipModule,
     IonicModule,
     CommonModule,
     FormsModule,
