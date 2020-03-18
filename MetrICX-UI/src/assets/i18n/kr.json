@@ -1,13 +1,44 @@
 {
     "wallet": {
-         "available": "유효한",
-         "staked": "스테이크",
-         "unclaimed": "미 청구",
-         "total": "합계",
-         "monthly": "월간 간행물",
-         "yearly": "매년",
-         "reward": "보상",
-         "unstake": "없애다",
-         "graphHeader": "보상 월간 간행물"
+         "available": "",
+         "unstakeTimer": "",
+         "staked": "",
+         "unclaimed": "",
+         "total": "",
+         "monthly": "",
+         "yearly": "",
+         "reward": "",
+         "unstakePeriod": "",
+         "graphHeader": ""
+    },
+    "governance": {
+        "title": "",
+        "latestBlockBy": "",
+        "preps" : "",
+        "total": "",
+        "circulating": "",
+        "prepTitle": "",
+        "productivity": "",
+        "rank": "",
+        "votes": ""
+    },
+    "tokens": {
+        "title": "",
+        "balance": "",
+        "tapDiv": ""
+    },
+    "settings": {
+        "notifications": "",
+        "reward": "",
+        "productivityDrop": "",
+        "currency": "",
+        "currencyLabel": "",
+        "multiAddress": ""
+    },
+    "tabs": {
+        "wallet": "",
+        "governance": "",
+        "tokens": "",
+        "settings": ""
     }
 }

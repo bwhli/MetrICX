@@ -1,0 +1,55 @@
+{
+    "wallet": {
+         "available": "Available",
+         "unstakeTimer": "Unstake Timer",
+         "staked": "Staked",
+         "unclaimed": "Unclaimed",
+         "total": "Total",
+         "monthly": "Monthly",
+         "yearly": "Yearly",
+         "reward": "Reward Rate",
+         "unstakePeriod": "Unstaking Period",
+         "graphHeader": "Monthly reward estimate (i-score claimed weekly)"
+    },
+    "governance": {
+        "title": "Governance Overview",
+        "latestBlockBy": "Latest Block By",
+        "preps" : "Preps",
+        "total": "Delegated/Total Supply",
+        "circulating": "Delegated/Circulating Supply",
+        "prepTitle": "My Voted Preps",
+        "productivity": "Productivity",
+        "rank": "Rank",
+        "votes": "My Votes"
+    },
+    "tokens": {
+        "title": "IRC-20 Tokens",
+        "balance": "Balance",
+        "tapDiv": "Todays expected divs",
+        "wagerWar": "Wager War"
+    },
+    "addTokens": {
+        "add": "Add Tokens"
+    },
+    "settings": {
+        "notifications": "Push Notifications",
+        "reward": "Notify me when staking rewards become available",
+        "productivityDrop": "Notify me if Main P-Rep productivity drops below",
+        "currency": "Currency",
+        "currencyLabel": "Display USD value",
+        "multiAddress": "Multi Address"
+    },
+    "addAddress": {
+        "title": "Push Notifications (this address)",
+        "deposit": "Notify me when I recieve a deposit",
+        "addressDetails": "Address Details",
+        "walletName": "Wallet Name",
+        "address": "address"
+    },
+    "tabs": {
+        "wallet": "Wallet",
+        "governance": "Governance",
+        "tokens": "Tokens",
+        "settings": "Settings"
+    }
+}
