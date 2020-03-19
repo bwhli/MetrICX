@@ -19,7 +19,7 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("fI3IX8oKzEw:APA91bFVRqIT5pNVL89edl5RMSBEuSfgQNXC1cSev4SDksI8lmDj1SMSBQjyASv4Sw52eAUbAoMuorHo2Fb_7S1zWdnWun9ydE6Ny9L2ZJZ3vldMbpdRt4atkC9-CHyxYsCnBk0A9lMv");
+            //var device = FirebaseGateway.GetDevice("duzgt9Ubnxo:APA91bEYuVNGByPeAo292pIADQzOjTSA49Ly0ZKQ37INJdENTId1pn8HDHtAXQ3krRmoIEHIRaAvkIsYxADT0MGyZm58fQZGVebZz5DiUFRNLIAGd_mGR7XGnoVqGvqyjJBVAMucXaWw");
             //FirebaseGateway.UpdateDevice(device);
 
             ////device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
@@ -31,7 +31,7 @@ namespace MetrICXServerPush
             //    ProcessDeviceToken(device, device.addresses_v2.p0, token);
             //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.8");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.10");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
