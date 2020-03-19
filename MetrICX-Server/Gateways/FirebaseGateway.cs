@@ -30,7 +30,7 @@ namespace MetrICXServerPush.Gateways
                 Console.WriteLine("[FB] Loading firebase-config.json");
                 string json = File.ReadAllText($"{Path.GetDirectoryName(Assembly.GetCallingAssembly().Location)}/firebase-config.json");
                 FirebaseConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            } 
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"[FB] Was not able to load firebase-config.json. Look at firebase-config.sample.json to see an example. Exception Message {ex.Message}");
@@ -74,12 +74,12 @@ namespace MetrICXServerPush.Gateways
                     using (Stream dataStreamResponse = tResponse.GetResponseStream())
                     {
                         if (dataStreamResponse != null) using (StreamReader tReader = new StreamReader(dataStreamResponse))
-                        {
-                            String sResponseFromServer = tReader.ReadToEnd();
-                            Console.WriteLine($"[FB] RESPONSE : {sResponseFromServer}");
+                            {
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                Console.WriteLine($"[FB] RESPONSE : {sResponseFromServer}");
 
-                            response = JsonConvert.DeserializeObject<SendResponse>(sResponseFromServer);
-                        }
+                                response = JsonConvert.DeserializeObject<SendResponse>(sResponseFromServer);
+                            }
                     }
                 }
             }
@@ -96,7 +96,30 @@ namespace MetrICXServerPush.Gateways
                 DeviceRegistration device = null;
                 try
                 {
-                    device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                    object broken;
+                    documentSnapshot.TryGetValue<object>("addresses_v2.p0.tokens", out broken);
+                    if (broken != null && broken.GetType().FullName.Contains("List"))
+                    {
+                        Console.WriteLine($"[FB] Invalid Tokens array found, deleting it {documentSnapshot.Id}");
+
+                        //This will fail to be deserialized, so deleting the tokens array
+                        DocumentReference docRef = db.Collection("devices").Document(documentSnapshot.Id);
+                        Dictionary<string, object> updates = new Dictionary<string, object>
+                        {
+                            { "addresses_v2.p0.tokens", FieldValue.Delete }
+                        };
+                        docRef.UpdateAsync(updates).Wait();
+
+                        var newdocumentSnapshot = db.Collection("devices").Document(documentSnapshot.Id).GetSnapshotAsync().Result;
+                        device = newdocumentSnapshot.ConvertTo<DeviceRegistration>();
+                        Console.WriteLine($"[FB] Invalid Tokens array successfully deleted {documentSnapshot.Id}");
+                    }
+                    else
+                    {
+                        device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                    }
+
+
                     device.ResetDirty();
                     device.MigrateData();
                 }
@@ -116,9 +139,26 @@ namespace MetrICXServerPush.Gateways
         public static DeviceRegistration GetDevice(string token)
         {
             var documentSnapshot = db.Collection("devices").Document(token).GetSnapshotAsync().Result;
+            var broken = documentSnapshot.GetValue<object>("addresses_v2.p0.tokens");
+            if (broken != null && broken.GetType().FullName.Contains("List"))
+            {
+                Console.WriteLine($"[FB] Invalid Tokens array found, deleting it {token}");
+
+                //This will fail to be deserialized, so deleting the tokens array
+                DocumentReference docRef = db.Collection("devices").Document(token);
+                Dictionary<string, object> updates = new Dictionary<string, object>
+                {
+                    { "addresses_v2.p0.tokens", FieldValue.Delete }
+                };
+                docRef.UpdateAsync(updates).Wait();
+
+                documentSnapshot = db.Collection("devices").Document(token).GetSnapshotAsync().Result;
+                Console.WriteLine($"[FB] Invalid Tokens array successfully deleted {token}");
+            }
+
             DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
             device.ResetDirty();
-            device.MigrateData(); 
+            device.MigrateData();
             return device;
         }
 
