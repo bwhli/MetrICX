@@ -21,7 +21,7 @@ import { SharedService } from './services/shared/shared.service';
 import { HttpService } from './services/http-service/http.service';
 import { HttpClientModule } from '@angular/common/http';
 import { TranslateModule } from '@ngx-translate/core';
-
+import { SelectModelPageModule } from './selectLanguageModal/selectLanguageModal.module';
 
 //From google firebase download the web app's config and put it into a new file called
 //firebase-config.ts with this content
@@ -54,6 +54,7 @@ import { SuperTabsModule } from '@ionic-super-tabs/angular';
     AppRoutingModule,
     AddTokenModalModule,
     AddressModalModule,
+    SelectModelPageModule,
     IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(FirebaseConfig.config),
     AngularFirestoreModule,

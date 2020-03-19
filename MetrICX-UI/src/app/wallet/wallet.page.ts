@@ -186,7 +186,8 @@ export class WalletPage {
           title: {
             display: true,
             text: this.graphHeader,
-            fontColor: '#fff'
+            fontColor: '#fff',
+            fontSize: 9,
           },
           layout: {
                     padding: {

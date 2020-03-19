@@ -7,7 +7,7 @@ import { DeviceSettings, MapArray, Address } from '../services/settings/settings
 import { Base64ToGallery } from '@ionic-native/base64-to-gallery/ngx';
 import { SettingsService } from '../services/settings/settings.service';
 import { AddressModalPage } from '../addressModal/addressModal.page';
-
+import { SelectLanguageModalPage } from '../selectLanguageModal/selectLanguageModal.page';
 @Component({
   selector: 'app-settings',
   templateUrl: 'settings.page.html',
@@ -98,7 +98,7 @@ export class SettingsPage {
    this.ionViewWillEnter();
   }
 
-  async openModal(key: string) {
+  async openAddAddressModal(key: string) {
     const modal = await this.modalController.create({
       component: AddressModalPage,
       cssClass: 'address-modal-css',
@@ -114,4 +114,22 @@ export class SettingsPage {
     return await modal.present();
 
   }
+
+  async openLanguageSelectModal(key: string) {
+    const modal = await this.modalController.create({
+      component: SelectLanguageModalPage,
+      cssClass: 'address-modal-css',
+      componentProps: {
+        key: key
+     }
+    });
+ 
+    modal.onDidDismiss().then((dataReturned) => {
+        this.ionViewWillEnter();
+    });
+ 
+    return await modal.present();
+
+  }
+
 }

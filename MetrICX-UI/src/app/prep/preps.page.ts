@@ -160,7 +160,9 @@ export class PrepsPage  {
       prepTable.votingPerc = prepDetail[i].delegated / totalDelegated * 100;
 
       let prepDetails = await this.settingsService.getPrepDetails(prepDetail[i].address);
-      prepTable.imageUrl = prepDetails.representative.logo.logo_256
+       if(prepDetails.representative.logo) {
+           prepTable.imageUrl = prepDetails.representative.logo.logo_256
+       }
 
       prepTable.rank = "#"+prepDetail[i].rank;
       prepTable.name = prepDetail[i].name;

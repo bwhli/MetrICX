@@ -10,12 +10,12 @@
 <ion-grid>
   <ion-row>
     <ion-item-divider>
-      <ion-label> Governance Overview</ion-label>
+      <ion-label>  {{'governance.title' | translate }} </ion-label>
     </ion-item-divider>
     <ion-col size="8">
           <ion-card>
               <ion-card-title class="card-title-primary ion-text-end">
-                 Latest Block By
+                 {{'governance.latestBlockBy' | translate }}
               </ion-card-title>
                 <ion-card-content class="card-content-inverted">
                       <ion-row>
@@ -51,7 +51,7 @@
         <ion-col size="6">
           <ion-card>
             <ion-card-title  class="card-title-primary ion-text-end">
-              Delegated/Total Supply
+              {{'governance.total' | translate }}
           </ion-card-title>
                 <ion-card-content class="card-content-inverted">
                     <ion-row>
@@ -88,7 +88,7 @@
         <ion-col size="6">
           <ion-card>
             <ion-card-title  class="card-title-primary ion-text-end">
-          Delegated/Circulating Supply
+          {{'governance.circulating' | translate }}
           </ion-card-title>
               <ion-card-content class="card-content-inverted">
                   <ion-row>
@@ -127,7 +127,7 @@
     <ion-grid>
       <ion-row>
       <ion-col class="ion-text-start align-text-middle">
-        <ion-label>My Voted Preps</ion-label>
+        <ion-label>{{'governance.prepTitle' | translate }}</ion-label>
       </ion-col>
       <ion-col class="ion-text-end">
         <ion-badge class="badge" color="secondary">{{numberOfVotedReps}}</ion-badge>
@@ -146,12 +146,12 @@
                 {{prep.name}}          
               </ion-col>
               <ion-col size="6" class="myVotes ion-text-end">
-                  <div class="first">My Votes:  {{prep.myVotes | number : '1.2-2'}} ({{prep.width | number : '1.2-2' }}%)
+                  <div class="first">     {{'governance.votes' | translate }}:  {{prep.myVotes | number : '1.2-2'}} ({{prep.width | number : '1.2-2' }}%)
                     <div [ngStyle]="{'width.%': prep.width }" class="second"> </div>
                   </div>
               </ion-col>
               <ion-col size="3" class="name ion-text-end">
-               Rank {{prep.rank}}
+                {{'governance.rank' | translate }} {{prep.rank}}
               </ion-col>
             </ion-row>
            <!-- </ion-grid> -->
@@ -168,7 +168,7 @@
                    {{prep.city}}
                  </ion-col>
                   <ion-col size="3" class="production align-text-middle">
-                     Productivity <br/>
+                    {{'governance.productivity' | translate }} <br/>
                      {{prep.production}}%
                   </ion-col>
                   <ion-col size="3"  class="votes ion-text-end">

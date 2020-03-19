@@ -4,6 +4,7 @@ import { LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { SuperTabs } from '@ionic-super-tabs/angular';
 import { Address } from '../services/settings/settings';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-prep-tab',
@@ -26,10 +27,12 @@ export class PrepTabPage {
   constructor(
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    public settingsService: SettingsService    
+    public settingsService: SettingsService,
+    private translate: TranslateService    
   ) { }
 
   async ionViewWillEnter() {
+    this.translate.use('es');
     var length = await this.settingsService.getLength();
     if (length == 0) {
       this.navCtrl.navigateForward('/tabs/settings');

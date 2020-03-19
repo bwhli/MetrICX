@@ -7,7 +7,7 @@
          "total": "Total",
          "monthly": "Mensual",
          "yearly": "Anual",
-         "reward": "Tasa de ganancias",
+         "rewardRate": "Tasa de ganancias",
          "unstakePeriod": "Periodo de desbloqueo",
          "graphHeader": "Estimado de ganancias mensuales (i-score reclamado semanalmente)"
     },

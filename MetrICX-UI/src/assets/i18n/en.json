@@ -7,7 +7,7 @@
          "total": "Total",
          "monthly": "Monthly",
          "yearly": "Yearly",
-         "reward": "Reward Rate",
+         "rewardRate": "Reward Rate",
          "unstakePeriod": "Unstaking Period",
          "graphHeader": "Monthly reward estimate (i-score claimed weekly)"
     },

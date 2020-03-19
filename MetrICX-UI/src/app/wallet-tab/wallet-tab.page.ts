@@ -32,7 +32,7 @@ export class WalletTabPage {
   ) { }
 
   async ionViewWillEnter() {
-    this.translate.use('en');
+    this.translate.use('es');
     var length = await this.settingsService.getLength();
     if (length == 0) {
       this.navCtrl.navigateForward('/tabs/settings');

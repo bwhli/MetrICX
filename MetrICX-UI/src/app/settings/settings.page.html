@@ -4,7 +4,7 @@
 	<ion-grid>
 		<ion-row>
 			<ion-item-divider>
-				<ion-label>Push Notifications        {{'wallet.unstake' | translate}} </ion-label>
+				<ion-label>Push Notifications </ion-label>
 			</ion-item-divider>
 
 			<ion-item>
@@ -13,7 +13,7 @@
 			</ion-item>
 			
 			<ion-item>
-				<ion-label>Notify me if Main P-Rep productivity drops below</ion-label>
+				<ion-label>{{'settings.productivityDrop' | translate}} </ion-label>
 				<ion-select interface="popover" class="selector" value="disabled" okText="Okay" cancelText="Dismiss" [(ngModel)]="enablePushProductivityDrop" (ngModelChange)="save()">
 					<ion-select-option class="option" value="disabled">No </ion-select-option>
 					<ion-select-option class="option" value="98">98 % </ion-select-option>
@@ -31,13 +31,23 @@
 			</ion-item>
 
 			<ion-item-divider>
+				<ion-label>Language Support</ion-label>
+			</ion-item-divider>
+			<ion-item>
+				<ion-label>Español</ion-label>
+				<ion-button shape="round" fill="clear" size="small" (click)="openLanguageSelectModal()">
+					<fa-icon class="fa-lg" [icon]="['fas', 'arrow-right']" slot="start"></fa-icon>
+				  </ion-button>
+			</ion-item>
+
+			<ion-item-divider>
 				<ion-grid>
 					<ion-row>
 						<ion-col class="align-text-middle">
 							<ion-label>Multi Address</ion-label>
 						</ion-col>
 						<ion-col class="ion-text-end ion-no-margin">
-							<ion-button (click)="openModal('')" fill="clear" size="small">
+							<ion-button (click)="openAddAddressModal('')" fill="clear" size="small">
 								<fa-icon class="fa-lg" [icon]="['fas', 'plus-circle']" slot="start"></fa-icon>
 							</ion-button>
 						</ion-col>
