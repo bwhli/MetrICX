@@ -1,5 +1,55 @@
 {
     "wallet": {
-         "hello": "Hola"
+         "available": "Disponible",
+         "unstakeTimer": "Tiempo para desbloqueo",
+         "staked": "Delegado",
+         "unclaimed": "Sin Reclamar",
+         "total": "Total",
+         "monthly": "Mensual",
+         "yearly": "Anual",
+         "reward": "Tasa de ganancias",
+         "unstakePeriod": "Periodo de desbloqueo",
+         "graphHeader": "Estimado de ganancias mensuales (i-score reclamado semanalmente)"
+    },
+    "governance": {
+        "title": "Resumen de gobernanza",
+        "latestBlockBy": "Ultimo bloque por",
+        "preps" : "P-Reps",
+        "total": "Delegado/Total suministro",
+        "circulating": "Delegado/Total circulante",
+        "prepTitle": "Mis P-Reps Votados",
+        "productivity": "Productividad",
+        "rank": "Rango",
+        "votes": "Mis Votos"
+    },
+    "tokens": {
+        "title": "Tokens IRC-20",
+        "balance": "Balance",
+        "tapDiv": "Dividendos esperados hoy",
+        "wagerWar": "Guerra de apuesta"
+    },
+    "addTokens": {
+        "add": "Agregar Tokens"
+    },
+    "settings": {
+        "notifications": "Notificaciones",
+        "reward": "Notificarme cuando las recompensas estén disponibles",
+        "productivityDrop": "Notificar si productividad de P-Rep baja a",
+        "currency": "Moneda",
+        "currencyLabel": "Mostrar valor en USD",
+        "multiAddress": "Multi direcciones"
+    },
+    "addAddress": {
+        "title": "Notificaciones (esta dirección)",
+        "deposit": "Notificarme cuando reciba un deposito",
+        "addressDetails": "Detalles de la dirección",
+        "walletName": "Nombre de la billetera",
+        "address": "dirección"
+    },
+    "tabs": {
+        "wallet": "Billetera",
+        "governance": "Gobernanza",
+        "tokens": "Tokens",
+        "settings": "Configuración"
     }
 }
