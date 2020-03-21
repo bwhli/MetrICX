@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { FontAwesomeModule, FaIconLibrary } from '@fortawesome/angular-fontawesome';
-import { faWallet, faCogs, faPollPeople, faCoins }  from '@fortawesome/pro-light-svg-icons';
+import { faPiggyBank, faCogs, faPollPeople, faCoins }  from '@fortawesome/pro-light-svg-icons';
 import { TabsPageRoutingModule } from './tabs.router.module';
 import { TabsPage } from './tabs.page';
 
@@ -19,6 +19,6 @@ import { TabsPage } from './tabs.page';
 })
 export class TabsPageModule {
 constructor(library: FaIconLibrary) {
-     library.addIcons(faWallet, faCogs, faPollPeople, faCoins);
+     library.addIcons(faPiggyBank, faCogs, faPollPeople, faCoins);
   }  
 }

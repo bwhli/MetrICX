@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.rhizome.metricx" version="1.0.6" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="com.rhizome.metricx" version="2.0.2" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>MetrICX</name>
     <description>Economic view of ICON</description>
     <author email="metricx@rhizomeicx.com" href="http://rhizomeicx.com/">Rhizome P-Rep</author>
@@ -50,6 +50,11 @@
         </edit-config>
         <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
             <string>To save QR Codes</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="UIRequiredDeviceCapabilities">
+            <array>
+                <string>armv7</string>
+            </array>
         </edit-config>
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />

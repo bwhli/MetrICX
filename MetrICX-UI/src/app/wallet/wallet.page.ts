@@ -74,7 +74,7 @@ export class WalletPage {
   async presentLoading() {
     const loading = await this.loadingController.create({
       spinner: null,
-      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      message: '<ion-img src="assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
       cssClass: 'loading-css',
       showBackdrop: false,
       duration: 1000

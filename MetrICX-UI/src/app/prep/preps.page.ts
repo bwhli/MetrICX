@@ -86,10 +86,10 @@ export class PrepsPage  {
     this.isLoaded = true;
     await this.loadingController.create({
       spinner: null,
-      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      message: '<ion-img src="assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
       cssClass: 'loading-css',
       showBackdrop: false,
-      duration: 5000
+      duration: 8000
     }).then(a => {
       a.present().then(() => {
         console.log('presented');
