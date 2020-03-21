@@ -31,7 +31,7 @@ namespace MetrICXServerPush
             //    ProcessDeviceToken(device, device.addresses_v2.p0, token);
             //}
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.8");
+            Console.WriteLine("[MAIN] STARTING APPLICATION TIMER v2.11");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval * 1000;
             timer.Start();
