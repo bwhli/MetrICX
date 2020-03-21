@@ -126,11 +126,10 @@ export class WalletPage {
   }
 
   doRefresh(event) {
-    setTimeout(() => {
       this.ionViewWillEnter();
       event.target.complete();
-    }, 2000);
   }
+  
 
   calculateY(pv: number, r: number, n: number) : number {
     const rateOfInterest = r/100;
