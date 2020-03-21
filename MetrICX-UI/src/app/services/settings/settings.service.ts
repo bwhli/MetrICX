@@ -81,7 +81,6 @@ export class SettingsService {
       //Update object
       docRef.set(objectData, {merge:true});
 
-      debugger;
       //Now remove unused address slots
       if (!objectData.addresses_v2.p0) docRef.update({ "addresses_v2.p0": firebase.firestore.FieldValue.delete() });
       if (!objectData.addresses_v2.p1) docRef.update({ "addresses_v2.p1": firebase.firestore.FieldValue.delete() });
