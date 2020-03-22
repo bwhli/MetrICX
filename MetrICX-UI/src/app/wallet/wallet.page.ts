@@ -74,7 +74,7 @@ export class WalletPage {
   async presentLoading() {
     const loading = await this.loadingController.create({
       spinner: null,
-      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      message: '<ion-img src="assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
       cssClass: 'loading-css',
       showBackdrop: false,
       duration: 1000
@@ -126,11 +126,10 @@ export class WalletPage {
   }
 
   doRefresh(event) {
-    setTimeout(() => {
       this.ionViewWillEnter();
       event.target.complete();
-    }, 2000);
   }
+  
 
   calculateY(pv: number, r: number, n: number) : number {
     const rateOfInterest = r/100;

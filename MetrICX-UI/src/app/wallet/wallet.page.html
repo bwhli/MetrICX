@@ -1,4 +1,4 @@
-   <ion-content class="bg-class">
+   <ion-content no-bounce has-bouncing="false" forceOverscroll="false" class="bg-class">
     <p>
     <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)" pullMin="50">
       <ion-refresher-content
@@ -117,7 +117,10 @@
                       <ion-col style="padding-left:12px !important; padding-right:5px !important"size="2" class="align-text-middle ion-text-center">
                           <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
                       </ion-col>
-                      <ion-col size="10" class="amount-value ion-text-end">
+                      <ion-col size="2" class="align-text-middle">
+                        <div class="amount-value-usd" *ngIf="deviceSettings && deviceSettings.showUSDValue">    ${{1 / USDValue | number : '1.2-2'}} </div>
+                      </ion-col>
+                      <ion-col size="8" class="amount-value ion-text-end">
                           {{(stake+balance+claim) | number : '1.2-2'}} <small>ICX</small>
                           <div class="amount-value-usd" *ngIf="deviceSettings && deviceSettings.showUSDValue">{{(stake+balance+claim) / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
@@ -149,7 +152,7 @@
                   <ion-card-content class="card-content-inverted" style="padding:0px !important">  
                     <ion-row>
                       <ion-col style="padding-left:10px !important;" size="4" class="align-text-middle ion-text-center">
-                        <img src="assets/icx_vibrant.png" alt="ICX" style="width:40px;height:35px;"/>       
+                        <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
                     </ion-col>
                       <ion-col class="amount-value ion-text-end">
                         ~ {{monthlyICX | number : '1.2-2'}} <small>ICX</small>
@@ -173,7 +176,7 @@
                   <ion-card-content class="card-content-inverted" style="padding:0px !important">  
                     <ion-row>
                       <ion-col style="padding-left:10px !important;" size="4" class="align-text-middle ion-text-center">
-                        <img src="assets/icx_vibrant.png" alt="ICX" style="width:40px;height:35px;"/>       
+                        <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
                     </ion-col>
                       <ion-col class="amount-value ion-text-end">
                         ~ {{yearlyICX | number : '1.2-2'}} <small>ICX</small>
