@@ -1,28 +1,86 @@
-﻿using BlockSniffer.Gateways;
+﻿using BlockSniffer.Entities;
+using BlockSniffer.Gateways;
 using IconSDK;
 using IconSDK.RPCs;
 using System;
+using System.Timers;
 
 namespace BlockSniffer
 {
     public class Program
     {
+        static int timerInterval = 1500;
+        static System.Timers.Timer timer = new Timer();
+        static long lastProcessedHeight = 0; 
+
         static void Main(string[] args)
         {
 
-            // GetTotalSupply
-            var getTotalSupply = new GetTotalSupply(Consts.ApiUrl.TestNet);
-            var totalSupply = getTotalSupply.Invoke().Result;
+            Console.WriteLine("[MAIN] STARTING APPLICATION");
+            timer.Elapsed += Timer_Elapsed;
+            timer.Interval = timerInterval;
+            timer.Start();
 
-            //var getLastBlock = IconSDK.RPCs.GetLastBlock.Create(Consts.ApiUrl.TestNet);
-            //var block = getLastBlock().Result;
+            while (true)
+            {
+                System.Threading.Thread.Sleep(1000);
+            }
+        }
 
-            //IconGateway.CallTestService().Wait();
+        private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            timer.Stop();
+            try
+            {
+                var lastBlock = IconGateway.GetLastBlock();
 
-            //var getablock = IconSDK.RPCs.GetBlockByHeight.Create(Consts.ApiUrl.TestNet);
-            //var ablock = getablock(100000).Result;
+                if (lastProcessedHeight == 0)
+                {
+                    //We dont have a previous block for some reason, do not catch up, start from here
+                    ProcessBlock(lastBlock);
+                }
+                else if (lastProcessedHeight == lastBlock.Height)
+                {
+                    //Do nothing
+                }
+                else if (lastProcessedHeight == lastBlock.Height - 1)
+                {
+                    //As expected, got the next block
+                    ProcessBlock(lastBlock);
+                }
+                else
+                {
+                    //We have missed some blocks, need to catch up
+                    for (long indexHeight = lastProcessedHeight + 1; indexHeight < lastBlock.Height; indexHeight++)
+                    {
+                        var oldBlock = IconGateway.GetBlockByHeight(indexHeight);
+                        ProcessBlock(oldBlock);
+                    }
+                    ProcessBlock(lastBlock);
+                }
+            }
+            finally
+            {
+                timer.Start();
+            }
+        }
 
-            IconGateway.GetLastBlock();
+        private static void ProcessBlock(ICXBlock icxBlock)
+        {
+            try
+            {
+                long blockoftheday = icxBlock.Height % 43200;
+
+                //What do we do
+                Console.WriteLine($"{DateTime.Now} Incoming block received : {icxBlock.Height}, block of the day {blockoftheday}, transactions {icxBlock.ConfirmedTransactionList.Count}");
+
+                lastProcessedHeight = icxBlock.Height;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"EXCEPTION : {ex.Message}");
+                throw;
+            }
         }
     }
 }
