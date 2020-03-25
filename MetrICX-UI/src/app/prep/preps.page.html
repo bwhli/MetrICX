@@ -78,10 +78,7 @@
                             [subtitleFontSize]="10">>
                           </circle-progress>
                         </ion-col>
-                      </ion-row>    
-                      <ion-row *ngIf="isLoaded" >
-                        <ion-col class="ion-text-center"> <small>Total Votes : {{totalICXDelegated}}</small> </ion-col>
-                      </ion-row>     
+                      </ion-row>                 
                 </ion-card-content>
               </ion-card>
         </ion-col>
@@ -115,12 +112,45 @@
                       [subtitleFontSize]="10">>
                     </circle-progress>
                       </ion-col>
-                    </ion-row>    
-                    <ion-row *ngIf="isLoaded" >
-                      <ion-col class="ion-text-center"> <small>{{circulatingSupply}} ICX </small></ion-col>
-                    </ion-row>      
+                    </ion-row>       
               </ion-card-content>
             </ion-card> 
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size="6">
+          <ion-card>
+            <ion-card-title  class="card-title-primary ion-text-end">
+                ICX Delegated
+            </ion-card-title>
+              <ion-card-content class="card-content-inverted">
+                  <ion-row>
+                    <ion-col style="padding-left:12px !important; padding-right:5px !important" size="4" class="align-text-middle ion-text-center">
+                      <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
+                  </ion-col>
+                  <ion-col size="8" class="amount-value-inverted ion-text-end">
+                    {{totalICXDelegated}}
+                </ion-col>
+                    </ion-row>       
+              </ion-card-content>
+            </ion-card>
+        </ion-col>
+        <ion-col size="6">
+          <ion-card>
+            <ion-card-title  class="card-title-primary ion-text-end">
+                ICX Circulating
+            </ion-card-title>
+              <ion-card-content class="card-content-inverted">
+                  <ion-row>
+                    <ion-col style="padding-left:12px !important; padding-right:5px !important" size="4" class="align-text-middle ion-text-center">
+                      <img src="assets/icx_vibrant.png" alt="ICX" style="width:35px;height:35px;"/>       
+                  </ion-col>
+                        <ion-col size="8" class="amount-value-inverted ion-text-end" >
+                          {{circulatingSupply}}
+                      </ion-col>
+                    </ion-row>       
+              </ion-card-content>
+            </ion-card>
         </ion-col>
       </ion-row>
   <ion-item-divider>

@@ -91,7 +91,6 @@ export class PrepsPage  {
       duration: 8000
     }).then(a => {
       a.present().then(() => {
-        console.log('presented');
         if (!this.isLoaded) {
           a.dismiss().then(() => console.log('abort presenting'));
         }

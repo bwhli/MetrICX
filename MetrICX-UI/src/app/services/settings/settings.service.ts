@@ -188,9 +188,6 @@ export class SettingsService {
             }
         }
     });
-
-    console.log(address);
-
     return address;
   }
 }
