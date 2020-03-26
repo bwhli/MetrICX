@@ -24,7 +24,7 @@
                   <ion-col size="{{colSize}}" class="ion-text-center">
                       <fa-icon style="color: #1adfcb;"size="2x" [icon]="['fas', 'wallet']"></fa-icon>
                   </ion-col>
-                       <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" text-right>
+                       <ion-col [ngClass]="{'amount-value': hideUnstakeTimer}" class="ion-text-end">
                         {{balance | number : '1.2-2'}} <small>ICX</small>
                         <div class="amount-value-usd" *ngIf="deviceSettings && deviceSettings.showUSDValue">{{balance / USDValue | number : '1.2-2'}} <small>USD</small></div>
                       </ion-col>
