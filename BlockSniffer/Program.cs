@@ -69,16 +69,28 @@ namespace BlockSniffer
         {
             try
             {
-                long blockoftheday = icxBlock.Height % 43200;
+                long blockoftheday = (icxBlock.Height - 13283) % 43120;
+
+                var rewards1 = IconGateway.GetAvailableRewards("hx1141b769011ee8399ef70f393b568ca15a6e22d7");
+
+                var rewards2 = IconGateway.GetAvailableRewards("hxc147caa988765c13eaa6ca43400c27a0372b9436");
+
+                //TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
+                //int secondsSinceEpoch = t.Ticks / DateTime. ;
+                //Console.WriteLine(secondsSinceEpoch);
+                //DateTimeOffset.Now.ToUnixTimeSeconds();
+
+                var blockTimeStamp = DateTimeOffset.FromUnixTimeMilliseconds(icxBlock.TimeStamp / 1000).AddHours(8);
+
 
                 //What do we do
-                Console.WriteLine($"{DateTime.Now} Incoming block received : {icxBlock.Height}, block of the day {blockoftheday}, transactions {icxBlock.ConfirmedTransactionList.Count}");
+                Console.WriteLine($"{DateTime.Now} Incoming block received : {icxBlock.Height}, block of the day {blockoftheday}, transactions {icxBlock.ConfirmedTransactionList.Count}, rewards 1 {rewards1}, rewards 2 {rewards2}");
 
                 lastProcessedHeight = icxBlock.Height;
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"EXCEPTION : {ex.Message}");
+                Console.WriteLine($"EXCEPTION : Error on block {icxBlock.Height} :  {ex.Message}");
                 throw;
             }
         }

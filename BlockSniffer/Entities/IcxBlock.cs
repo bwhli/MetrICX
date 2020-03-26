@@ -66,11 +66,17 @@ namespace BlockSniffer.Entities
         [JsonProperty("timestamp")]
         public string Timestamp { get; set; }
 
+        public DateTime GetTimeStamp()
+        {
+            var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(Timestamp) / 1000);
+            return dateTime.UtcDateTime.AddHours(8);
+        }
+
         [JsonProperty("dataType")]
         public string DataType { get; set; }
 
         [JsonProperty("data")]
-        public Data Data { get; set; }
+        public object Data { get; set; }
 
         [JsonProperty("txHash")]
         public string TxHash { get; set; }
@@ -114,6 +120,11 @@ namespace BlockSniffer.Entities
 
         [JsonProperty("time_stamp")]
         public long TimeStamp { get; set; }
+        public DateTime GetTimeStamp()
+        {
+            var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(TimeStamp) / 1000);
+            return dateTime.UtcDateTime.AddHours(8);
+        }
 
         [JsonProperty("confirmed_transaction_list")]
         public IList<ConfirmedTransactionList> ConfirmedTransactionList { get; set; }

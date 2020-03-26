@@ -53,5 +53,38 @@ namespace BlockSniffer.Gateways
             var response = rpc.InvokeAsync<ReturnType>(method.ToString(), param);
             return response.Result;
         }
+
+        public static Decimal GetAvailableRewards(string address)
+        {
+            //Console.WriteLine($"[ICON] Getting available Rewards for address '{address}'");
+            var call = new Call<IDictionary<string, BigInteger>>(Consts.ApiUrl.MainNet);
+
+            if (!string.IsNullOrEmpty(address) && address.StartsWith("hx"))
+            {
+                try
+                {
+                    var result = call.Invoke(
+                        address,
+                        "cx0000000000000000000000000000000000000000",
+                        "queryIScore",
+                        ("address", address)
+                    ).Result;
+
+                    var icx = IntToDecimal(result["estimatedICX"]);
+                    //Console.WriteLine($"[ICON] ICX for address {address} is {icx}");
+                    return icx;
+                }
+                catch (Exception ex)
+                {
+                    //Console.WriteLine($"[ICON] EXCEPTION GetAvailableRewards for address {address} : {ex.Message}");
+                    throw;
+                }
+            }
+            else
+            {
+                //Console.WriteLine($"[ICON] WARNING, invalid address {address}");
+                return 0;
+            }
+        }
     }
 }
