@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlockSniffer.Entities
+namespace MetrICXCore.Models
 {
     public class RequestParams
     {
@@ -28,3 +28,4 @@ namespace BlockSniffer.Entities
     }
 
 }
+

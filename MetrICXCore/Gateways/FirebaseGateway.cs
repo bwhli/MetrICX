@@ -1,5 +1,6 @@
 ﻿using Google.Cloud.Firestore;
-using MetrICXServerPush.Entities;
+using MetrICXCore.Entities;
+using MetrICXCore.Models;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -8,7 +9,7 @@ using System.Net;
 using System.Reflection;
 using System.Text;
 
-namespace MetrICXServerPush.Gateways
+namespace MetrICXCore.Gateways
 {
     public static class FirebaseGateway
     {
@@ -30,12 +31,62 @@ namespace MetrICXServerPush.Gateways
                 Console.WriteLine("[FB] Loading firebase-config.json");
                 string json = File.ReadAllText($"{Path.GetDirectoryName(Assembly.GetCallingAssembly().Location)}/firebase-config.json");
                 FirebaseConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
-            } 
+            }
             catch (Exception ex)
             {
                 Console.WriteLine($"[FB] Was not able to load firebase-config.json. Look at firebase-config.sample.json to see an example. Exception Message {ex.Message}");
                 throw;
             }
+        }
+
+        public static IEnumerable<DeviceRegistration> AllDevices()
+        {
+            Query allCitiesQuery = db.Collection("devices");
+            QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                DeviceRegistration device = null;
+                try
+                {
+                    object broken;
+                    documentSnapshot.TryGetValue<object>("addresses_v2.p0.tokens", out broken);
+                    if (broken != null && broken.GetType().FullName.Contains("List"))
+                    {
+                        Console.WriteLine($"[FB] Invalid Tokens array found, deleting it {documentSnapshot.Id}");
+
+                        //This will fail to be deserialized, so deleting the tokens array
+                        DocumentReference docRef = db.Collection("devices").Document(documentSnapshot.Id);
+                        Dictionary<string, object> updates = new Dictionary<string, object>
+                        {
+                            { "addresses_v2.p0.tokens", FieldValue.Delete }
+                        };
+                        docRef.UpdateAsync(updates).Wait();
+
+                        var newdocumentSnapshot = db.Collection("devices").Document(documentSnapshot.Id).GetSnapshotAsync().Result;
+                        device = newdocumentSnapshot.ConvertTo<DeviceRegistration>();
+                        Console.WriteLine($"[FB] Invalid Tokens array successfully deleted {documentSnapshot.Id}");
+                    }
+                    else
+                    {
+                        device = documentSnapshot.ConvertTo<DeviceRegistration>();
+                    }
+
+
+                    device.ResetDirty();
+                    device.MigrateData();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[FB] EXCEPTION, unable to deserialize the document {documentSnapshot.Id} : {ex.Message}");
+                }
+                if (device != null)
+                {
+                    Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
+                    yield return device;
+                }
+                Console.WriteLine("");
+            }
+
         }
 
         public static SendResponse SendPush(string recipientToken, string address, string title, string message)
@@ -74,12 +125,12 @@ namespace MetrICXServerPush.Gateways
                     using (Stream dataStreamResponse = tResponse.GetResponseStream())
                     {
                         if (dataStreamResponse != null) using (StreamReader tReader = new StreamReader(dataStreamResponse))
-                        {
-                            String sResponseFromServer = tReader.ReadToEnd();
-                            Console.WriteLine($"[FB] RESPONSE : {sResponseFromServer}");
+                            {
+                                String sResponseFromServer = tReader.ReadToEnd();
+                                Console.WriteLine($"[FB] RESPONSE : {sResponseFromServer}");
 
-                            response = JsonConvert.DeserializeObject<SendResponse>(sResponseFromServer);
-                        }
+                                response = JsonConvert.DeserializeObject<SendResponse>(sResponseFromServer);
+                            }
                     }
                 }
             }
@@ -87,53 +138,6 @@ namespace MetrICXServerPush.Gateways
             return response;
         }
 
-        public static IEnumerable<DeviceRegistration> AllDevices()
-        {
-            Query allCitiesQuery = db.Collection("devices");
-            QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
-            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
-            {
-                DeviceRegistration device = null;
-                try
-                {
-                    object broken;
-                    documentSnapshot.TryGetValue<object>("addresses_v2.p0.tokens", out broken);
-                    if (broken != null && broken.GetType().FullName.Contains("List"))
-                    {
-                        Console.WriteLine($"[FB] Invalid Tokens array found, deleting it {documentSnapshot.Id}");
-
-                        //This will fail to be deserialized, so deleting the tokens array
-                        DocumentReference docRef = db.Collection("devices").Document(documentSnapshot.Id);
-                        Dictionary<string, object> updates = new Dictionary<string, object>
-                        {
-                            { "addresses_v2.p0.tokens", FieldValue.Delete }
-                        };
-                        docRef.UpdateAsync(updates).Wait();
-
-                        var newdocumentSnapshot = db.Collection("devices").Document(documentSnapshot.Id).GetSnapshotAsync().Result;
-                        device = newdocumentSnapshot.ConvertTo<DeviceRegistration>();
-                        Console.WriteLine($"[FB] Invalid Tokens array successfully deleted {documentSnapshot.Id}");
-                    }
-                    else { 
-                        device = documentSnapshot.ConvertTo<DeviceRegistration>();
-                    }
-
-                    
-                    device.ResetDirty();
-                    device.MigrateData();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[FB] EXCEPTION, unable to deserialize the document {documentSnapshot.Id} : {ex.Message}");
-                }
-                if (device != null)
-                {
-                    Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
-                    yield return device;
-                }
-                Console.WriteLine("");
-            }
-        }
 
         public static DeviceRegistration GetDevice(string token)
         {
@@ -157,7 +161,7 @@ namespace MetrICXServerPush.Gateways
 
             DeviceRegistration device = documentSnapshot.ConvertTo<DeviceRegistration>();
             device.ResetDirty();
-            device.MigrateData(); 
+            device.MigrateData();
             return device;
         }
 

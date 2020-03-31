@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace BlockSniffer.Entities
+namespace MetrICXCore.Entities
 {
     public class Prep
     {
@@ -98,6 +98,9 @@ namespace BlockSniffer.Entities
 
         [JsonProperty("nonce")]
         public string Nonce { get; set; }
+
+        [JsonProperty("value")]
+        public string Value { get; set; }
     }
 
     public class ICXBlock

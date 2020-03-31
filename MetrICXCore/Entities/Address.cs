@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Entities
 {
     [FirestoreData]
     public class Address
@@ -44,7 +44,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public string Symbol { get => _symbol; 
+        public string Symbol
+        {
+            get => _symbol;
             set
             {
                 _dirty = _dirty || _symbol != value;
@@ -53,7 +55,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public DateTime? lastIScorePushSentDate { get => _lastIScorePushSentDate; 
+        public DateTime? lastIScorePushSentDate
+        {
+            get => _lastIScorePushSentDate;
             set
             {
                 _dirty = _dirty || _lastIScorePushSentDate != value;
@@ -62,7 +66,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public DateTime? lastDepositPushSentDate { get => _lastDepositPushSentDate;
+        public DateTime? lastDepositPushSentDate
+        {
+            get => _lastDepositPushSentDate;
             set
             {
                 _dirty = _dirty || _lastDepositPushSentDate != value;
@@ -71,7 +77,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public string availableRewards { get => _availableRewards; 
+        public string availableRewards
+        {
+            get => _availableRewards;
             set
             {
                 _dirty = _dirty || _availableRewards != value;
@@ -86,13 +94,15 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                return _dirty || (tokens != null && tokens.Dirty);
+                return _dirty || tokens != null && tokens.Dirty;
             }
         }
 
 
         [FirestoreProperty]
-        public string balance { get => _balance; 
+        public string balance
+        {
+            get => _balance;
             set
             {
                 _dirty = _dirty || _balance != value;

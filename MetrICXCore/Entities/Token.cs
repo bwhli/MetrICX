@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Entities
 {
     [FirestoreData]
     public class Token
@@ -50,7 +50,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public DateTime? lastDepositPushSentDate { get => _lastDepositPushSentDate;
+        public DateTime? lastDepositPushSentDate
+        {
+            get => _lastDepositPushSentDate;
             set
             {
                 _dirty = _dirty || _lastDepositPushSentDate != value;
@@ -59,7 +61,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public string lastBalance { get => _lastBalance; 
+        public string lastBalance
+        {
+            get => _lastBalance;
             set
             {
                 _dirty = _dirty || _lastBalance != value;

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Models
 {
     public class Result
     {

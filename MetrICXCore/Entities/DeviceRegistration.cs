@@ -6,7 +6,7 @@ using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Entities
 {
     [FirestoreData]
     public class DeviceRegistration
@@ -38,7 +38,7 @@ namespace MetrICXServerPush.Entities
         {
             get
             {
-                if (addresses_v2 != null && addresses_v2.p0 != null) 
+                if (addresses_v2 != null && addresses_v2.p0 != null)
                     return addresses_v2.p0.address;
                 return _legacyAddress;
             }
@@ -50,18 +50,20 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public DateTime? registrationDate { 
-            get => _registrationDate; 
-            set 
+        public DateTime? registrationDate
+        {
+            get => _registrationDate;
+            set
             {
                 _dirty = _dirty || _registrationDate != value;
-                _registrationDate = value; 
-            } 
+                _registrationDate = value;
+            }
         }
 
         [FirestoreProperty]
-        public bool? enablePushIScoreChange { 
-            get => _enablePushIScoreChange; 
+        public bool? enablePushIScoreChange
+        {
+            get => _enablePushIScoreChange;
             set
             {
                 _dirty = _dirty || _enablePushIScoreChange != value;
@@ -87,8 +89,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public bool? enablePushDeposits { 
-            get => _enablePushDeposits; 
+        public bool? enablePushDeposits
+        {
+            get => _enablePushDeposits;
             set
             {
                 _dirty = _dirty || _enablePushDeposits != value;
@@ -114,8 +117,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public string enablePushProductivityDrop { 
-            get => _enablePushProductivityDrop; 
+        public string enablePushProductivityDrop
+        {
+            get => _enablePushProductivityDrop;
             set
             {
                 _dirty = _dirty || _enablePushProductivityDrop != value;
@@ -124,8 +128,9 @@ namespace MetrICXServerPush.Entities
         }
 
         [FirestoreProperty]
-        public DateTime? lastProductivityPushSentDate { 
-            get => _lastProductivityPushSentDate; 
+        public DateTime? lastProductivityPushSentDate
+        {
+            get => _lastProductivityPushSentDate;
             set
             {
                 _dirty = _dirty || _lastProductivityPushSentDate != value;
@@ -187,13 +192,14 @@ namespace MetrICXServerPush.Entities
         [FirestoreProperty]
         public MapArray<Address> addresses_v2
         {
-            get {
+            get
+            {
                 if (_addresses_v2 == null && _addresses != null && _addresses.Count > 0)
                 {
                     _addresses_v2 = new MapArray<Address>();
                     _addresses_v2.p0 = _addresses[0];
                 }
-                return _addresses_v2; 
+                return _addresses_v2;
             }
             set
             {
@@ -202,10 +208,11 @@ namespace MetrICXServerPush.Entities
             }
         }
 
-        public bool Dirty {
-            get 
+        public bool Dirty
+        {
+            get
             {
-                return _dirty || (addresses_v2 != null && addresses_v2.AsEnumerator().Any(address => address.Dirty));
+                return _dirty || addresses_v2 != null && addresses_v2.AsEnumerator().Any(address => address.Dirty);
             }
         }
 
