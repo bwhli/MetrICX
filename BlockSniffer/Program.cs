@@ -21,10 +21,14 @@ namespace BlockSniffer
         static AmazonSimpleNotificationServiceClient _snsClient;
         static List<string> watchList = new List<string>();
 
+        static Config config;
+
         static void Main(string[] args)
         {
             //publishMessage();15,564,833
             //var lastBlock = IconGateway.GetBlockByHeight(16286914);
+
+            config = Config.LoadConfig();
 
             UpdateWatchList();
 
@@ -194,7 +198,7 @@ namespace BlockSniffer
         static public AmazonSimpleNotificationServiceClient GetSNS()
         {
             if (_snsClient == null)
-                _snsClient = new AmazonSimpleNotificationServiceClient("AKIA4MHM67P5QJRYNDYD", "YQ33fdnkyG/godWyLxiSTy9Im+dg9uhYGdN/I1sq", RegionEndpoint.APSoutheast2);
+                _snsClient = new AmazonSimpleNotificationServiceClient(config.AccessKey, config.SecretKey, RegionEndpoint.APSoutheast2);
             return _snsClient;
         }
 

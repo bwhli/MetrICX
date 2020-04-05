@@ -43,3 +43,4 @@ bin/
 obj/
 out/
 firebase-config.json
+/BlockSniffer/config.json
