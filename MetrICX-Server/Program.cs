@@ -75,6 +75,7 @@ namespace MetrICXServerPush
                 Console.WriteLine($"[MAIN] Processing all devices {allDevices.Count()}");
                 var count = 0;
                 pushNotificationCount = 0;
+
                 foreach (var device in allDevices)
                 {
                     Console.WriteLine($"[MAIN] Processing Device {count++}");
@@ -82,6 +83,7 @@ namespace MetrICXServerPush
                     {
                         foreach (var address in device.addresses_v2.AsEnumerator())
                         {
+
                             Console.WriteLine($"[MAIN] Processing Address {address.Symbol} {address.address}");
                             ProcessDeviceAddress(device, address);
 
@@ -94,7 +96,6 @@ namespace MetrICXServerPush
                                 }
                             }
                         }
-
                     }
                     
                     FirebaseGateway.UpdateDevice(device);
@@ -146,35 +147,43 @@ namespace MetrICXServerPush
 
             if (address.enablePushDeposits == true)
             {
-                try
+                var addressToggles = FirebaseGateway.GetToggleAddresses("awsdeposits");
+                if (!addressToggles.Any(a => a == address.address)) //Check if address is NOT in the toggles list
                 {
-                    var balance = IconGateway.GetBalance(address);
-                    if (string.IsNullOrEmpty(address.balance))
+                    try
                     {
-                        //Store current balance without sending a notification
-                        address.balance = balance.ToString();
-                    }
-                    else if (address.balanceAsDecimal < balance && balance - address.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
-                    {
-                        decimal depositReceived = balance - address.balanceAsDecimal;
-                        if (string.IsNullOrEmpty(address.Name))
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
-                        else
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                        var balance = IconGateway.GetBalance(address);
+                        if (string.IsNullOrEmpty(address.balance))
+                        {
+                            //Store current balance without sending a notification
+                            address.balance = balance.ToString();
+                        }
+                        else if (address.balanceAsDecimal < balance && balance - address.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
+                        {
+                            decimal depositReceived = balance - address.balanceAsDecimal;
+                            if (string.IsNullOrEmpty(address.Name))
+                                sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                            else
+                                sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
 
-                        //Now update firestore so we dont send the user duplicate messages
-                        address.balance = balance.ToString();
-                        address.lastDepositPushSentDate = DateTime.UtcNow;
-                        pushNotificationCount++;
+                            //Now update firestore so we dont send the user duplicate messages
+                            address.balance = balance.ToString();
+                            address.lastDepositPushSentDate = DateTime.UtcNow;
+                            pushNotificationCount++;
+                        }
+                        else if (address.balanceAsDecimal > balance)
+                        {
+                            address.balance = balance.ToString();
+                        }
                     }
-                    else if (address.balanceAsDecimal > balance)
+                    catch (Exception ex)
                     {
-                        address.balance = balance.ToString();
+                        Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
+
                 }
             }
 

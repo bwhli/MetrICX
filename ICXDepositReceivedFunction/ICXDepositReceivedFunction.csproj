@@ -9,4 +9,12 @@
     <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.7.0" />
     <PackageReference Include="Amazon.Lambda.SNSEvents" Version="1.1.0" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MetrICXCore\MetrICXCore.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="firebase-creds.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
 </Project>

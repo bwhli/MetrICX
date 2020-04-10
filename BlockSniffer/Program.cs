@@ -16,21 +16,23 @@ namespace BlockSniffer
         static Timer timer = new Timer();
         static int timerWLInterval = 60000;
         static Timer timerWL = new Timer();
-
+        static int eventCounter = 0;
         static long lastProcessedHeight = 0;
         static AmazonSimpleNotificationServiceClient _snsClient;
-        static List<string> watchList = new List<string>();
+        //static List<string> watchList = new List<string>();
 
         static Config config;
 
         static void Main(string[] args)
         {
-            //publishMessage();15,564,833
-            //var lastBlock = IconGateway.GetBlockByHeight(16286914);
-
             config = Config.LoadConfig();
+            
+            //publishMessage();15,564,833
+            //var lastBlock = IconGateway.GetBlockByHeight(17312037);
+            //ProcessBlock(lastBlock);
 
-            UpdateWatchList();
+
+            //UpdateWatchList();
 
             Console.WriteLine("[MAIN] STARTING APPLICATION");
             timer.Elapsed += Timer_Elapsed;
@@ -52,7 +54,7 @@ namespace BlockSniffer
             timerWL.Stop();
             try
             {
-                UpdateWatchList();
+                //UpdateWatchList();
             }
             finally
             {
@@ -62,15 +64,15 @@ namespace BlockSniffer
 
         private static void UpdateWatchList()
         {
-            lock (watchList)
-            {
-                watchList.Clear();
-                var allDevices = FirebaseGateway.AllDevices();
-                foreach (var device in allDevices)
-                    foreach (var address in device.addresses_v2.AsEnumerator())
-                        if (address.address != null && address.address.StartsWith("hx"))
-                            watchList.Add(address.address);
-            }
+            //lock (watchList)
+            //{
+            //    watchList.Clear();
+            //    var allDevices = FirebaseGateway.AllDevices();
+            //    foreach (var device in allDevices)
+            //        foreach (var address in device.addresses_v2.AsEnumerator())
+            //            if (address.address != null && address.address.StartsWith("hx"))
+            //                watchList.Add(address.address);
+            //}
         }
 
         private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
@@ -133,25 +135,18 @@ namespace BlockSniffer
                 var oldNess = Convert.ToInt32((DateTime.Now - icxBlock.GetTimeStamp()).TotalSeconds);
 
                 //What do we do
-                Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, block of the day {blockoftheday}, transactions {icxBlock.ConfirmedTransactionList.Count}, rewards 1 {rewards1}, rewards 2 {rewards2}");
+                Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, block of the day {blockoftheday}, transactions {icxBlock.ConfirmedTransactionList.Count}, eventCount {eventCounter}");
 
                 foreach (var tx in icxBlock.ConfirmedTransactionList)
                 {
                     var txStr = JsonConvert.SerializeObject(tx);
-                    foreach (var watchItem in watchList)
-                    {
-                        if (txStr.Contains(watchItem))
-                        {
-                            Console.WriteLine($"WATCHLIST ITEM {watchItem}");
-                            if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("hx"))
-                                publishTransferMessage(tx);
 
-                            if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("cx"))
-                                publishContractMethodMessage(tx);
+                    if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("hx"))
+                        publishTransferMessage(tx);
 
-                            break;
-                        }
-                    }
+                    if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("cx"))
+                        publishContractMethodMessage(tx);
+
                 }
 
                 lastProcessedHeight = icxBlock.Height;
@@ -165,6 +160,7 @@ namespace BlockSniffer
 
         static public void publishTransferMessage(ConfirmedTransactionList trx)
         {
+            eventCounter++;
             var msgStr = JsonConvert.SerializeObject(trx);
             Dictionary<String, MessageAttributeValue> messageAttributes = new Dictionary<string, MessageAttributeValue>();
             messageAttributes["from"] = new MessageAttributeValue
@@ -191,6 +187,7 @@ namespace BlockSniffer
 
         static public void publishContractMethodMessage(ConfirmedTransactionList trx)
         {
+            eventCounter++;
             var msgStr = JsonConvert.SerializeObject(trx);
             GetSNS().PublishAsync(new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_Contract_Method", msgStr, "contract method"));
         }

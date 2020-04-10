@@ -1,0 +1,21 @@
+{
+  "version": "0x3",
+  "timestamp": "0x5a2b403338c71",
+  "dataType": "call",
+  "data": {
+    "method": "call_bet",
+    "params": {
+      "upper": "0x61",
+      "lower": "0x3",
+      "user_seed": "YOLO"
+    }
+  },
+  "txHash": "0xaa43ce826731b1fe24d05b9e870a1528b958efead8ed9ff6a94b45cbd54a6b8e",
+  "from": "hxc147caa988765c13eaa6ca43400c27a0372b9436",
+  "to": "cxb0b6f777fba13d62961ad8ce11be7ef6c4b2bcc6",
+  "nid": "0x1",
+  "stepLimit": "0x5f5e100",
+  "signature": "4tj0XuHhwEkxuQzkxIw1bbYAdDAu1VevK8eAfJ/0pOPb2K755L+clIpBYB2Ptxb8/ZvjK8L1+8J09OabquWDOgA=",
+  "nonce": null,
+  "value": "0x8ac7230489e80000"
+}

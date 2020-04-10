@@ -8,6 +8,10 @@ using System.IO;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using Google.Cloud.Firestore.V1;
+using Google.Apis.Auth.OAuth2;
+using Grpc.Auth;
+using Grpc.Core;
 
 namespace MetrICXCore.Gateways
 {
@@ -19,8 +23,14 @@ namespace MetrICXCore.Gateways
         static FirebaseGateway()
         {
             LoadConfig();
+
             Console.WriteLine("[FB] Connecting to Firestore");
-            db = FirestoreDb.Create(FirebaseConfig["PROJECT_NAME"]);
+            // Load a service account explicitly
+            var serviceAcct = GoogleCredential.FromFile("firebase-creds.json");
+            Channel channel = new Channel(FirestoreClient.DefaultEndpoint.Host, FirestoreClient.DefaultEndpoint.Port, serviceAcct.ToChannelCredentials());
+            FirestoreClient client = FirestoreClient.Create(channel);
+            db = FirestoreDb.Create(FirebaseConfig["PROJECT_NAME"], client);
+
             Console.WriteLine($"[FB] Created Cloud Firestore client with project ID: {FirebaseConfig["PROJECT_NAME"]}");
         }
 
@@ -28,6 +38,7 @@ namespace MetrICXCore.Gateways
         {
             try
             {
+
                 Console.WriteLine("[FB] Loading firebase-config.json");
                 string json = File.ReadAllText($"{Path.GetDirectoryName(Assembly.GetCallingAssembly().Location)}/firebase-config.json");
                 FirebaseConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
@@ -39,54 +50,129 @@ namespace MetrICXCore.Gateways
             }
         }
 
+        private static GoogleCredential LoadCreds()
+        {
+            try
+            {
+                Console.WriteLine("[FB] Loading firebase-creds.json");
+                //string json = File.ReadAllText($"{Path.GetDirectoryName(Assembly.GetCallingAssembly().Location)}/firebase-config.json");
+                //FirebaseConfig = JsonConvert.DeserializeObject<Dictionary<string, string>>(json);
+                var credential = GoogleCredential.FromFile("firebase-creds.json");
+                return credential;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[FB] Was not able to load firebase-creds.json. Exception Message {ex.Message}");
+                throw;
+            }
+        }
+
         public static IEnumerable<DeviceRegistration> AllDevices()
         {
             Query allCitiesQuery = db.Collection("devices");
             QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
             foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
             {
-                DeviceRegistration device = null;
-                try
-                {
-                    object broken;
-                    documentSnapshot.TryGetValue<object>("addresses_v2.p0.tokens", out broken);
-                    if (broken != null && broken.GetType().FullName.Contains("List"))
-                    {
-                        Console.WriteLine($"[FB] Invalid Tokens array found, deleting it {documentSnapshot.Id}");
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+        }
 
-                        //This will fail to be deserialized, so deleting the tokens array
-                        DocumentReference docRef = db.Collection("devices").Document(documentSnapshot.Id);
-                        Dictionary<string, object> updates = new Dictionary<string, object>
+        private static DeviceRegistration GetDeviceByRef(DocumentSnapshot documentSnapshot)
+        {
+            DeviceRegistration device = null;
+            try
+            {
+                object broken;
+                documentSnapshot.TryGetValue<object>("addresses_v2.p0.tokens", out broken);
+                if (broken != null && broken.GetType().FullName.Contains("List"))
+                {
+                    Console.WriteLine($"[FB] Invalid Tokens array found, deleting it {documentSnapshot.Id}");
+
+                    //This will fail to be deserialized, so deleting the tokens array
+                    DocumentReference docRef = db.Collection("devices").Document(documentSnapshot.Id);
+                    Dictionary<string, object> updates = new Dictionary<string, object>
                         {
                             { "addresses_v2.p0.tokens", FieldValue.Delete }
                         };
-                        docRef.UpdateAsync(updates).Wait();
+                    docRef.UpdateAsync(updates).Wait();
 
-                        var newdocumentSnapshot = db.Collection("devices").Document(documentSnapshot.Id).GetSnapshotAsync().Result;
-                        device = newdocumentSnapshot.ConvertTo<DeviceRegistration>();
-                        Console.WriteLine($"[FB] Invalid Tokens array successfully deleted {documentSnapshot.Id}");
-                    }
-                    else
-                    {
-                        device = documentSnapshot.ConvertTo<DeviceRegistration>();
-                    }
-
-
-                    device.ResetDirty();
-                    device.MigrateData();
+                    var newdocumentSnapshot = db.Collection("devices").Document(documentSnapshot.Id).GetSnapshotAsync().Result;
+                    device = newdocumentSnapshot.ConvertTo<DeviceRegistration>();
+                    Console.WriteLine($"[FB] Invalid Tokens array successfully deleted {documentSnapshot.Id}");
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"[FB] EXCEPTION, unable to deserialize the document {documentSnapshot.Id} : {ex.Message}");
+                    device = documentSnapshot.ConvertTo<DeviceRegistration>();
                 }
-                if (device != null)
-                {
-                    Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
-                    yield return device;
-                }
-                Console.WriteLine("");
+
+                device.ResetDirty();
+                device.MigrateData();
             }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[FB] EXCEPTION, unable to deserialize the document {documentSnapshot.Id} : {ex.Message}");
+            }
+            if (device != null)
+            {
+                Console.WriteLine($"[FB] Document data for {documentSnapshot.Id} document: {JsonConvert.SerializeObject(device)}");
+                return device;
+            }
+            Console.WriteLine("");
 
+            return device;
+        }
+
+        public static IEnumerable<DeviceRegistration> GetDevicesByAddress(string address)
+        {
+            Query allCitiesQuery = db.Collection("devices").WhereEqualTo("addresses_v2.p0.address", address);
+            QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+            allCitiesQuery = db.Collection("devices").WhereEqualTo("addresses_v2.p1.address", address);
+            allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+            allCitiesQuery = db.Collection("devices").WhereEqualTo("addresses_v2.p2.address", address);
+            allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+            allCitiesQuery = db.Collection("devices").WhereEqualTo("addresses_v2.p3.address", address);
+            allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+            allCitiesQuery = db.Collection("devices").WhereEqualTo("addresses_v2.p4.address", address);
+            allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+        }
+
+        public static string[] GetToggleAddresses(string toggleName)
+        {
+            var documentSnapshot = db.Collection("toggles").Document(toggleName).GetSnapshotAsync().Result;
+            var addresses = documentSnapshot.ConvertTo<ToggleAddresses>();
+            return addresses.addresses;
         }
 
         public static SendResponse SendPush(string recipientToken, string address, string title, string message)

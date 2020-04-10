@@ -1,0 +1,14 @@
+{
+  "version": "0x3",
+  "timestamp": "0x5a2ec39975978",
+  "dataType": null,
+  "data": null,
+  "txHash": "0x1f9032475bdfdebe1d0e174767d9638f73fe7c69bbc36103ae06c4c8c7421d02",
+  "from": "hx5af8bd1b5cdc321a53ead7a836601ce8e2c938c9",
+  "to": "hx1141b769011ee8399ef70f393b568ca15a6e22d7",
+  "nid": "0x1",
+  "stepLimit": "0x186a0",
+  "signature": "/22Fm4o2UjcYZekxRvioCTI9qD701z8RVxdCZqaTVTg+Py/07V/fLHL8U3FcEYatZOk/wvqXvDW5UqOVn5+dgAE=",
+  "nonce": null,
+  "value": "0xde0b6b3a7640000"
+}

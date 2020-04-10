@@ -68,7 +68,8 @@ namespace MetrICXCore.Entities
 
         public DateTime GetTimeStamp()
         {
-            var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(Timestamp) / 1000);
+            var bigNumber = Int64.Parse(Timestamp.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
+            var dateTime = DateTimeOffset.FromUnixTimeMilliseconds(bigNumber / 1000);
             return dateTime.UtcDateTime.AddHours(8);
         }
 
