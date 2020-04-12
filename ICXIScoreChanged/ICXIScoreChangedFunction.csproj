@@ -3,6 +3,8 @@
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <AWSProjectType>Lambda</AWSProjectType>
+    <AssemblyName>ICXIScoreChangedFunction</AssemblyName>
+    <RootNamespace>ICXIScoreChangedFunction</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />

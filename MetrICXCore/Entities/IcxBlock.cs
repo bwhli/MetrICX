@@ -32,6 +32,7 @@ namespace MetrICXCore.Entities
 
         [JsonProperty("issue")]
         public string Issue { get; set; }
+
     }
 
     public class BlockParams
@@ -44,17 +45,17 @@ namespace MetrICXCore.Entities
     public class Data
     {
 
-        [JsonProperty("prep")]
-        public Prep Prep { get; set; }
+        //[JsonProperty("prep")]
+        //public Prep Prep { get; set; }
 
-        [JsonProperty("result")]
-        public TxResult Result { get; set; }
+        //[JsonProperty("result")]
+        //public TxResult Result { get; set; }
 
         [JsonProperty("method")]
         public string Method { get; set; }
 
         [JsonProperty("params")]
-        public BlockParams Params { get; set; }
+        public object Params { get; set; }
     }
 
     public class ConfirmedTransactionList
@@ -77,7 +78,7 @@ namespace MetrICXCore.Entities
         public string DataType { get; set; }
 
         [JsonProperty("data")]
-        public object Data { get; set; }
+        public Data Data { get; set; }
 
         [JsonProperty("txHash")]
         public string TxHash { get; set; }
@@ -102,6 +103,9 @@ namespace MetrICXCore.Entities
 
         [JsonProperty("value")]
         public string Value { get; set; }
+
+        [JsonProperty("txResultDetails")]
+        public TransactionResult TxResultDetails { get; set; }
     }
 
     public class ICXBlock

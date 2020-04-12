@@ -5,12 +5,8 @@ using System.Text;
 
 namespace MetrICXCore.Models
 {
-    public class RequestParams
-    {
-
-        [JsonProperty("height")]
-        public string Height { get; set; }
-    }
+    public class RequestParams : Dictionary<string, string>
+    { }
 
     public class Request
     {

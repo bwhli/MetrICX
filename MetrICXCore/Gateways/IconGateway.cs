@@ -16,7 +16,8 @@ namespace MetrICXCore.Gateways
     public enum IcxMethods
     {
         icx_getLastBlock,
-        icx_getBlockByHeight
+        icx_getBlockByHeight,
+        icx_getTransactionResult
     }
 
     public static class IconGateway
@@ -36,7 +37,19 @@ namespace MetrICXCore.Gateways
         {
             string hexValue = height.ToString("X");
 
-            var response = RPCCall<ICXBlock>(IcxMethods.icx_getBlockByHeight, new RequestParams() { Height = "0x" + hexValue.ToLower() }).Result.Result;
+            var pars = new RequestParams();
+            pars.Add("height", "0x" + hexValue.ToLower());
+
+            var response = RPCCall<ICXBlock>(IcxMethods.icx_getBlockByHeight, pars).Result.Result;
+            return response;
+        }
+
+        public static TransactionResult GetTransactionResult(string txHash)
+        {
+            var pars = new RequestParams();
+            pars.Add("txHash", txHash);
+
+            var response = RPCCall<TransactionResult>(IcxMethods.icx_getTransactionResult, pars).Result.Result;
             return response;
         }
 

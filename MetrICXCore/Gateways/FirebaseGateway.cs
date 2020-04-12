@@ -168,6 +168,19 @@ namespace MetrICXCore.Gateways
             }
         }
 
+        public static IEnumerable<DeviceRegistration> GetDevicesForIScorePush()
+        {
+            Query allCitiesQuery = db.Collection("devices").WhereEqualTo("enablePushIScoreChange", true);
+            QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+            
+        }
+
         public static string[] GetToggleAddresses(string toggleName)
         {
             var documentSnapshot = db.Collection("toggles").Document(toggleName).GetSnapshotAsync().Result;
@@ -272,6 +285,38 @@ namespace MetrICXCore.Gateways
             {
                 Console.WriteLine($"[FB] EXCEPTION, unable to delete the document {device.token} : {ex.Message}");
             }
+        }
+
+        public static void SetBlockProcessed(BlockProcessedStatus blockProcessedStatus)
+        {
+            Console.WriteLine($"[FB] Updating block status data for {blockProcessedStatus.height}");
+            db.Collection("blocksProcessed").Document(blockProcessedStatus.height.ToString()).SetAsync(blockProcessedStatus).Wait();
+        }
+
+        public static BlockProcessedStatus GetBlockProcessed(long height)
+        {
+            Console.WriteLine($"[FB] Getting block status data for {height}");
+            var documentSnapshot = db.Collection("blocksProcessed").Document(height.ToString()).GetSnapshotAsync().Result;
+            if (documentSnapshot.Exists)
+            {
+                BlockProcessedStatus blockStatus = documentSnapshot.ConvertTo<BlockProcessedStatus>();
+                return blockStatus;
+            }
+            return null;
+        }
+
+        public static IEnumerable<BlockProcessedStatus> GetAllIncompleteBlocks()
+        {
+            Console.WriteLine($"[FB] Getting all incomplete blocks");
+            Query allCitiesQuery = db.Collection("blocksProcessed").WhereEqualTo("complete", false);
+            QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                BlockProcessedStatus block = documentSnapshot.ConvertTo<BlockProcessedStatus>();
+                if (block != null)
+                    yield return block;
+            }
+
         }
     }
 }

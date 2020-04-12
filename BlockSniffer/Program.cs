@@ -6,19 +6,23 @@ using MetrICXCore.Gateways;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
+//using System.Threading;
+using System.Threading.Tasks;
 using System.Timers;
 
 namespace BlockSniffer
 {
     public class Program
     {
-        static int timerInterval = 1500;
+        static int timerInterval = 1000;
         static Timer timer = new Timer();
         static int timerWLInterval = 60000;
         static Timer timerWL = new Timer();
         static int eventCounter = 0;
         static long lastProcessedHeight = 0;
         static AmazonSimpleNotificationServiceClient _snsClient;
+        static decimal oldRewards = -1;
         //static List<string> watchList = new List<string>();
 
         static Config config;
@@ -62,19 +66,6 @@ namespace BlockSniffer
             }
         }
 
-        private static void UpdateWatchList()
-        {
-            //lock (watchList)
-            //{
-            //    watchList.Clear();
-            //    var allDevices = FirebaseGateway.AllDevices();
-            //    foreach (var device in allDevices)
-            //        foreach (var address in device.addresses_v2.AsEnumerator())
-            //            if (address.address != null && address.address.StartsWith("hx"))
-            //                watchList.Add(address.address);
-            //}
-        }
-
         private static void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             timer.Stop();
@@ -85,7 +76,7 @@ namespace BlockSniffer
                 if (lastProcessedHeight == 0)
                 {
                     //We dont have a previous block for some reason, do not catch up, start from here
-                    ProcessBlock(lastBlock);
+                    Task.Run(() => ProcessBlock(lastBlock));
                 }
                 else if (lastProcessedHeight == lastBlock.Height)
                 {
@@ -94,18 +85,22 @@ namespace BlockSniffer
                 else if (lastProcessedHeight == lastBlock.Height - 1)
                 {
                     //As expected, got the next block
-                    ProcessBlock(lastBlock);
+                    Task.Run(() => ProcessBlock(lastBlock));
                 }
                 else
                 {
                     //We have missed some blocks, need to catch up
                     for (long indexHeight = lastProcessedHeight + 1; indexHeight < lastBlock.Height; indexHeight++)
                     {
-                        var oldBlock = IconGateway.GetBlockByHeight(indexHeight);
-                        ProcessBlock(oldBlock);
+                        Task.Run(() => { 
+                            var oldBlock = IconGateway.GetBlockByHeight(indexHeight);
+                            ProcessBlock(oldBlock);
+                        });
+                        System.Threading.Thread.Sleep(100);
                     }
-                    ProcessBlock(lastBlock);
+                    Task.Run(() => ProcessBlock(lastBlock));
                 }
+                lastProcessedHeight = lastBlock.Height;
             }
             finally
             {
@@ -114,48 +109,83 @@ namespace BlockSniffer
             }
         }
 
-        private static void ProcessBlock(ICXBlock icxBlock)
+        private static Task ProcessBlock(ICXBlock icxBlock)
         {
+            var blockStatus = FirebaseGateway.GetBlockProcessed(icxBlock.Height);
+            if (blockStatus == null)
+            {
+                blockStatus = new BlockProcessedStatus()
+                {
+                    height = icxBlock.Height,
+                    blockTimestamp = Google.Cloud.Firestore.Timestamp.FromDateTimeOffset(icxBlock.GetTimeStamp().AddHours(-8)),
+                    eventsPublished = 0,
+                    retryAttempts = 0
+                };
+            }
+            else
+            {
+                blockStatus.retryAttempts++;
+            }
+
             try
             {
-                long blockoftheday = (icxBlock.Height - 13283) % 43120;
-
-                var rewards1 = 1; //IconGateway.GetAvailableRewards("hx1141b769011ee8399ef70f393b568ca15a6e22d7");
-
-                var rewards2 = 2; //IconGateway.GetAvailableRewards("hxc147caa988765c13eaa6ca43400c27a0372b9436");
-
-                //TimeSpan t = DateTime.UtcNow - new DateTime(1970, 1, 1);
-                //int secondsSinceEpoch = t.Ticks / DateTime. ;
-                //Console.WriteLine(secondsSinceEpoch);
-                //DateTimeOffset.Now.ToUnixTimeSeconds();
-//Incoming block received : 16700584, block of the day 42981, transactions 1, rewards 1 0, rewards 2 126.136519267542804784, block timestamp 3 / 27 / 2020 9:14:43 AM
-//Incoming block received : 16700585, block of the day 42982, transactions 1, rewards 1 26.207820362406018518, rewards 2 140.021515648686631944, block timestamp 3 / 27 / 2020 9:14:45 AM
-
+                // Check ISCORE
+                var rewards = IconGateway.GetAvailableRewards("hxc147caa988765c13eaa6ca43400c27a0372b9436");
+                if (oldRewards == -1)
+                {
+                    oldRewards = rewards;
+                }
+                else if (rewards > oldRewards)
+                {
+                    blockStatus.eventsPublished++;
+                    Console.WriteLine($"ISCORE CHANGED, Pushing event update");
+                    publishIScoreChange();
+                    oldRewards = rewards;
+                }
+ 
                 var blockTimeStamp = DateTimeOffset.FromUnixTimeMilliseconds(icxBlock.TimeStamp / 1000).AddHours(8);
                 var oldNess = Convert.ToInt32((DateTime.Now - icxBlock.GetTimeStamp()).TotalSeconds);
 
                 //What do we do
-                Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, block of the day {blockoftheday}, transactions {icxBlock.ConfirmedTransactionList.Count}, eventCount {eventCounter}");
+                Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, transactions {icxBlock.ConfirmedTransactionList.Count}, eventCount {eventCounter}");
 
                 foreach (var tx in icxBlock.ConfirmedTransactionList)
                 {
                     var txStr = JsonConvert.SerializeObject(tx);
 
                     if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("hx"))
+                    {
+                        blockStatus.eventsPublished++;
                         publishTransferMessage(tx);
-
+                    }
+                        
                     if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("cx"))
+                    {
+                        blockStatus.eventsPublished++;
+                        var txResult = IconGateway.GetTransactionResult(tx.TxHash);
+                        tx.TxResultDetails = txResult;
+
                         publishContractMethodMessage(tx);
 
+                    }
                 }
 
-                lastProcessedHeight = icxBlock.Height;
+                //lastProcessedHeight = icxBlock.Height;
+                //System.Threading.Thread.Sleep(4000);
+                blockStatus.completed = true;
+                UpdateBlockStatus(blockStatus, icxBlock);
+                Console.WriteLine($"COMPLETED {icxBlock.Height}");
             }
             catch (Exception ex)
             {
+                blockStatus.completed = false;
+                blockStatus.lastErrorMessage = ex.Message;
+                UpdateBlockStatus(blockStatus, icxBlock);
                 Console.WriteLine($"EXCEPTION : Error on block {icxBlock.Height} :  {ex.Message}");
                 throw;
             }
+
+            return Task.CompletedTask;
         }
 
         static public void publishTransferMessage(ConfirmedTransactionList trx)
@@ -189,7 +219,45 @@ namespace BlockSniffer
         {
             eventCounter++;
             var msgStr = JsonConvert.SerializeObject(trx);
-            GetSNS().PublishAsync(new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_Contract_Method", msgStr, "contract method"));
+            Dictionary<String, MessageAttributeValue> messageAttributes = new Dictionary<string, MessageAttributeValue>();
+            messageAttributes["from"] = new MessageAttributeValue
+            {
+                DataType = "String",
+                StringValue = trx.From
+            };
+            messageAttributes["contract"] = new MessageAttributeValue
+            {
+                DataType = "String",
+                StringValue = trx.To
+            };
+            messageAttributes["method"] = new MessageAttributeValue
+            {
+                DataType = "String",
+                StringValue = trx.Data.Method
+            };
+
+            List<string> eventList = new List<string>();
+            foreach (var eventitem in trx.TxResultDetails.EventLogs)
+            {
+                eventList.Add(eventitem.Indexed[0].Substring(0, eventitem.Indexed[0].IndexOf("(")));
+            }
+
+            messageAttributes["events"] = new MessageAttributeValue
+            {
+                DataType = "String.Array",
+                StringValue = "[\"" + string.Join("\",\"", eventList) + "\"]"
+            };
+
+            var request = new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_Contract_Method", msgStr, "score method");
+            request.MessageAttributes = messageAttributes;
+
+            GetSNS().PublishAsync(request);
+        }
+
+        static public void publishIScoreChange()
+        {
+            eventCounter++;
+            GetSNS().PublishAsync(new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_IScore_Change", "", "iscore changed"));
         }
 
         static public AmazonSimpleNotificationServiceClient GetSNS()
@@ -199,5 +267,13 @@ namespace BlockSniffer
             return _snsClient;
         }
 
+
+        static public void UpdateBlockStatus(BlockProcessedStatus blockStatus, ICXBlock block)
+        {
+            blockStatus.processingDelaySeconds = Convert.ToInt32((DateTime.Now - block.GetTimeStamp()).TotalSeconds);
+            blockStatus.processedTimestamp = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
+
+            FirebaseGateway.SetBlockProcessed(blockStatus);
+        }
     }
 }
