@@ -38,6 +38,8 @@ Simply input your public wallet address into MetrICX, and you'll be able to view
 
 **Push Notifications** - 
   * MetrICX provides users with the option of receiving push notifications when their I_Score has been made available for a given day,     and the amount of I_Score they are receiving in the form of ICX.
+  * MetrICX provides users with the option of recieved push notifications when an ICX or IRC-2 token deposit has been recieved
+  * MetrICX provides uers with the option to recieve push notificatins when an elected main prep has dropped node productivity.
 
 <h1><strong>Additional Features</strong></h1>
 
