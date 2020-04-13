@@ -38,13 +38,13 @@ namespace ICXIScoreChangedFunction
         {
             foreach (var record in evnt.Records)
             {
-                await ProcessRecordAsync(context, record.Sns.Message);
+                await ProcessRecordAsync(context);
             }
         }
 
-        public async Task ProcessRecordAsync(ILambdaContext context, string message)
+        public async Task ProcessRecordAsync(ILambdaContext context)
         {
-            context.Logger.LogLine($"[{DateTime.Now.ToString()}] Processed record {message}");
+            context.Logger.LogLine($"[{DateTime.Now.ToString()}] Processed record");
 
             var addressToggles = FirebaseGateway.GetToggleAddresses("awsdeposits");
 
@@ -63,9 +63,9 @@ namespace ICXIScoreChangedFunction
                             {
                                 decimal awardedICX = totalRewards - address.availableRewardsAsDecimal;
                                 if (string.IsNullOrEmpty(address.Name))
-                                    FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
+                                    FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available NEW", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
                                 else
-                                    FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed from {address.Name.ToUpper()}");
+                                    FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available NEW", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed from {address.Name.ToUpper()}");
 
                                 //Now update firestore so we dont send the user duplicate messages
                                 address.availableRewards = totalRewards.ToString();

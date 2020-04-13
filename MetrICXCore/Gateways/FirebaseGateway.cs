@@ -289,13 +289,13 @@ namespace MetrICXCore.Gateways
 
         public static void SetBlockProcessed(BlockProcessedStatus blockProcessedStatus)
         {
-            Console.WriteLine($"[FB] Updating block status data for {blockProcessedStatus.height}");
+            Console.WriteLine($"[FB] Updating block status data for {blockProcessedStatus.height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             db.Collection("blocksProcessed").Document(blockProcessedStatus.height.ToString()).SetAsync(blockProcessedStatus).Wait();
         }
 
         public static BlockProcessedStatus GetBlockProcessed(long height)
         {
-            Console.WriteLine($"[FB] Getting block status data for {height}");
+            Console.WriteLine($"[FB] Getting block status data for {height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             var documentSnapshot = db.Collection("blocksProcessed").Document(height.ToString()).GetSnapshotAsync().Result;
             if (documentSnapshot.Exists)
             {
@@ -308,7 +308,7 @@ namespace MetrICXCore.Gateways
         public static IEnumerable<BlockProcessedStatus> GetAllIncompleteBlocks()
         {
             Console.WriteLine($"[FB] Getting all incomplete blocks");
-            Query allCitiesQuery = db.Collection("blocksProcessed").WhereEqualTo("complete", false);
+            Query allCitiesQuery = db.Collection("blocksProcessed").WhereEqualTo("completed", false);
             QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
             foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
             {
@@ -317,6 +317,16 @@ namespace MetrICXCore.Gateways
                     yield return block;
             }
 
+        }
+
+        public static BlockProcessedStatus GetLastBlockProcessed()
+        {
+            Console.WriteLine($"[FB] Getting last block");
+            CollectionReference collectionRef = db.Collection("blocksProcessed");
+            Query query = collectionRef.OrderByDescending("height").Limit(1);
+            QuerySnapshot allCitiesQuerySnapshot = query.GetSnapshotAsync().Result;
+            BlockProcessedStatus block = allCitiesQuerySnapshot.Documents[0].ConvertTo<BlockProcessedStatus>();
+            return block;
         }
     }
 }

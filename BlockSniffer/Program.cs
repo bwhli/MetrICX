@@ -6,6 +6,7 @@ using MetrICXCore.Gateways;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 //using System.Threading;
 using System.Threading.Tasks;
@@ -23,20 +24,20 @@ namespace BlockSniffer
         static long lastProcessedHeight = 0;
         static AmazonSimpleNotificationServiceClient _snsClient;
         static decimal oldRewards = -1;
-        //static List<string> watchList = new List<string>();
+        static int MAX_THREADS = 150;
 
         static Config config;
 
         static void Main(string[] args)
         {
             config = Config.LoadConfig();
-            
+
             //publishMessage();15,564,833
             //var lastBlock = IconGateway.GetBlockByHeight(17312037);
             //ProcessBlock(lastBlock);
 
-
-            //UpdateWatchList();
+            var lastBlockProcessed = FirebaseGateway.GetLastBlockProcessed();
+            lastProcessedHeight = lastBlockProcessed.height;
 
             Console.WriteLine("[MAIN] STARTING APPLICATION");
             timer.Elapsed += Timer_Elapsed;
@@ -71,12 +72,21 @@ namespace BlockSniffer
             timer.Stop();
             try
             {
+                Console.WriteLine($"TIMER BLOCK START (Threads {Process.GetCurrentProcess().Threads.Count})");
                 var lastBlock = IconGateway.GetLastBlock();
+
+                if (lastBlock.Height % 10 == 0)
+                {
+                    var incompleteBlocks = FirebaseGateway.GetAllIncompleteBlocks();
+                    foreach (var block in incompleteBlocks)
+                    {
+                        ProcessBlockInThread(block.height);
+                    }
+                }
 
                 if (lastProcessedHeight == 0)
                 {
-                    //We dont have a previous block for some reason, do not catch up, start from here
-                    Task.Run(() => ProcessBlock(lastBlock));
+                    ProcessBlockInThread(lastBlock);
                 }
                 else if (lastProcessedHeight == lastBlock.Height)
                 {
@@ -84,33 +94,71 @@ namespace BlockSniffer
                 }
                 else if (lastProcessedHeight == lastBlock.Height - 1)
                 {
-                    //As expected, got the next block
-                    Task.Run(() => ProcessBlock(lastBlock));
+                    ProcessBlockInThread(lastBlock);
                 }
                 else
                 {
                     //We have missed some blocks, need to catch up
                     for (long indexHeight = lastProcessedHeight + 1; indexHeight < lastBlock.Height; indexHeight++)
-                    {
-                        Task.Run(() => { 
-                            var oldBlock = IconGateway.GetBlockByHeight(indexHeight);
-                            ProcessBlock(oldBlock);
-                        });
-                        System.Threading.Thread.Sleep(100);
-                    }
-                    Task.Run(() => ProcessBlock(lastBlock));
+                        ProcessBlockInThread(indexHeight);
+
+                    ProcessBlockInThread(lastBlock);
                 }
                 lastProcessedHeight = lastBlock.Height;
             }
             finally
             {
-
                 timer.Start();
             }
         }
 
-        private static Task ProcessBlock(ICXBlock icxBlock)
+        private static void ProcessBlockInThread(long height)
         {
+
+            //If there are too many thread, wait here for a bit
+            while (Process.GetCurrentProcess().Threads.Count > MAX_THREADS)
+            {
+                Console.Write(".");
+                System.Threading.Thread.Sleep(100);
+            }
+
+            var newThread = (new System.Threading.Thread((idxHeight) =>
+            {
+                //System.Threading.Thread.Sleep(waitTime);
+                var oldBlock = IconGateway.GetBlockByHeight((long)idxHeight);
+                ProcessBlock(oldBlock);
+            })
+            {
+                Name = $"processing height {height}"
+            });
+
+            newThread.Start(height);
+        }
+
+        private static void ProcessBlockInThread(ICXBlock icxBlock)
+        {
+
+            //If there are too many thread, wait here for a bit
+            while (Process.GetCurrentProcess().Threads.Count > MAX_THREADS)
+            {
+                Console.Write(".");
+                System.Threading.Thread.Sleep(100);
+            }
+
+            var newThread = (new System.Threading.Thread((block) =>
+            {
+                ProcessBlock((ICXBlock)block);
+            })
+            {
+                Name = $"processing height {icxBlock.Height}"
+            });
+
+            newThread.Start(icxBlock);
+        }
+
+        private static void ProcessBlock(ICXBlock icxBlock)
+        {
+            Console.WriteLine($"Starting to Process Block {icxBlock.Height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             var blockStatus = FirebaseGateway.GetBlockProcessed(icxBlock.Height);
             if (blockStatus == null)
             {
@@ -124,6 +172,11 @@ namespace BlockSniffer
             }
             else
             {
+                if (blockStatus.completed == true)
+                {
+                    Console.WriteLine($"Block {icxBlock.Height} is already completed, exiting");
+                }
+
                 blockStatus.retryAttempts++;
             }
 
@@ -147,7 +200,7 @@ namespace BlockSniffer
                 var oldNess = Convert.ToInt32((DateTime.Now - icxBlock.GetTimeStamp()).TotalSeconds);
 
                 //What do we do
-                Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, transactions {icxBlock.ConfirmedTransactionList.Count}, eventCount {eventCounter}");
+                Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, transactions {icxBlock.ConfirmedTransactionList.Count}, eventCount {eventCounter}, retries {blockStatus.retryAttempts} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
 
                 foreach (var tx in icxBlock.ConfirmedTransactionList)
                 {
@@ -170,11 +223,9 @@ namespace BlockSniffer
                     }
                 }
 
-                //lastProcessedHeight = icxBlock.Height;
-                //System.Threading.Thread.Sleep(4000);
                 blockStatus.completed = true;
                 UpdateBlockStatus(blockStatus, icxBlock);
-                Console.WriteLine($"COMPLETED {icxBlock.Height}");
+                Console.WriteLine($"COMPLETED {icxBlock.Height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             }
             catch (Exception ex)
             {
@@ -182,10 +233,7 @@ namespace BlockSniffer
                 blockStatus.lastErrorMessage = ex.Message;
                 UpdateBlockStatus(blockStatus, icxBlock);
                 Console.WriteLine($"EXCEPTION : Error on block {icxBlock.Height} :  {ex.Message}");
-                throw;
             }
-
-            return Task.CompletedTask;
         }
 
         static public void publishTransferMessage(ConfirmedTransactionList trx)
@@ -257,7 +305,7 @@ namespace BlockSniffer
         static public void publishIScoreChange()
         {
             eventCounter++;
-            GetSNS().PublishAsync(new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_IScore_Change", "", "iscore changed"));
+            GetSNS().PublishAsync(new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_IScore_Change", "{}", "iscore changed"));
         }
 
         static public AmazonSimpleNotificationServiceClient GetSNS()

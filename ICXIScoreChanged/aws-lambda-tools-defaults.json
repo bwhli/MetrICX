@@ -13,7 +13,7 @@
     "function-runtime" : "dotnetcore2.1",
     "function-memory-size" : 256,
     "function-timeout"     : 30,
-    "function-handler"     : "ICXIScoreChanged::ICXIScoreChanged.Function::FunctionHandler",
+    "function-handler"     : "ICXIScoreChangedFunction::ICXIScoreChangedFunction.Function::FunctionHandler",
     "function-name"        : "ICXIScoreChangedFunction",
     "function-role"        : "arn:aws:iam::850900483067:role/lambda_exec_ICXIScoreChangedFunction",
     "tracing-mode"         : "PassThrough",

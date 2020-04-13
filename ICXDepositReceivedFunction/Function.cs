@@ -84,9 +84,9 @@ namespace ICXDepositReceivedFunction
 
                                 decimal depositReceived = balance - addressObj.balanceAsDecimal;
                                 if (string.IsNullOrEmpty(addressObj.Name))
-                                    FirebaseGateway.SendPush(device.token, addressObj.address, $"{addressObj.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {addressObj.Symbol}");
+                                    FirebaseGateway.SendPush(device.token, addressObj.address, $"{addressObj.Symbol} Deposit Received NEW", $"You have received a deposit of {depositReceived.ToString("0.##")} {addressObj.Symbol}");
                                 else
-                                    FirebaseGateway.SendPush(device.token, addressObj.address, $"{addressObj.Symbol} Deposit Received", $"{addressObj.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {addressObj.Symbol}");
+                                    FirebaseGateway.SendPush(device.token, addressObj.address, $"{addressObj.Symbol} Deposit Received NEW", $"{addressObj.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {addressObj.Symbol}");
 
                                 //Now update firestore so we dont send the user duplicate messages
                                 addressObj.balance = balance.ToString();
