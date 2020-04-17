@@ -33,6 +33,13 @@ namespace MetrICXCore.Gateways
             return response;
         }
 
+        public static decimal GetIcxValueFromHex(string hexValue)
+        {
+            BigInteger value = BigInteger.Parse(hexValue.Substring(2), System.Globalization.NumberStyles.HexNumber);
+            var icxValue = IconGateway.IntToDecimal(value);
+            return icxValue;
+        }
+
         public static ICXBlock GetBlockByHeight(long height)
         {
             string hexValue = height.ToString("X");

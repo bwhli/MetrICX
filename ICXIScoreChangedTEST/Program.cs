@@ -8,7 +8,7 @@ namespace ICXIScoreChangedTEST
         {
             Console.WriteLine("Hello World!");
             var func = new ICXIScoreChangedFunction.Function();
-            func.ProcessRecordAsync(null, "").Wait();
+            func.ProcessRecordAsync(null).Wait();
         }
     }
 }

@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using MetrICXCore.Gateways;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Numerics;
 using System.Text;
 
 namespace MetrICXCore.Entities
@@ -58,7 +60,7 @@ namespace MetrICXCore.Entities
         public object Params { get; set; }
     }
 
-    public class ConfirmedTransactionList
+    public class ConfirmedTransaction
     {
 
         [JsonProperty("version")]
@@ -78,7 +80,7 @@ namespace MetrICXCore.Entities
         public string DataType { get; set; }
 
         [JsonProperty("data")]
-        public Data Data { get; set; }
+        public dynamic Data { get; set; }
 
         [JsonProperty("txHash")]
         public string TxHash { get; set; }
@@ -106,6 +108,11 @@ namespace MetrICXCore.Entities
 
         [JsonProperty("txResultDetails")]
         public TransactionResult TxResultDetails { get; set; }
+
+        public decimal GetIcxValue()
+        {
+            return IconGateway.GetIcxValueFromHex(Value);
+        }
     }
 
     public class ICXBlock
@@ -135,7 +142,7 @@ namespace MetrICXCore.Entities
         }
 
         [JsonProperty("confirmed_transaction_list")]
-        public IList<ConfirmedTransactionList> ConfirmedTransactionList { get; set; }
+        public IList<ConfirmedTransaction> ConfirmedTransactionList { get; set; }
 
         [JsonProperty("block_hash")]
         public string BlockHash { get; set; }
@@ -146,19 +153,5 @@ namespace MetrICXCore.Entities
         [JsonProperty("next_leader")]
         public string NextLeader { get; set; }
     }
-
-    //public class ICXBlock
-    //{
-
-    //    [JsonProperty("jsonrpc")]
-    //    public string Jsonrpc { get; set; }
-
-    //    [JsonProperty("result")]
-    //    public ICXBlock Result { get; set; }
-
-    //    [JsonProperty("id")]
-    //    public int Id { get; set; }
-    //}
-
 
 }

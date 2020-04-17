@@ -7,6 +7,7 @@ using Amazon.Lambda.Core;
 using Amazon.Lambda.SNSEvents;
 using MetrICXCore.Entities;
 using MetrICXCore.Gateways;
+using MetrICXCore.Models;
 using Newtonsoft.Json;
 
 
@@ -17,6 +18,8 @@ namespace ICXDepositReceivedFunction
 {
     public class Function
     {
+        private string[] addressToggles;
+
         /// <summary>
         /// Default constructor. This constructor is used by Lambda to construct the instance. When invoked in a Lambda environment
         /// the AWS credentials will come from the IAM role associated with the function and the AWS region will be set to the
@@ -48,19 +51,46 @@ namespace ICXDepositReceivedFunction
         {
             context.Logger.LogLine($"[{DateTime.Now.ToString()}] Processed record {message}");
 
-            var addressToggles = FirebaseGateway.GetToggleAddresses("awsdeposits");
+            ConfirmedTransaction tx = JsonConvert.DeserializeObject<ConfirmedTransaction>(message);
 
-            ConfirmedTransactionList tx = JsonConvert.DeserializeObject<ConfirmedTransactionList>(message);
-            string address = "";
+            string address;
+            decimal amount;
+
+            //Subscription to AWS Topic ICX_Transfer
             if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("hx"))
+            {
                 address = tx.To;
+                amount = tx.GetIcxValue();
+                ProcessAddress(context, address, amount);
+            }
 
-            if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("cx"))
-                address = tx.From;
+            //Subscription to AWS Topic ICX_Contract_Method
+            if (tx.TxResultDetails != null)
+            {
+                foreach (var eventItem in tx.TxResultDetails.EventLogs)
+                {
+                    if (eventItem.Indexed[0].Contains("ICXTransfer"))
+                    {
+                        address = eventItem.Indexed[2];
+                        amount = IconGateway.GetIcxValueFromHex(eventItem.Indexed[3]);
+                        ProcessAddress(context, address, amount);
+                    }
+                    if (eventItem.Indexed[0].Contains("IScoreClaimed"))
+                    {
+                        address = tx.From;
+                        amount = IconGateway.GetIcxValueFromHex(eventItem.Data[0]);
+                        amount = amount / 1000M;
+                        ProcessAddress(context, address, amount);
+                    }
+                }
+            }
 
-            context.Logger.LogLine($"{address}, block timeStamp {tx.GetTimeStamp().ToString()}");
+            await Task.CompletedTask;
+        }
 
-            if (addressToggles.Any(a => a == address)) //Check if address is in the toggles list
+        public void ProcessAddress(ILambdaContext context, string address, decimal amount)
+        {
+            if (IsAddressInToggleList(address)) //Check if address is in the toggles list
             {
                 context.Logger.LogLine($"Address is in toggle list {address}");
 
@@ -69,41 +99,59 @@ namespace ICXDepositReceivedFunction
                 {
                     foreach (var addressObj in device.addresses_v2.AsEnumerator())
                     {
-                        if (address == addressObj.address && addressObj.enablePushDeposits == true)
+                        if (address == addressObj.address)
                         {
-
-                            var balance = IconGateway.GetBalance(addressObj);
-                            if (string.IsNullOrEmpty(addressObj.balance))
-                            {
-                                //Store current balance without sending a notification
-                                addressObj.balance = balance.ToString();
-                            }
-                            else if (addressObj.balanceAsDecimal < balance && balance - addressObj.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
-                            {
-                                context.Logger.LogLine($"Sending Push notification to {address}");
-
-                                decimal depositReceived = balance - addressObj.balanceAsDecimal;
-                                if (string.IsNullOrEmpty(addressObj.Name))
-                                    FirebaseGateway.SendPush(device.token, addressObj.address, $"{addressObj.Symbol} Deposit Received NEW", $"You have received a deposit of {depositReceived.ToString("0.##")} {addressObj.Symbol}");
-                                else
-                                    FirebaseGateway.SendPush(device.token, addressObj.address, $"{addressObj.Symbol} Deposit Received NEW", $"{addressObj.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {addressObj.Symbol}");
-
-                                //Now update firestore so we dont send the user duplicate messages
-                                addressObj.balance = balance.ToString();
-                                addressObj.lastDepositPushSentDate = DateTime.UtcNow;
-                                //pushNotificationCount++;
-                            }
-                            else if (addressObj.balanceAsDecimal > balance)
-                            {
-                                addressObj.balance = balance.ToString();
-                            }
+                            ProcessDeviceAddress(device, addressObj, amount);
                         }
                     }
                 }
             }
-
-            await Task.CompletedTask;
         }
 
+        public bool IsAddressInToggleList(string address)
+        {
+            if (addressToggles == null)
+                addressToggles = FirebaseGateway.GetToggleAddresses("awsdeposits");
+
+            return addressToggles.Any(a => a == address);
+        }
+
+        public void ProcessDeviceAddress(DeviceRegistration device, Address address, decimal amount)
+        {
+            SendResponse sendResponse = null;
+
+            if (!device.registrationDate.HasValue)
+            {
+                device.registrationDate = DateTime.UtcNow;
+            }
+
+            if (address.enablePushDeposits == true)
+            {
+                try
+                {
+                    if (string.IsNullOrEmpty(address.Name))
+                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received AWS", $"You have received a deposit of {amount.ToString("0.##")} {address.Symbol}");
+                    else
+                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received AWS", $"{address.Name.ToUpper()} has received a deposit of {amount.ToString("0.##")} {address.Symbol}");
+                    address.lastDepositPushSentDate = DateTime.UtcNow;
+
+                    //This will not always be required
+                    address.balance = IconGateway.GetBalance(address).ToString();
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
+                }
+            }
+
+            if (sendResponse != null && sendResponse.failure > 0)
+            {
+                if (sendResponse.results.Any(a => a.error == "NotRegistered"))
+                {
+                    //This token has become stale, need to remove it from firestore
+                    FirebaseGateway.DeleteDevice(device);
+                }
+            }
+        }
     }
 }

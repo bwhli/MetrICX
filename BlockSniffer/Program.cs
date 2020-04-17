@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 //using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -24,7 +25,7 @@ namespace BlockSniffer
         static long lastProcessedHeight = 0;
         static AmazonSimpleNotificationServiceClient _snsClient;
         static decimal oldRewards = -1;
-        static int MAX_THREADS = 150;
+        static int MAX_THREADS = 120;
 
         static Config config;
 
@@ -33,8 +34,10 @@ namespace BlockSniffer
             config = Config.LoadConfig();
 
             //publishMessage();15,564,833
-            //var lastBlock = IconGateway.GetBlockByHeight(17312037);
+            //var lastBlock = IconGateway.GetBlockByHeight(17564306);
             //ProcessBlock(lastBlock);
+
+            //var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
 
             var lastBlockProcessed = FirebaseGateway.GetLastBlockProcessed();
             lastProcessedHeight = lastBlockProcessed.height;
@@ -100,11 +103,19 @@ namespace BlockSniffer
                 {
                     //We have missed some blocks, need to catch up
                     for (long indexHeight = lastProcessedHeight + 1; indexHeight < lastBlock.Height; indexHeight++)
+                    {
+                        FirebaseGateway.SetBlockProcessed(new BlockProcessedStatus() {completed = false, height = indexHeight, retryAttempts = -1});
                         ProcessBlockInThread(indexHeight);
+                        lastProcessedHeight = indexHeight;
+                    }
 
                     ProcessBlockInThread(lastBlock);
                 }
                 lastProcessedHeight = lastBlock.Height;
+            }
+            catch (Exception ex)
+            {
+                //Do nothing for now, next timer hit will retry
             }
             finally
             {
@@ -124,9 +135,7 @@ namespace BlockSniffer
 
             var newThread = (new System.Threading.Thread((idxHeight) =>
             {
-                //System.Threading.Thread.Sleep(waitTime);
-                var oldBlock = IconGateway.GetBlockByHeight((long)idxHeight);
-                ProcessBlock(oldBlock);
+                ProcessBlock(null, (long)idxHeight);
             })
             {
                 Name = $"processing height {height}"
@@ -156,35 +165,53 @@ namespace BlockSniffer
             newThread.Start(icxBlock);
         }
 
-        private static void ProcessBlock(ICXBlock icxBlock)
+        private static void ProcessBlock(ICXBlock block, long icxBlockHeight = -1)
         {
-            Console.WriteLine($"Starting to Process Block {icxBlock.Height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
-            var blockStatus = FirebaseGateway.GetBlockProcessed(icxBlock.Height);
-            if (blockStatus == null)
-            {
-                blockStatus = new BlockProcessedStatus()
-                {
-                    height = icxBlock.Height,
-                    blockTimestamp = Google.Cloud.Firestore.Timestamp.FromDateTimeOffset(icxBlock.GetTimeStamp().AddHours(-8)),
-                    eventsPublished = 0,
-                    retryAttempts = 0
-                };
-            }
-            else
-            {
-                if (blockStatus.completed == true)
-                {
-                    Console.WriteLine($"Block {icxBlock.Height} is already completed, exiting");
-                }
-
-                blockStatus.retryAttempts++;
-            }
+            BlockProcessedStatus blockStatus = null;
+            ICXBlock icxBlock = block;
+            long blockHeight = 0;
 
             try
             {
+                //Get block height to process
+                
+                if (icxBlockHeight > 0)
+                    blockHeight = icxBlockHeight;
+                else
+                    blockHeight = block.Height;
+
+                //Get block info from Firebase
+                Console.WriteLine($"Starting to Process Block {blockHeight} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+                blockStatus = FirebaseGateway.GetBlockProcessed(blockHeight);
+                if (blockStatus == null)
+                {
+                    blockStatus = new BlockProcessedStatus()
+                    {
+                        height = blockHeight,
+                        eventsPublished = 0,
+                        retryAttempts = 0
+                    };
+                }
+                else
+                {
+                    if (blockStatus.completed == true)
+                    {
+                        Console.WriteLine($"Block {blockHeight} is already completed, exiting");
+                        return;
+                    }
+
+                    blockStatus.retryAttempts++;
+                }
+
+                //Get the ICX Block if it not provided
+                if (icxBlockHeight > 0)
+                    icxBlock = IconGateway.GetBlockByHeight(icxBlockHeight);
+
+                blockStatus.blockTimestamp = Google.Cloud.Firestore.Timestamp.FromDateTimeOffset(icxBlock.GetTimeStamp().AddHours(-8));
+
                 // Check ISCORE
                 var rewards = IconGateway.GetAvailableRewards("hxc147caa988765c13eaa6ca43400c27a0372b9436");
-                if (oldRewards == -1)
+                if (rewards < oldRewards || oldRewards == -1)
                 {
                     oldRewards = rewards;
                 }
@@ -229,14 +256,15 @@ namespace BlockSniffer
             }
             catch (Exception ex)
             {
+                Console.WriteLine($"EXCEPTION : Error on block {blockHeight} :  {ex.Message} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+
                 blockStatus.completed = false;
                 blockStatus.lastErrorMessage = ex.Message;
                 UpdateBlockStatus(blockStatus, icxBlock);
-                Console.WriteLine($"EXCEPTION : Error on block {icxBlock.Height} :  {ex.Message}");
             }
         }
 
-        static public void publishTransferMessage(ConfirmedTransactionList trx)
+        static public void publishTransferMessage(ConfirmedTransaction trx)
         {
             eventCounter++;
             var msgStr = JsonConvert.SerializeObject(trx);
@@ -250,11 +278,11 @@ namespace BlockSniffer
             {
                 DataType = "String",
                 StringValue = trx.To
-            }; 
+            };
             messageAttributes["value"] = new MessageAttributeValue
             {
-                DataType = "String",
-                StringValue = trx.Value
+                DataType = "Number",
+                StringValue = trx.GetIcxValue().ToString()
             };
 
             var request = new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_Transfer", msgStr, "transfer");
@@ -263,7 +291,7 @@ namespace BlockSniffer
             GetSNS().PublishAsync(request);
         }
 
-        static public void publishContractMethodMessage(ConfirmedTransactionList trx)
+        static public void publishContractMethodMessage(ConfirmedTransaction trx)
         {
             eventCounter++;
             var msgStr = JsonConvert.SerializeObject(trx);
@@ -281,13 +309,16 @@ namespace BlockSniffer
             messageAttributes["method"] = new MessageAttributeValue
             {
                 DataType = "String",
-                StringValue = trx.Data.Method
+                StringValue = trx.Data.method.Value
             };
 
             List<string> eventList = new List<string>();
             foreach (var eventitem in trx.TxResultDetails.EventLogs)
             {
-                eventList.Add(eventitem.Indexed[0].Substring(0, eventitem.Indexed[0].IndexOf("(")));
+                string eventName = eventitem.Indexed[0];
+                if (eventName.IndexOf("(") > 0)
+                    eventName = eventName.Substring(0, eventName.IndexOf("("));
+                eventList.Add(eventName);
             }
 
             messageAttributes["events"] = new MessageAttributeValue
@@ -315,10 +346,10 @@ namespace BlockSniffer
             return _snsClient;
         }
 
-
         static public void UpdateBlockStatus(BlockProcessedStatus blockStatus, ICXBlock block)
         {
-            blockStatus.processingDelaySeconds = Convert.ToInt32((DateTime.Now - block.GetTimeStamp()).TotalSeconds);
+            if (block != null)
+                blockStatus.processingDelaySeconds = Convert.ToInt32((DateTime.Now - block.GetTimeStamp()).TotalSeconds);
             blockStatus.processedTimestamp = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
 
             FirebaseGateway.SetBlockProcessed(blockStatus);

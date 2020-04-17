@@ -17,6 +17,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ICXIScoreChangedFunction", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ICXIScoreChangedTEST", "..\ICXIScoreChangedTEST\ICXIScoreChangedTEST.csproj", "{81CA4AE9-35A8-4AC6-8535-6345A85E2DBE}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TokenDepositReceivedFunction", "..\TokenDepositReceivedFunction\TokenDepositReceivedFunction.csproj", "{29D30C9C-F62B-4CD0-8947-BFBB7B2B5FC1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{81CA4AE9-35A8-4AC6-8535-6345A85E2DBE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{81CA4AE9-35A8-4AC6-8535-6345A85E2DBE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{81CA4AE9-35A8-4AC6-8535-6345A85E2DBE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{29D30C9C-F62B-4CD0-8947-BFBB7B2B5FC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29D30C9C-F62B-4CD0-8947-BFBB7B2B5FC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29D30C9C-F62B-4CD0-8947-BFBB7B2B5FC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29D30C9C-F62B-4CD0-8947-BFBB7B2B5FC1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

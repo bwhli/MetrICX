@@ -289,13 +289,13 @@ namespace MetrICXCore.Gateways
 
         public static void SetBlockProcessed(BlockProcessedStatus blockProcessedStatus)
         {
-            Console.WriteLine($"[FB] Updating block status data for {blockProcessedStatus.height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Console.WriteLine($"[FB] Updating block status data for {blockProcessedStatus.height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             db.Collection("blocksProcessed").Document(blockProcessedStatus.height.ToString()).SetAsync(blockProcessedStatus).Wait();
         }
 
         public static BlockProcessedStatus GetBlockProcessed(long height)
         {
-            Console.WriteLine($"[FB] Getting block status data for {height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
+            //Console.WriteLine($"[FB] Getting block status data for {height} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
             var documentSnapshot = db.Collection("blocksProcessed").Document(height.ToString()).GetSnapshotAsync().Result;
             if (documentSnapshot.Exists)
             {
