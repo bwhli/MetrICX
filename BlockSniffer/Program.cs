@@ -34,11 +34,13 @@ namespace BlockSniffer
             config = Config.LoadConfig();
 
             //publishMessage();15,564,833
-            //var lastBlock = IconGateway.GetBlockByHeight(17564306);
-            //ProcessBlock(lastBlock);
+            var lastBlock = IconGateway.GetBlockByHeight(17699880);
+            ProcessBlock(lastBlock);
 
-            //var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
+            var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
 
+
+            //Get last block processed
             var lastBlockProcessed = FirebaseGateway.GetLastBlockProcessed();
             lastProcessedHeight = lastBlockProcessed.height;
 
@@ -306,11 +308,14 @@ namespace BlockSniffer
                 DataType = "String",
                 StringValue = trx.To
             };
-            messageAttributes["method"] = new MessageAttributeValue
+            if (trx.Data.method != null)
             {
-                DataType = "String",
-                StringValue = trx.Data.method.Value
-            };
+                messageAttributes["method"] = new MessageAttributeValue
+                {
+                    DataType = "String",
+                    StringValue = trx.Data.method.Value
+                };
+            }
 
             List<string> eventList = new List<string>();
             foreach (var eventitem in trx.TxResultDetails.EventLogs)

@@ -57,6 +57,7 @@ namespace ICXDepositReceivedFunction
             decimal amount;
 
             //Subscription to AWS Topic ICX_Transfer
+            //Just triggered from normal ICX to ICX wallets
             if (tx.From != null && tx.From.StartsWith("hx") && tx.To != null && tx.To.StartsWith("hx"))
             {
                 address = tx.To;
@@ -65,17 +66,18 @@ namespace ICXDepositReceivedFunction
             }
 
             //Subscription to AWS Topic ICX_Contract_Method
+            //Looks for specific events that causes ICX to be transferred
             if (tx.TxResultDetails != null)
             {
                 foreach (var eventItem in tx.TxResultDetails.EventLogs)
                 {
-                    if (eventItem.Indexed[0].Contains("ICXTransfer"))
+                    if (eventItem.Indexed[0].StartsWith("ICXTransfer"))
                     {
                         address = eventItem.Indexed[2];
                         amount = IconGateway.GetIcxValueFromHex(eventItem.Indexed[3]);
                         ProcessAddress(context, address, amount);
                     }
-                    if (eventItem.Indexed[0].Contains("IScoreClaimed"))
+                    if (eventItem.Indexed[0].StartsWith("IScoreClaimed"))
                     {
                         address = tx.From;
                         amount = IconGateway.GetIcxValueFromHex(eventItem.Data[0]);

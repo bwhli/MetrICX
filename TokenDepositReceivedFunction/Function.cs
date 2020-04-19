@@ -51,31 +51,47 @@ namespace TokenDepositReceivedFunction
             context.Logger.LogLine($"[{DateTime.Now.ToString()}] Processed record {message}");
             ConfirmedTransaction tx = JsonConvert.DeserializeObject<ConfirmedTransaction>(message);
 
+            string address;
+            string contractAddress;
+            decimal amount;
+
+            //Subscription to AWS Topic ICX_Contract_Method
+            //Looks for specific events that causes Tokens to be transferred
             foreach (var eventItem in tx.TxResultDetails.EventLogs)
             {
-                if (eventItem.Indexed[0].Contains("Transfer"))
+                if (eventItem.Indexed[0].StartsWith("Transfer"))
                 {
-                    string address = eventItem.Indexed[2];
-
-                    if (IsAddressInToggleList(address)) //Check if address is in the toggles list
-                    {
-                        context.Logger.LogLine($"Address is in toggle list {address}");
-                        var devices = FirebaseGateway.GetDevicesByAddress(address);
-                        foreach (var device in devices)
-                        {
-                            foreach (var addressObj in device.addresses_v2.AsEnumerator())
-                            {
-                                foreach (var token in addressObj.tokens.AsEnumerator())
-                                {
-                                    ProcessDeviceToken(device, addressObj, token);
-                                }
-                            }
-                        }
-                    }
+                    contractAddress = eventItem.ScoreAddress;
+                    address = eventItem.Indexed[2];
+                    amount = IconGateway.GetIcxValueFromHex(eventItem.Indexed[3]);
+                    ProcessAddress(context, address, contractAddress, amount);
                 }
             }
 
             await Task.CompletedTask;
+        }
+
+
+        public void ProcessAddress(ILambdaContext context, string address, string tokenAddress, decimal amount)
+        {
+            if (IsAddressInToggleList(address)) //Check if address is in the toggles list
+            {
+                context.Logger.LogLine($"Address is in toggle list {address}");
+
+                var tokenRegistration = FirebaseGateway.GetTokenByAddress(tokenAddress);
+
+                var devices = FirebaseGateway.GetDevicesByAddress(address);
+                foreach (var device in devices)
+                {
+                    foreach (var addressObj in device.addresses_v2.AsEnumerator())
+                    {
+                        if (address == addressObj.address && addressObj.enablePushDeposits == true)
+                        {
+                            ProcessDeviceToken(device, addressObj, tokenRegistration, amount);
+                        }
+                    }
+                }
+            }
         }
 
         public bool IsAddressInToggleList(string address)
@@ -86,41 +102,23 @@ namespace TokenDepositReceivedFunction
             return addressToggles.Any(a => a == address);
         }
 
-        public static void ProcessDeviceToken(DeviceRegistration device, Address address, Token token)
+        public static void ProcessDeviceToken(DeviceRegistration device, Address address, TokenRegistration token, decimal amount)
         {
             SendResponse sendResponse = null;
 
-            if (address.enablePushDeposits == true && token.isSelected == true)
+            try
             {
-                try
-                {
-                    var balance = IconGateway.GetBalance(address, token);
-                    if (string.IsNullOrEmpty(token.lastBalance))
-                    {
-                        //Store current balance without sending a notification
-                        token.lastBalance = balance.ToString();
-                    }
-                    else if (token.balanceAsDecimal < balance && balance - token.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
-                    {
-                        decimal depositReceived = balance - token.balanceAsDecimal;
-                        if (string.IsNullOrEmpty(address.Name))
-                            sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received AWS", $"You have received a deposit of {depositReceived.ToString("0.##")} {token.token}");
-                        else
-                            sendResponse = FirebaseGateway.SendPush(device.token, token.token, $"{token.token} Deposit Received AWS", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {token.token}");
-                        //Now update firestore so we dont send the user duplicate messages
-                        token.lastBalance = balance.ToString();
-                        token.lastDepositPushSentDate = DateTime.UtcNow;
-                        //pushNotificationCount++;
-                    }
-                    else if (token.balanceAsDecimal > balance)
-                    {
-                        token.lastBalance = balance.ToString();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
-                }
+                if (string.IsNullOrEmpty(address.Name))
+                    sendResponse = FirebaseGateway.SendPush(device.token, token.Token, $"{token.Token} Deposit Received AWS", $"You have received a deposit of {amount.ToString("0.##")} {token.Token}");
+                else
+                    sendResponse = FirebaseGateway.SendPush(device.token, token.Token, $"{token.Token} Deposit Received AWS", $"{address.Name.ToUpper()} has received a deposit of {amount.ToString("0.##")} {token.Token}");
+                //Now update firestore so we dont send the user duplicate messages
+                //token.lastBalance = IconGateway.GetBalance(address, token).ToString();
+                //token.lastDepositPushSentDate = DateTime.UtcNow;
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
             }
 
             if (sendResponse != null && sendResponse.failure > 0)

@@ -168,17 +168,17 @@ namespace MetrICXCore.Gateways
             }
         }
 
-        public static IEnumerable<DeviceRegistration> GetDevicesForIScorePush()
+        public static TokenRegistration GetTokenByAddress(string tokenAddress)
         {
-            Query allCitiesQuery = db.Collection("devices").WhereEqualTo("enablePushIScoreChange", true);
+            Query allCitiesQuery = db.Collection("tokens").WhereEqualTo("address", tokenAddress);
             QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
             foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
             {
-                var device = GetDeviceByRef(documentSnapshot);
-                if (device != null)
-                    yield return device;
+                var token = documentSnapshot.ConvertTo<TokenRegistration>();
+                if (token != null)
+                    return token;
             }
-            
+            return null;
         }
 
         public static string[] GetToggleAddresses(string toggleName)
@@ -327,6 +327,19 @@ namespace MetrICXCore.Gateways
             QuerySnapshot allCitiesQuerySnapshot = query.GetSnapshotAsync().Result;
             BlockProcessedStatus block = allCitiesQuerySnapshot.Documents[0].ConvertTo<BlockProcessedStatus>();
             return block;
+        }
+
+        public static IEnumerable<DeviceRegistration> GetDevicesForIScorePush()
+        {
+            Query allCitiesQuery = db.Collection("devices").WhereEqualTo("enablePushIScoreChange", true);
+            QuerySnapshot allCitiesQuerySnapshot = allCitiesQuery.GetSnapshotAsync().Result;
+            foreach (DocumentSnapshot documentSnapshot in allCitiesQuerySnapshot.Documents)
+            {
+                var device = GetDeviceByRef(documentSnapshot);
+                if (device != null)
+                    yield return device;
+            }
+
         }
     }
 }
