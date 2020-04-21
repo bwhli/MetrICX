@@ -117,6 +117,7 @@ namespace ICXIScoreChangedFunction
                     //This token has become stale, need to remove it from firestore
                     FirebaseGateway.DeleteDevice(device);
                 }
+
             }
         }
 

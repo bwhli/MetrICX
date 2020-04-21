@@ -34,10 +34,10 @@ namespace BlockSniffer
             config = Config.LoadConfig();
 
             //publishMessage();15,564,833
-            var lastBlock = IconGateway.GetBlockByHeight(17699880);
-            ProcessBlock(lastBlock);
+            //var lastBlock = IconGateway.GetBlockByHeight(17699880);
+            //ProcessBlock(lastBlock);
 
-            var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
+            //var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
 
 
             //Get last block processed
