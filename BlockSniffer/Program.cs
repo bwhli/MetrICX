@@ -34,7 +34,7 @@ namespace BlockSniffer
             config = Config.LoadConfig();
 
             //publishMessage();15,564,833
-            //var lastBlock = IconGateway.GetBlockByHeight(17699880);
+            //var lastBlock = IconGateway.GetLastBlock();//.GetBlockByHeight(17699880);
             //ProcessBlock(lastBlock);
 
             //var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
@@ -44,7 +44,7 @@ namespace BlockSniffer
             var lastBlockProcessed = FirebaseGateway.GetLastBlockProcessed();
             lastProcessedHeight = lastBlockProcessed.height;
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION");
+            Console.WriteLine("[MAIN] STARTING APPLICATION v1.1");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval;
             timer.Start();
@@ -226,7 +226,7 @@ namespace BlockSniffer
                 }
  
                 var blockTimeStamp = DateTimeOffset.FromUnixTimeMilliseconds(icxBlock.TimeStamp / 1000).AddHours(8);
-                var oldNess = Convert.ToInt32((DateTime.Now - icxBlock.GetTimeStamp()).TotalSeconds);
+                var oldNess = Convert.ToInt32((DateTime.UtcNow.AddHours(8) - icxBlock.GetTimeStamp()).TotalSeconds);
 
                 //What do we do
                 Console.WriteLine($"block timestamp {icxBlock.GetTimeStamp()}, oldNess {oldNess} seconds, HEIGHT {icxBlock.Height}, transactions {icxBlock.ConfirmedTransactionList.Count}, eventCount {eventCounter}, retries {blockStatus.retryAttempts} in thread {System.Threading.Thread.CurrentThread.ManagedThreadId}");
@@ -291,6 +291,8 @@ namespace BlockSniffer
             request.MessageAttributes = messageAttributes;
 
             GetSNS().PublishAsync(request);
+
+            Console.WriteLine($"Published message to AWS : ICX_Transfer, txHash " + trx.TxHash);
         }
 
         static public void publishContractMethodMessage(ConfirmedTransaction trx)
@@ -336,12 +338,16 @@ namespace BlockSniffer
             request.MessageAttributes = messageAttributes;
 
             GetSNS().PublishAsync(request);
+
+            Console.WriteLine($"Published message to AWS : ICX_Contract_Method, txHash " + trx.TxHash);
         }
 
         static public void publishIScoreChange()
         {
             eventCounter++;
             GetSNS().PublishAsync(new PublishRequest("arn:aws:sns:ap-southeast-2:850900483067:ICX_IScore_Change", "{}", "iscore changed"));
+
+            Console.WriteLine($"Published message to AWS : ICX_IScore_Change");
         }
 
         static public AmazonSimpleNotificationServiceClient GetSNS()
@@ -354,7 +360,7 @@ namespace BlockSniffer
         static public void UpdateBlockStatus(BlockProcessedStatus blockStatus, ICXBlock block)
         {
             if (block != null)
-                blockStatus.processingDelaySeconds = Convert.ToInt32((DateTime.Now - block.GetTimeStamp()).TotalSeconds);
+                blockStatus.processingDelaySeconds = Convert.ToInt32((DateTime.UtcNow.AddHours(8) - block.GetTimeStamp()).TotalSeconds);
             blockStatus.processedTimestamp = Google.Cloud.Firestore.Timestamp.GetCurrentTimestamp();
 
             FirebaseGateway.SetBlockProcessed(blockStatus);
