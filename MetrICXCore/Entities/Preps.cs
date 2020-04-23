@@ -5,11 +5,11 @@ using System.Globalization;
 using System.Net;
 using System.Numerics;
 using Google.Cloud.Firestore;
-using MetrICXServerPush.Gateways;
+using MetrICXCore.Gateways;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Entities
 {
 
     public partial class PReps
@@ -21,11 +21,11 @@ namespace MetrICXServerPush.Entities
             StartRanking = prepResult.StartRanking;
             TotalDelegated = IconGateway.IntToDecimal(prepResult.TotalDelegated);
             TotalStake = IconGateway.IntToDecimal(prepResult.TotalStake);
-            Preps = new List<Prep>();
+            Preps = new List<IcxPrep>();
 
             foreach (var prep in prepResult.Preps)
             {
-                Preps.Add(new Prep()
+                Preps.Add(new IcxPrep()
                 {
                     Address = prep.Address,
                     BlockHeight = prep.BlockHeight,
@@ -57,7 +57,7 @@ namespace MetrICXServerPush.Entities
         public BigInteger StartRanking { get; set; }
         public decimal TotalDelegated { get; set; }
         public decimal TotalStake { get; set; }
-        public List<Prep> Preps { get; set; }
+        public List<IcxPrep> Preps { get; set; }
 
         public string GetDetails(string details)
         {
@@ -74,7 +74,7 @@ namespace MetrICXServerPush.Entities
     }
 
     [FirestoreData]
-    public partial class Prep
+    public partial class IcxPrep
     {
         [FirestoreProperty]
         public string Address { get; set; }
@@ -116,16 +116,16 @@ namespace MetrICXServerPush.Entities
 
         public BigInteger BlockHeight { get; set; }
 
-        public Decimal Productivity
+        public decimal Productivity
         {
             get
             {
                 if (TotalBlocks > 0)
-                    return (Decimal)ValidatedBlocks / (Decimal)TotalBlocks * 100;
+                    return (decimal)ValidatedBlocks / (decimal)TotalBlocks * 100;
                 else return 100;
             }
         }
-        
+
     }
 
 }

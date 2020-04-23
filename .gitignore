@@ -43,3 +43,6 @@ bin/
 obj/
 out/
 firebase-config.json
+/BlockSniffer/config.json
+/ICXDepositReceivedFunction/firebase-creds.json
+/MetrICXCore/firebase-creds.json

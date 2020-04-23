@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\MetrICXCore\MetrICXCore.csproj" />
+    <ProjectReference Include="..\TokenDepositReceivedFunction\TokenDepositReceivedFunction.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,6 @@
-﻿using MetrICXServerPush.Entities;
-using MetrICXServerPush.Gateways;
+﻿using MetrICXCore.Entities;
+using MetrICXCore.Gateways;
+using MetrICXCore.Models;
 using System;
 using System.Linq;
 using System.Timers;
@@ -19,7 +20,7 @@ namespace MetrICXServerPush
 
         static void Main(string[] args)
         {
-            //var device = FirebaseGateway.GetDevice("fI3IX8oKzEw:APA91bFVRqIT5pNVL89edl5RMSBEuSfgQNXC1cSev4SDksI8lmDj1SMSBQjyASv4Sw52eAUbAoMuorHo2Fb_7S1zWdnWun9ydE6Ny9L2ZJZ3vldMbpdRt4atkC9-CHyxYsCnBk0A9lMv");
+            //var device = FirebaseGateway.GetDevice("duzgt9Ubnxo:APA91bEYuVNGByPeAo292pIADQzOjTSA49Ly0ZKQ37INJdENTId1pn8HDHtAXQ3krRmoIEHIRaAvkIsYxADT0MGyZm58fQZGVebZz5DiUFRNLIAGd_mGR7XGnoVqGvqyjJBVAMucXaWw");
             //FirebaseGateway.UpdateDevice(device);
 
             ////device.addresses_v2.p0.tokens = new System.Collections.Generic.List<Token>() { new Token() {token = "TAP", contractAddress = "cxc0b5b52c9f8b4251a47e91dda3bd61e5512cd782" } }; 
@@ -74,6 +75,7 @@ namespace MetrICXServerPush
                 Console.WriteLine($"[MAIN] Processing all devices {allDevices.Count()}");
                 var count = 0;
                 pushNotificationCount = 0;
+
                 foreach (var device in allDevices)
                 {
                     Console.WriteLine($"[MAIN] Processing Device {count++}");
@@ -81,6 +83,7 @@ namespace MetrICXServerPush
                     {
                         foreach (var address in device.addresses_v2.AsEnumerator())
                         {
+
                             Console.WriteLine($"[MAIN] Processing Address {address.Symbol} {address.address}");
                             ProcessDeviceAddress(device, address);
 
@@ -93,7 +96,6 @@ namespace MetrICXServerPush
                                 }
                             }
                         }
-
                     }
                     
                     FirebaseGateway.UpdateDevice(device);
@@ -145,35 +147,43 @@ namespace MetrICXServerPush
 
             if (address.enablePushDeposits == true)
             {
-                try
+                var addressToggles = FirebaseGateway.GetToggleAddresses("awsdeposits");
+                if (!addressToggles.Any(a => a == address.address)) //Check if address is NOT in the toggles list
                 {
-                    var balance = IconGateway.GetBalance(address);
-                    if (string.IsNullOrEmpty(address.balance))
+                    try
                     {
-                        //Store current balance without sending a notification
-                        address.balance = balance.ToString();
-                    }
-                    else if (address.balanceAsDecimal < balance && balance - address.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
-                    {
-                        decimal depositReceived = balance - address.balanceAsDecimal;
-                        if (string.IsNullOrEmpty(address.Name))
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
-                        else
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                        var balance = IconGateway.GetBalance(address);
+                        if (string.IsNullOrEmpty(address.balance))
+                        {
+                            //Store current balance without sending a notification
+                            address.balance = balance.ToString();
+                        }
+                        else if (address.balanceAsDecimal < balance && balance - address.balanceAsDecimal > 0.005M) //Otherwise user gets a message of receiving 0
+                        {
+                            decimal depositReceived = balance - address.balanceAsDecimal;
+                            if (string.IsNullOrEmpty(address.Name))
+                                sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
+                            else
+                                sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {depositReceived.ToString("0.##")} {address.Symbol}");
 
-                        //Now update firestore so we dont send the user duplicate messages
-                        address.balance = balance.ToString();
-                        address.lastDepositPushSentDate = DateTime.UtcNow;
-                        pushNotificationCount++;
+                            //Now update firestore so we dont send the user duplicate messages
+                            address.balance = balance.ToString();
+                            address.lastDepositPushSentDate = DateTime.UtcNow;
+                            pushNotificationCount++;
+                        }
+                        else if (address.balanceAsDecimal > balance)
+                        {
+                            address.balance = balance.ToString();
+                        }
                     }
-                    else if (address.balanceAsDecimal > balance)
+                    catch (Exception ex)
                     {
-                        address.balance = balance.ToString();
+                        Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    Console.WriteLine($"[MAIN] EXCEPTION processing Deposit check {ex.Message}");
+
                 }
             }
 

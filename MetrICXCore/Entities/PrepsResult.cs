@@ -6,7 +6,7 @@ using System.Numerics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Entities
 {
 
     public partial class PRepResult

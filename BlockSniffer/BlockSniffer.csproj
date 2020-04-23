@@ -3,7 +3,6 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
-    <RootNamespace>MetrICXServerPush</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,11 +12,18 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="IconSDK.Net" Version="1.0.0" />
+    <PackageReference Include="AWSSDK.SimpleNotificationService" Version="3.3.101.140" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MetrICXCore\MetrICXCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

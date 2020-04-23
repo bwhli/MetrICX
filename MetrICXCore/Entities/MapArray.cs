@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace MetrICXServerPush.Entities
+namespace MetrICXCore.Entities
 {
     [FirestoreData]
     public class MapArray<T>
@@ -15,19 +15,19 @@ namespace MetrICXServerPush.Entities
         private T __4;
 
         [FirestoreProperty]
-        public T p4 { get => this.__4; set => this.__4 = value; }
+        public T p4 { get => __4; set => __4 = value; }
 
         [FirestoreProperty]
-        public T p3 { get => this.__3; set => this.__3 = value; }
+        public T p3 { get => __3; set => __3 = value; }
 
         [FirestoreProperty]
-        public T p2 { get => this.__2; set => this.__2 = value; }
+        public T p2 { get => __2; set => __2 = value; }
 
         [FirestoreProperty]
-        public T p1 { get => this.__1; set => this.__1 = value; }
+        public T p1 { get => __1; set => __1 = value; }
 
         [FirestoreProperty]
-        public T p0 { get => this.__0; set => this.__0 = value; }
+        public T p0 { get => __0; set => __0 = value; }
 
         public IEnumerable<T> AsEnumerator()
         {
