@@ -16,6 +16,7 @@ namespace MetrICXCore.Entities
     {
         public PReps(PRepResult prepResult)
         {
+            
             BlockHeight = prepResult.BlockHeight;
             StartRanking = prepResult.StartRanking;
             TotalDelegated = IconGateway.IntToDecimal(prepResult.TotalDelegated);
@@ -68,7 +69,7 @@ namespace MetrICXCore.Entities
             catch (Exception ex)
             {
             }
-            return null;
+            return "{\"representative\":{\"logo\":{\"logo_256\":\"http://icons.iconarchive.com/icons/cjdowner/cryptocurrency-flat/256/ICON-ICX-icon.png\",\"logo_1024\":\"\",\"logo_svg\":\"\"},\"media\":{\"steemit\":\"\",\"twitter\":\"\",\"youtube\":\"\",\"facebook\":\"\",\"github\":\"\",\"reddit\":\"\",\"keybase\":\"\",\"telegram\":\"\",\"wechat\":\"\"}},\"server\":{\"location\":{\"country\":\"\",\"city\":\"\"},\"server_type\":\"\",\"api_endpoint\":\"\"}}";
         }
     }
 

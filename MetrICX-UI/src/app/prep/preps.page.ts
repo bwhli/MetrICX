@@ -58,30 +58,39 @@ export class PrepsPage  {
 
    async ionViewWillEnter() {
       if (this.address) {
-        await this.presentLoading();
+        await this.presentLoading(); 
+        this.preps = await this.iconContract.getPReps();
         await this.loadPageData(this.address);
+        await this.showStakePercentage();
         this.isLoaded = true;
+        await this.dismiss();
       }
    }
 
    doRefresh(event) {
-    setTimeout(() => {
-      this.ionViewWillEnter();
-      event.target.complete();
-    }, 2000);
+    this.ionViewWillEnter();
+    event.target.complete();
+}
+
+  async showStakePercentage() {
+    await this.httpService.get().then((data) => {
+      var cS: number = data['tmainInfo']['icxCirculationy']; 
+      this.circPercentage = this.preps.totalDelegated / cS * 100;
+      this.circulatingSupply = Math.round(cS).toLocaleString();
+    });
+    this.totalICXDelegated = Math.round(this.preps.totalDelegated).toLocaleString();
   }
 
   async presentLoading() {
     this.isLoaded = true;
     await this.loadingController.create({
       spinner: null,
-      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      message: '<ion-img src="assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
       cssClass: 'loading-css',
       showBackdrop: false,
-      duration: 5000
+      duration: 8000
     }).then(a => {
       a.present().then(() => {
-        console.log('presented');
         if (!this.isLoaded) {
           a.dismiss().then(() => console.log('abort presenting'));
         }
@@ -104,7 +113,6 @@ export class PrepsPage  {
    }
 
    async loadPageData(address: string) {
-    var preps = await this.iconContract.getPReps();
     var delegatedPReps = await this.iconContract.getDelegatedPReps(address);
     var totalSupply = await this.iconContract.getTotalSupply();
     var votedPreps: number = delegatedPReps.delegations.length;
@@ -121,30 +129,19 @@ export class PrepsPage  {
       prepData.push(pData);
     }
 
-
-    await this.httpService.get().then((data) => {
-      var cS: number = data['tmainInfo']['icxCirculationy']; 
-      this.circPercentage = preps.totalDelegated / cS * 100;
-      this.circulatingSupply = Math.round(cS).toLocaleString();
-    });
-  
-
     this.numberOfVotedReps = numPreps;
-    var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, preps);   
+    var delegatedPrepDetail = await this.filterPrepsList(delegatedPReps.delegations, this.preps);   
 
-    await this.createTableData(delegatedPrepDetail, preps.totalDelegated, prepData);
+    await this.createTableData(delegatedPrepDetail, this.preps.totalDelegated, prepData);
 
     this.totalSupply = Math.round(totalSupply).toLocaleString();
-    this.totalICXDelegated = Math.round(preps.totalDelegated).toLocaleString();
     this.totalNetworkDelegated = await this.iconContract.getNetworkStaked();
-    this.votedPerc =  preps.totalDelegated / totalSupply * 100;
-    this.totalStakedPerc = preps.totalStake / totalSupply * 100;
-    this.totalStaked = Math.round(preps.totalStake).toLocaleString();
+    this.votedPerc =  this.preps.totalDelegated / totalSupply * 100;
+    this.totalStakedPerc = this.preps.totalStake / totalSupply * 100;
+    this.totalStaked = Math.round(this.preps.totalStake).toLocaleString();
     this.lastBlockCreatedBy = await this.iconContract.getLastBlockCreatedBy();
 
-    this.totalNumPreps = preps.preps.length;
-    await this.dismiss();
-
+    this.totalNumPreps = this.preps.preps.length;
    }
 
   async createTableData(prepDetail: PrepDetails[], totalDelegated: number, prepDataVoted: PrepPie[]) {

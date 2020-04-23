@@ -38,15 +38,9 @@ Simply input your public wallet address into MetrICX, and you'll be able to view
 
 **Push Notifications** - 
   * MetrICX provides users with the option of receiving push notifications when their I_Score has been made available for a given day,     and the amount of I_Score they are receiving in the form of ICX.
+  * MetrICX provides users with the option of recieved push notifications when an ICX or IRC-2 token deposit has been recieved
+  * MetrICX provides uers with the option to recieve push notificatins when an elected main prep has dropped node productivity.
 
 <h1><strong>Additional Features</strong></h1>
 
-Among one of the features in development for future release is a portal to allow P-Reps to send updates and information (via the public chain) to their delegators (should the user wish to receive such updates) via MetrICX. This will allow users to receive important information from the P-Reps they're currently voting for.
 
-In addition, 
-
-Users will also have the opportunity to receive push notifications to alert them if one of their P-Rep candidates sees their productivity ratio dip below a certain threshold (to be selected by the user).
-
-While notifications will likely not be available upon initial release, we're aiming to ensure they are available in subsequent versions.
-
-Over time, we will be adding additional features and will be taking feature requests from the community as well.

@@ -1,11 +1,12 @@
 import { Component, ViewChild, ElementRef, Input } from '@angular/core';
-import {  NavController,  } from '@ionic/angular';
+import {  NavController, Platform,  } from '@ionic/angular';
 import { Chart } from 'chart.js';
 import 'chartjs-plugin-labels';
 import { IconContractService } from '../services/icon-contract/icon-contract.service';
 import { LoadingController } from '@ionic/angular';
 import { SettingsService } from '../services/settings/settings.service';
 import { Address, DeviceSettings } from '../services/settings/settings';
+import { Router} from '@angular/router';
 
 @Component({
   selector: 'app-wallet',
@@ -13,6 +14,8 @@ import { Address, DeviceSettings } from '../services/settings/settings';
   styleUrls: ['wallet.page.scss']
 })
 export class WalletPage {
+
+  backButtonSubscribe: any;
   private _addressSetting: Address;
 
   @Input("addresssetting")
@@ -52,14 +55,36 @@ export class WalletPage {
     private iconContract: IconContractService,
     public loadingController: LoadingController,
     public navCtrl: NavController,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private platform: Platform,
+    private router: Router
 
   ) { }
 
+  async initializeBackButtonCustomHandler() {
+      this.backButtonSubscribe = this.platform.backButton.subscribeWithPriority(1, () => 
+      {
+        //if we are already on the wallet page and we hit the hardware back button ask if we want to exit the app
+        if(this.router.url == "/tabs/wallet") {
+          if(window.confirm('Do you want to exit MetrICX?'))
+            {
+              navigator["app"].exitApp();
+            }
+          //else if we hit the hardware back button go back to the last page we were on
+          } else {
+             this.navCtrl.back();
+          }
+      });
+   }
+
+  async ionViewWillLeave() {
+     this.backButtonSubscribe.unsubscribe();
+  } 
+
   async ionViewWillEnter() {
+   await this.initializeBackButtonCustomHandler();
     if (this.address) {
       this.presentLoading();
-
       this.deviceSettings = await this.settingsService.get()
       this.loadWallet();
       this.loadStake();
@@ -74,7 +99,7 @@ export class WalletPage {
   async presentLoading() {
     const loading = await this.loadingController.create({
       spinner: null,
-      message: '<ion-img src="/assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      message: '<ion-img src="assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
       cssClass: 'loading-css',
       showBackdrop: false,
       duration: 1000
@@ -126,11 +151,10 @@ export class WalletPage {
   }
 
   doRefresh(event) {
-    setTimeout(() => {
       this.ionViewWillEnter();
       event.target.complete();
-    }, 2000);
   }
+  
 
   calculateY(pv: number, r: number, n: number) : number {
     const rateOfInterest = r/100;

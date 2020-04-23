@@ -42,6 +42,7 @@ export class TokensPage {
 
 
   async loadTokenBalances() {
+    this.presentLoading()
     if (this._tokens) {
       Object.keys(this._tokens).forEach(async key => {
         if(this._tokens[key].IsSelected) {
@@ -65,11 +66,20 @@ export class TokensPage {
     }
   }
 
+  async presentLoading() {
+    const loading = await this.loadingController.create({
+      spinner: null,
+      message: '<ion-img src="assets/loading-spinner-trans.gif" alt="loading..."></ion-img>',
+      cssClass: 'loading-css',
+      showBackdrop: false,
+      duration: 1000
+    });
+    await loading.present();
+  }
+
   async doRefresh(event) {
-    setTimeout(() => {
       this.loadTokenBalances();
       event.target.complete();
-    }, 2000);
   }
 
   async openModal() {
