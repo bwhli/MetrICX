@@ -74,7 +74,7 @@ namespace TokenDepositReceivedFunction
 
         public void ProcessAddress(ILambdaContext context, string address, string tokenAddress, decimal amount)
         {
-            if (IsAddressInToggleList(address)) //Check if address is in the toggles list
+            //if (IsAddressInToggleList(address)) //Check if address is in the toggles list
             {
                 context.Logger.LogLine($"Address is in toggle list {address}");
 
@@ -109,9 +109,9 @@ namespace TokenDepositReceivedFunction
             try
             {
                 if (string.IsNullOrEmpty(address.Name))
-                    sendResponse = FirebaseGateway.SendPush(device.token, token.Token, $"{token.Token} Deposit Received AWS", $"You have received a deposit of {amount.ToString("0.##")} {token.Token}");
+                    sendResponse = FirebaseGateway.SendPush(device.token, token.Token, $"{token.Token} Deposit Received", $"You have received a deposit of {amount.ToString("0.##")} {token.Token}");
                 else
-                    sendResponse = FirebaseGateway.SendPush(device.token, token.Token, $"{token.Token} Deposit Received AWS", $"{address.Name.ToUpper()} has received a deposit of {amount.ToString("0.##")} {token.Token}");
+                    sendResponse = FirebaseGateway.SendPush(device.token, token.Token, $"{token.Token} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {amount.ToString("0.##")} {token.Token}");
                 //Now update firestore so we dont send the user duplicate messages
                 //token.lastBalance = IconGateway.GetBalance(address, token).ToString();
                 //token.lastDepositPushSentDate = DateTime.UtcNow;

@@ -54,7 +54,7 @@ namespace ICXIScoreChangedFunction
             {
                 foreach (var address in device.addresses_v2.AsEnumerator())
                 {
-                    if (IsAddressInToggleList(address.address)) //Check if address is in the toggles list
+                    //if (IsAddressInToggleList(address.address)) //Check if address is in the toggles list
                     {
                         ProcessDeviceAddress(device, address);
                     }
@@ -90,9 +90,9 @@ namespace ICXIScoreChangedFunction
                     {
                         decimal awardedICX = totalRewards - address.availableRewardsAsDecimal;
                         if (string.IsNullOrEmpty(address.Name))
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available AWS", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
                         else
-                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available AWS", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed from {address.Name.ToUpper()}");
+                            sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed from {address.Name.ToUpper()}");
 
                         //Now update firestore so we dont send the user duplicate messages
                         address.availableRewards = totalRewards.ToString();
