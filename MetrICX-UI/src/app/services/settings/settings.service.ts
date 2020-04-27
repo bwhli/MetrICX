@@ -21,7 +21,7 @@ export class SettingsService {
   public async get(): Promise<DeviceSettings> {
     if (!this.deviceSettings) {
       var token : string = await this.fcm.getToken();
-      if (token) {
+      if (token && token != "Unknown") {
         this.deviceSettings = await this.loadFromFcm(token);
       }
     }
