@@ -34,7 +34,7 @@ namespace BlockSniffer
             config = Config.LoadConfig();
 
             //publishMessage();15,564,833
-            //var lastBlock = IconGateway.GetLastBlock();//.GetBlockByHeight(17699880);
+            //var lastBlock = IconGateway.GetBlockByHeight(17938724);
             //ProcessBlock(lastBlock);
 
             //var icxValue = lastBlock.ConfirmedTransactionList[1].GetIcxValue();
@@ -44,7 +44,7 @@ namespace BlockSniffer
             var lastBlockProcessed = FirebaseGateway.GetLastBlockProcessed();
             lastProcessedHeight = lastBlockProcessed.height;
 
-            Console.WriteLine("[MAIN] STARTING APPLICATION v1.1");
+            Console.WriteLine("[MAIN] STARTING APPLICATION v1.2");
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = timerInterval;
             timer.Start();
@@ -310,7 +310,7 @@ namespace BlockSniffer
                 DataType = "String",
                 StringValue = trx.To
             };
-            if (trx.Data.method != null)
+            if (trx.Data != null && !(trx.Data is string) && trx.Data.method != null)
             {
                 messageAttributes["method"] = new MessageAttributeValue
                 {

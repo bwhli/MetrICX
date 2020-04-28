@@ -92,9 +92,9 @@ namespace ICXDepositReceivedFunction
 
         public void ProcessAddress(ILambdaContext context, string address, decimal amount)
         {
-            if (IsAddressInToggleList(address)) //Check if address is in the toggles list
+            //if (IsAddressInToggleList(address)) //Check if address is in the toggles list
             {
-                context.Logger.LogLine($"Address is in toggle list {address}");
+                //context.Logger.LogLine($"Address is in toggle list {address}");
 
                 var devices = FirebaseGateway.GetDevicesByAddress(address);
                 foreach (var device in devices)
@@ -132,9 +132,9 @@ namespace ICXDepositReceivedFunction
                 try
                 {
                     if (string.IsNullOrEmpty(address.Name))
-                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received AWS", $"You have received a deposit of {amount.ToString("0.##")} {address.Symbol}");
+                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"You have received a deposit of {amount.ToString("0.##")} {address.Symbol}");
                     else
-                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received AWS", $"{address.Name.ToUpper()} has received a deposit of {amount.ToString("0.##")} {address.Symbol}");
+                        sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Deposit Received", $"{address.Name.ToUpper()} has received a deposit of {amount.ToString("0.##")} {address.Symbol}");
                     address.lastDepositPushSentDate = DateTime.UtcNow;
 
                     //This will not always be required
