@@ -106,6 +106,8 @@ namespace ICXDepositReceivedFunction
                             ProcessDeviceAddress(device, addressObj, amount);
                         }
                     }
+
+                    FirebaseGateway.UpdateDevice(device);
                 }
             }
         }
