@@ -20,6 +20,13 @@ export class SettingsService {
 
   public async get(): Promise<DeviceSettings> {
     if (!this.deviceSettings) {
+      var token : string = await this.fcm.getToken();
+      if (token && token != "Unknown") {
+        this.deviceSettings = await this.loadFromFcm(token);
+      }
+    }
+
+    if (!this.deviceSettings) {
       //Load OLD Data Structure from storage
       this.deviceSettings = new DeviceSettings();
       this.storage.get('address').then(address => {
@@ -91,6 +98,25 @@ export class SettingsService {
     catch {}
   }
 
+  private async loadFromFcm(token: string) : Promise<DeviceSettings> {
+    try {
+      var objectData: DeviceSettings = null;
+      var docRef = this.afs.collection('devices').doc(token);
+
+      await docRef.get().toPromise().then((doc) => {
+        if (doc.exists) {
+            console.log("Document data:", doc.data());
+            objectData = <DeviceSettings>doc.data();
+        } else {
+            // doc.data() will be undefined in this case
+            console.log("No such document!");
+        }
+      });
+      return objectData;
+    }
+    catch {}
+  }
+
   public getActiveAddress() : Address {
     return this.deviceSettings.addresses_v2.p0;
   }
@@ -107,8 +133,7 @@ export class SettingsService {
     catch{
       return false;
     }
-  } 
-
+  }
 
   public async addAddressAndSave(newAddress: string, nickname: string, enablePushDeposits: boolean) : Promise<boolean>{
       var deviceSettings = await this.get();
