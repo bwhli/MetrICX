@@ -90,6 +90,8 @@ namespace TokenDepositReceivedFunction
                             ProcessDeviceToken(device, addressObj, tokenRegistration, amount);
                         }
                     }
+
+                    FirebaseGateway.UpdateDevice(device);
                 }
             }
         }

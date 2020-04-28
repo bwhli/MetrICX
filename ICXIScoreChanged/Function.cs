@@ -59,6 +59,8 @@ namespace ICXIScoreChangedFunction
                         ProcessDeviceAddress(device, address);
                     }
                 }
+
+                FirebaseGateway.UpdateDevice(device);
             }
 
             await Task.CompletedTask;
@@ -86,9 +88,8 @@ namespace ICXIScoreChangedFunction
                 try
                 {
                     var totalRewards = IconGateway.GetAvailableRewards(address);
-                    if (address.availableRewardsAsDecimal < totalRewards)
+                    if (totalRewards > 0)
                     {
-                        decimal awardedICX = totalRewards - address.availableRewardsAsDecimal;
                         if (string.IsNullOrEmpty(address.Name))
                             sendResponse = FirebaseGateway.SendPush(device.token, address.address, $"{address.Symbol} Rewards Available", $"Congratulations! your reward of {totalRewards.ToString("0.##")} {address.Symbol} is ready to be claimed");
                         else
@@ -97,7 +98,6 @@ namespace ICXIScoreChangedFunction
                         //Now update firestore so we dont send the user duplicate messages
                         address.availableRewards = totalRewards.ToString();
                         address.lastIScorePushSentDate = DateTime.UtcNow;
-                        //pushNotificationCount++;
                     }
                     else if (address.availableRewardsAsDecimal > totalRewards)
                     {
