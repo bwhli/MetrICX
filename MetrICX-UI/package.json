@@ -170,9 +170,7 @@
         "PLAY-SERVICES-WEARABLE": "17.0.0"
       },
       "cordova-plugin-firebasex": {},
-      "phonegap-plugin-barcodescanner": {
-        "ANDROID_SUPPORT_V4_VERSION": "27.+"
-      },
+      "phonegap-plugin-barcodescanner": {},
       "cordova-base64-to-gallery": {},
       "cordova-plugin-firebase": {},
       "cordova-plugin-advanced-http": {
