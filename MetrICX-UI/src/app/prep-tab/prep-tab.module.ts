@@ -1,5 +1,5 @@
 import { IonicModule } from '@ionic/angular';
-//import { RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PrepTabPage } from './prep-tab.page';
@@ -23,7 +23,7 @@ import { PrepsPage } from '../prep/preps.page';
     IonicModule,
     CommonModule,
     FontAwesomeModule,
-    //RouterModule.forChild([{ path: '', component: PrepTabPage }]),
+    RouterModule.forChild([{ path: '', component: PrepTabPage }]),
     SuperTabsModule.forRoot()
   ],
   declarations: [PrepTabPage, PrepsPage]

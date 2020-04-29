@@ -5,7 +5,6 @@ import { FcmService } from '../fcm/fcm.service';
 import { Storage } from '@ionic/storage';
 import { SharedService } from '../shared/shared.service';
 import { environment } from 'src/environments/environment';
-import * as firebase from 'firebase';
 
 @Injectable()
 export class SettingsService {

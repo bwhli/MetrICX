@@ -34,7 +34,7 @@
   //height: 10%;
   background-color: #1d2025;
   --background: #1d2025;
-   padding-top: 40px !important;
+  //padding-top: 40px !important; //for iOS 
 }
 
 ion-col {
@@ -146,7 +146,7 @@ ion-item {
 ion-list, ion-item-divider {
   background-color:#1d2025;
   --background: #1d2025;
- // --color: #fff;
+  --color: #fff;
 }
 
  ion-icon {
